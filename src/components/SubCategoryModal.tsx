@@ -1,0 +1,210 @@
+import {
+  NewSubCategory,
+  UpdateSubCategory,
+} from "@/declarations";
+import { Button } from "@nextui-org/button";
+import { Image } from "@nextui-org/image";
+import { Input, Textarea } from "@nextui-org/input";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "@nextui-org/modal";
+import { Select, SelectItem } from "@nextui-org/select";
+import { useFormik } from "formik";
+import React from "react";
+import * as yup from "yup";
+import { InputImage } from "./InputImage";
+import { AdminContext } from "@/context/admin";
+
+type Props = {
+  handleOpenModal: (isOpen: boolean) => void;
+  isOpen: boolean;
+};
+
+type CategoryFormInputs = {
+  name: string;
+  description: string;
+  category: string;
+  file: any;
+};
+
+const schema = yup.object().shape({
+  name: yup.string().required("Campo requerido"),
+  description: yup.string().required("Campo requerido"),
+  category: yup.string().required("Campo requerido"),
+  file: yup.mixed().required("Campo requerido"),
+});
+
+export function SubCategoryModal({ handleOpenModal, isOpen }: Props) {
+
+  const {
+    category: { categories },
+    subcategory: { selected, loading },
+    onCreateOrEditSubCategory,
+    onSelectSubCategory
+  } = React.useContext(AdminContext);
+
+  const [isEditing, setIsEditing] = React.useState<boolean>(false);
+  const [isEditValid, setIsEditValid] = React.useState(false);
+
+  React.useEffect(() => {
+    if(!isOpen){
+      onSelectSubCategory( null );
+    }
+  }, [isOpen]);
+
+  const { handleChange, handleBlur, touched, values, setFieldValue, isValid, resetForm, errors } =
+    useFormik<CategoryFormInputs>({
+      validateOnChange: true,
+      isInitialValid: false,
+      initialValues: {
+        name: selected ? selected.name : "",
+        description: selected ? selected.description : "",
+        category: selected ? selected.category.id : "",
+        file: selected ? "null" : null
+      },
+      onSubmit: (values) => {
+        alert(JSON.stringify(values, null, 2));
+      },
+      validationSchema: schema,
+    });
+
+  React.useEffect(() => {
+    resetForm({
+      values: {
+        name: selected ? selected?.name : "",
+        description: selected ? selected?.description : "",
+        category: selected ? selected.category.id : "",
+        file: selected ? "null" : null,
+      },
+    });
+  }, [selected]);
+
+  React.useEffect(() => {
+    setIsEditing(selected !== null ? true : false);
+    if (isEditing) {
+      console.log("IS EDITING " , isEditing);
+      setIsEditValid(
+        values.name.length > 0 && values.category.length > 0 && selected
+          ? selected!.url_image.length > 0
+          : false
+      );
+    }
+  }, [values]);
+
+  const onSubmit = async () => {
+    if (selected) {
+      onCreateOrEditSubCategory(
+        "Edit",
+        {
+          id: selected.id,
+          newName: values.name,
+          newDescription: values.description,
+          newCategoryId: values.category,
+          file: values.file,
+        } as UpdateSubCategory,
+        () => {
+          handleOpenModal(false);
+          resetForm();
+        }
+      );
+    } else {
+      onCreateOrEditSubCategory(
+        "Create",
+        {
+          name: values.name,
+          description: values.description,
+          category_id: values.category,
+          file: values.file,
+        } as NewSubCategory,
+        () => {
+          handleOpenModal(false);
+          resetForm();
+        }
+      );
+    }
+  };
+
+  return (
+    <Modal isOpen={isOpen} onOpenChange={handleOpenModal} placement="center">
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader className="flex flex-col gap-1">
+              Crear Sub Categorias
+            </ModalHeader>
+            <ModalBody>
+              <Input
+                isRequired
+                onChange={handleChange("name")}
+                onBlur={handleBlur("name")}
+                value={values.name}
+                label="Nombre"
+                isInvalid={!!errors.name && touched.name }
+                errorMessage={ touched.name && errors.name}
+                variant="bordered"
+              />
+              <Textarea
+                isRequired
+                onChange={handleChange("description")}
+                onBlur={handleBlur("description")}
+                value={values.description}
+                label="Descripcion"
+                isInvalid={!!errors.description && touched.description}
+                errorMessage={touched.description && errors.description}
+                variant="bordered"
+              />
+              <Select
+                isRequired
+                items={categories}
+                label="Categoria"
+                variant="bordered"
+                placeholder="Selecciona una categoria"
+                onChange={handleChange("category")}
+                onBlur={handleBlur("category")}
+                value={values.category}
+                isInvalid={!!errors.category && touched.category}
+                errorMessage={touched.category && errors.category}
+                defaultSelectedKeys={ selected && [selected.category.id] as any}
+              >
+                {(category) => (
+                  <SelectItem key={category.id}>{category.name}</SelectItem>
+                )}
+              </Select>
+              <InputImage
+                accept=".jpg,.png,.webp"
+                label="Imagen"
+                multiple={false}
+                onBlur={ handleBlur("file") }
+                onChange={(event: any) => {
+                  setFieldValue("file", event.currentTarget.files[0]);
+                }}
+                isInvalid={!!errors.file && touched.file}
+                errorMessage={ touched.file && errors.file + ""}
+              />
+              {selected && (
+                <Image
+                  alt="asd"
+                  src={selected.url_image}
+                  width={100}
+                  height={100}
+                />
+              )}
+            </ModalBody>
+            <ModalFooter>
+              <Button color="danger" variant="flat" onPress={onClose}>
+                Cerrar
+              </Button>
+              <Button color="primary" className="text-white" onPress={onSubmit} isDisabled={!isValid} isLoading={ loading }>
+                Guardar
+              </Button>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
+  );
+}
