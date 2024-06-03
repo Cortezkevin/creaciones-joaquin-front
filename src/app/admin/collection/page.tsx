@@ -1,13 +1,12 @@
 "use client";
 
-import { collectionAPI } from "@/api";
 import { CollectionModal } from "@/components/CollectionModal";
 import { DataTable, DataTableModalProps } from "@/components/DataTable";
 import { AdminContext } from "@/context/admin";
-import { ICollection, ICollectionTableCell, ICollectionTableColumn } from "@/declarations";
+import { ICollectionTableCell, ICollectionTableColumn } from "@/declarations";
 import { Image } from "@nextui-org/image";
 import { Tooltip } from "@nextui-org/react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 
 const columns: ICollectionTableColumn[] = [
   {

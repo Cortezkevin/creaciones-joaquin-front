@@ -1,11 +1,9 @@
 "use client";
 
-import { productAPI } from "@/api";
 import { DataTable, DataTableModalProps } from "@/components/DataTable";
 import { ProductModal } from "@/components/ProductModal";
 import { AdminContext } from "@/context/admin";
 import { IProductTableCell, IProductTableColumn } from "@/declarations";
-import { IProduct } from "@/declarations/model/product";
 import { Image } from "@nextui-org/image";
 import { Tooltip } from "@nextui-org/react";
 import React from "react";

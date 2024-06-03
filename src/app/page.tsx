@@ -2,11 +2,9 @@
 
 import { categoryAPI, productAPI } from "@/api";
 import { CategoryCard } from "@/components/CategoryCard";
-import { Map } from "@/components/Map";
 import { NavbarUI } from "@/components/NavbarUI";
 import { ProductCard } from "@/components/ProductCard";
 import { ICategory, IProduct } from "@/declarations";
-import { categories } from "@/helpers/mock-data";
 import { Image } from "@nextui-org/image";
 import React from "react";
 

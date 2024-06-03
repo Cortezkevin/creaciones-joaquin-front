@@ -1,12 +1,11 @@
 "use client";
 
-import { categoryAPI } from "@/api";
 import { CategoryModal } from "@/components/CategoryModal";
 import { DataTable, DataTableModalProps } from "@/components/DataTable";
 import { AdminContext } from "@/context/admin";
-import { ICategory, ICategoryTableCell, ICategoryTableColumn } from "@/declarations";
+import { ICategoryTableCell, ICategoryTableColumn } from "@/declarations";
 import { Image, Tooltip } from "@nextui-org/react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 const columns: ICategoryTableColumn[] = [
   {
