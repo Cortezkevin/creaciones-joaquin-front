@@ -68,7 +68,7 @@ export default function ConfirmChangePasswordPage({
       <form onSubmit={ handleSubmit }>
         <Card className="p-6 w-[400px]" isBlurred>
           <CardHeader className="pb-0 pt-2 px-4 flex-col items-center">
-            <h1 className="font-bold text-[25px]">Crear una cuenta</h1>
+            <h1 className="font-bold text-[25px]">Cambiar Contraseña</h1>
           </CardHeader>
           <CardBody className="overflow-visible py-2 flex flex-col gap-4 mt-[10px]">
             <div className="flex flex-col gap-4">
