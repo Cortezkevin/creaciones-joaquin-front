@@ -6,22 +6,30 @@ import { NavbarUI } from "@/components/NavbarUI";
 import { ProductCard } from "@/components/ProductCard";
 import { ICategory, IProduct } from "@/declarations";
 import { Image } from "@nextui-org/image";
+import { Spinner } from "@nextui-org/react";
 import React from "react";
 
 export default function Home() {
+
+  const [isLoadingProducts, setIsLoadingProducts] = React.useState(false);
+  const [isLoadingCategories, setIsLoadingCategories] = React.useState(false);
 
   const [products, setProducts] = React.useState<IProduct[]>([]);
   const [categories, setCategories] = React.useState<ICategory[]>([]);
 
   React.useEffect(() => {
     ( async () => {
+      setIsLoadingProducts( true );
+      setIsLoadingCategories( true );
       const productsResponse = await productAPI.getAll();
       const categoriesResponse = await categoryAPI.getAll();
       if(productsResponse?.success){
         setProducts( productsResponse.content );
+        setIsLoadingProducts( false );
       }
       if(categoriesResponse?.success){
         setCategories( categoriesResponse.content );
+        setIsLoadingCategories( false );
       }
     })();
   }, [])
@@ -42,7 +50,9 @@ export default function Home() {
           <h1 className="text-lg font-semibold">Categorias</h1>
           <div className="flex flex-wrap w-full gap-4 items-center justify-center">
             {
-              categories
+              isLoadingCategories
+              ? <Spinner label="Cargando..." size="lg" color="warning" />
+              : categories
               && categories.map( c => 
                 (
                   <CategoryCard key={c.id} category={ c } />
@@ -55,7 +65,9 @@ export default function Home() {
           <h1 className="text-lg font-semibold">Productos</h1>
           <div className="flex justify-center gap-4">
             {
-              products 
+              isLoadingProducts
+              ? <Spinner label="Cargando..." size="lg" color="warning" />
+              : products 
               && products.map( p => 
                 (
                   <ProductCard key={p.id} product={ p} />
