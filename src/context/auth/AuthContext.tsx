@@ -8,6 +8,7 @@ export interface AuthProps {
   isAdmin: boolean;
   user: IUser;
   isLoadingUserData: boolean;
+  isSavingAddress: boolean;
   validateSession: () => void;
   onLogin: ( email: string, password: string ) => Promise<boolean>;
   onRegister: ( newUser: NewUser ) => Promise<boolean>;

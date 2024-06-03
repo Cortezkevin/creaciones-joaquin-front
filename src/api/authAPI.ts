@@ -7,7 +7,7 @@ const PATH = "auth/";
 export const login = async (email: string, password: string) => {
   try{
     const { data } = await AxiosInstance.post<ResponseWrapper<JwtToken>>(PATH + "login", { email, password });
-    if( data.success ){
+    //if( data.success ){
       Cokkies.set('token', data.content.token);
       Cokkies.set('user',JSON.stringify(data.content.user));
       const newMemoryCart: ICart = {
@@ -22,7 +22,8 @@ export const login = async (email: string, password: string) => {
       }
       Cokkies.set("cart", JSON.stringify(newMemoryCart));
       Cokkies.remove("address");
-    }
+    //}
+    //console.log("RESPONSE LOGIN", data);
     return data;
   }catch(e){
     if(isAxiosError(e)){
@@ -96,16 +97,17 @@ export const changePassword = async ({ password, confirmPassword, tokenPassword 
 
 export const validateToken = async ( token: string  ) => {
   try{
-    const response = await fetch("http://localhost:4000/api/auth/getUserFromToken", 
+    const response = await fetch("https://creaciones-joaquin-back.onrender.com/api/auth/getUserFromToken", 
     { method: "GET", credentials: "omit", headers: { "Authorization": "Bearer " + token }, }
     );
     const data = await response.json() as ResponseWrapper<IUser>;
     if( data && data.success ){
       Cokkies.set('user',JSON.stringify(data.content));
       return data;
+    }else {
+      Cokkies.remove("token");
+      Cokkies.remove("user");
     }
-    Cokkies.remove("token");
-    Cokkies.remove("user");
     return null;
   }catch(e){
     Cokkies.remove("token");

@@ -6,6 +6,10 @@ type AuthAction =
 { 
   type: '[Auth] - Login',
   payload: ILoginAction
+} |
+{ 
+  type: '[Auth] - Saving Address',
+  payload: boolean
 } | 
 { 
   type: '[Auth] - Update Address',
@@ -24,9 +28,15 @@ export const AuthReducer = ( state: AuthState, action: AuthAction ): AuthState =
         isAdmin: action.payload.isAdmin,
         user: action.payload.user
       };
+    case '[Auth] - Saving Address':
+      return {
+        ...state,
+        isSavingAddress: action.payload
+      }
     case '[Auth] - Update Address':
       return {
         ...state,
+        isSavingAddress: false,
         user: {
           ...state.user,
           profile: {

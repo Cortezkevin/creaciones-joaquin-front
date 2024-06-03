@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 
 export const CartSummary = () => {
   const router = useRouter();
-  const { isLogged, user } = React.useContext(AuthContext);
+  const { isLogged, user, isSavingAddress } = React.useContext(AuthContext);
   const { total, discount, count, subtotal, tax, shippingCost } = React.useContext(CartContext);
   const [showSummary, setShowSummary] = useState(false);
   const [direction, setDirection] = useState<IAddress | undefined>(user.profile.address);
@@ -69,8 +69,8 @@ export const CartSummary = () => {
             readOnly
             startContent={<i className="fa-solid fa-location-dot"></i>}
           />
-          <Button color="primary" className="text-white rounded-md" onClick={() => setOpenModal(true)}>
-            Cambiar direccion
+          <Button color="primary" className="text-white rounded-md" onClick={() => setOpenModal(true)} isLoading={isSavingAddress}>
+            { direction && direction !== null ? "Cambiar direccion" : "Agregar Direccion" }
           </Button>
         </div>
         <AddressModal isOpen={ openModal } handleOpenModal={(isOpen) => setOpenModal(isOpen)} />

@@ -13,12 +13,14 @@ interface Props {
 export interface AuthState {
   isLogged: boolean;
   isAdmin: boolean;
+  isSavingAddress: boolean;
   user: IUser;
 }
 
 const name_INITIAL_STATE: AuthState = {
   isAdmin: false,
   isLogged: false,
+  isSavingAddress: false,
   user: {
     id: "",
     email: "",
@@ -57,6 +59,7 @@ export default function AuthProvider({ children }: Props) {
         });
       }
     }
+    console.log("NO HAY USUARIO" , user);
     const address = JSON.parse(Cookies.get("address") || "null") as IAddress;
     dispatch({
       type: "[Auth] - Update Address",
@@ -83,6 +86,10 @@ export default function AuthProvider({ children }: Props) {
   };
 
   const handleUpdateAddress = async ( address: IAddress ) => {
+    dispatch({
+      type: "[Auth] - Saving Address",
+      payload: true
+    })
     const data = await addressAPI.update(address);
     if( data?.success ){
       dispatch({
@@ -92,6 +99,10 @@ export default function AuthProvider({ children }: Props) {
       toast.success(data.message);
     }else {
       toast.error(data?.message || "Ocurrio un error");
+      dispatch({
+        type: "[Auth] - Saving Address",
+        payload: false
+      })
     }
   }
   
