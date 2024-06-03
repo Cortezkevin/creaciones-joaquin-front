@@ -48,7 +48,7 @@ export default function Home() {
       <div className="flex flex-col gap-4 ">
         <div className="w-full p-6 flex flex-col gap-6 items-center">
           <h1 className="text-lg font-semibold">Categorias</h1>
-          <div className="flex flex-wrap w-full gap-4 items-center justify-center">
+          <div className="flex flex-wrap w-full gap-4 items-center justify-center min-h-[300px]">
             {
               isLoadingCategories
               ? <Spinner label="Cargando..." size="lg" color="warning" />
@@ -61,7 +61,7 @@ export default function Home() {
             }
           </div>
         </div>
-        <div className="w-full flex flex-col gap-6 items-center justify-center">
+        <div className="w-full flex flex-col gap-6 items-center justify-center min-h-[300px]">
           <h1 className="text-lg font-semibold">Productos</h1>
           <div className="flex justify-center gap-4">
             {
