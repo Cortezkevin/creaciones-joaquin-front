@@ -1,16 +1,14 @@
 "use client";
 import { Button } from '@nextui-org/button';
-import {Badge} from "@nextui-org/badge";
-import { usePathname, useRouter } from 'next/navigation';
+import { Badge } from "@nextui-org/badge";
+import { useRouter } from 'next/navigation';
 import { Listbox, ListboxSection, ListboxItem } from '@nextui-org/listbox';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/dropdown';
 import { Image, User } from '@nextui-org/react';
-import { Skeleton } from '@nextui-org/skeleton';
 import NextLink from 'next/link';
 import Link from 'next/link';
-import { Suspense, use, useContext } from 'react';
+import {  useContext } from 'react';
 import { AuthContext } from '@/context/auth';
-import Loading from '@/app/admin/loading';
 
 export const AdminMenu = () => {
   
@@ -19,7 +17,7 @@ export const AdminMenu = () => {
   
   const handleLogout = () => {
     onLogout();
-    router.push("/auth/login")
+    router.replace("/auth/login");
   }
 
   return (

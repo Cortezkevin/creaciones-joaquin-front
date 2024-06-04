@@ -135,7 +135,7 @@ export const CartSummary = () => {
       </div>
       <Button
         onClick={handleCheckout}
-        isDisabled={count === 0}
+        isDisabled={count === 0 || (user.profile.address === undefined || user.profile.address.fullAddress === "") }
         size="lg"
         className="w-full text-white font-semibold rounded-md"
         color="primary"

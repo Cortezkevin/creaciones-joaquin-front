@@ -69,7 +69,7 @@ export default function ChangePasswordPage() {
                 errorMessage={ errors.email }
               />
             </div>
-            <Button type="submit" size="lg" color="primary" isDisabled={ !isValid } isLoading={ isLoading }>
+            <Button className='text-white' type="submit" size="lg" color="primary" isDisabled={ !isValid } isLoading={ isLoading }>
               Confirmar
             </Button>
           </CardBody>
