@@ -1,5 +1,10 @@
 import { productAPI, subcategoryAPI } from "@/api";
-import { IProductTableCell, ISubCategory, NewProduct, UpdateProduct } from "@/declarations";
+import {
+  IProductTableCell,
+  ISubCategory,
+  NewProduct,
+  UpdateProduct,
+} from "@/declarations";
 import { Button } from "@nextui-org/button";
 import { Input, Textarea } from "@nextui-org/input";
 import {
@@ -47,12 +52,12 @@ export function ProductModal({ handleOpenModal, isOpen }: Props) {
     collection: { collections },
     product: { selected, loading },
     onCreateOrEditProduct,
-    onSelectProduct
+    onSelectProduct,
   } = React.useContext(AdminContext);
 
   React.useEffect(() => {
-    if(!isOpen){
-      onSelectProduct( null );
+    if (!isOpen) {
+      onSelectProduct(null);
     }
   }, [isOpen]);
 
@@ -60,24 +65,36 @@ export function ProductModal({ handleOpenModal, isOpen }: Props) {
   const [isEditValid, setIsEditValid] = React.useState(false);
   const [files, setFiles] = React.useState<File[]>([]);
 
-  const { handleChange, handleBlur, touched, values, setFieldValue, isValid, resetForm, errors } =
-    useFormik<ProductFormInputs>({
-      validateOnChange: true,
-      isInitialValid: false,
-      initialValues: {
-        name: selected ? selected.name : "",
-        description: selected ? selected.description : "",
-        subCategory: selected ? selected.subCategory.id : "",
-        collection: selected ? selected.collection ? selected.collection?.id : "" : "",
-        price: selected ? selected.price : "",
-        stock: selected ? selected.stock : 0,
-        files: [],
-      },
-      onSubmit: (values) => {
-        alert(JSON.stringify(values, null, 2));
-      },
-      validationSchema: schema,
-    });
+  const {
+    handleChange,
+    handleBlur,
+    touched,
+    values,
+    setFieldValue,
+    isValid,
+    resetForm,
+    errors,
+  } = useFormik<ProductFormInputs>({
+    validateOnChange: true,
+    isInitialValid: false,
+    initialValues: {
+      name: selected ? selected.name : "",
+      description: selected ? selected.description : "",
+      subCategory: selected ? selected.subCategory.id : "",
+      collection: selected
+        ? selected.collection
+          ? selected.collection?.id
+          : ""
+        : "",
+      price: selected ? selected.price : "",
+      stock: selected ? selected.stock : 0,
+      files: [],
+    },
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+    validationSchema: schema,
+  });
 
   React.useEffect(() => {
     resetForm({
@@ -85,7 +102,11 @@ export function ProductModal({ handleOpenModal, isOpen }: Props) {
         name: selected ? selected?.name : "",
         description: selected ? selected?.description : "",
         subCategory: selected ? selected.subCategory.id : "",
-        collection: selected ? selected.collection ? selected.collection?.id : "" : "",
+        collection: selected
+          ? selected.collection
+            ? selected.collection?.id
+            : ""
+          : "",
         price: selected ? selected?.price : "",
         stock: selected ? selected?.stock : 0,
         files: [],
@@ -94,26 +115,19 @@ export function ProductModal({ handleOpenModal, isOpen }: Props) {
   }, [selected]);
 
   React.useEffect(() => {
-      setIsEditing(selected !== null ? true : false);
-      /* if (isEditing) {
-        setIsEditValid(
-          values.name.length > 0 && values.category.length > 0 && selected
-            ? selected!.url_image.length > 0
-            : false
-        );
-      } */
-    }, [values]); 
+    setIsEditing(selected !== null ? true : false);
+  }, [values]);
 
   const onSubmit = async () => {
     if (selected) {
-      console.log("COLLECTION " , values.collection);
       onCreateOrEditProduct(
         "Edit",
         {
           id: selected.id,
           newName: values.name,
           newSubCategoryId: values.subCategory,
-          newCollectionId: values.collection.length === 0 ? null : values.collection,
+          newCollectionId:
+            values.collection.length === 0 ? null : values.collection,
           newDescription: values.description,
           newPrice: values.price,
           newStock: values.stock,
@@ -130,7 +144,8 @@ export function ProductModal({ handleOpenModal, isOpen }: Props) {
         {
           name: values.name,
           subcategory_id: values.subCategory,
-          collection: values.collection.length === 0 ? undefined : values.collection,
+          collection:
+            values.collection.length === 0 ? undefined : values.collection,
           description: values.description,
           price: values.price,
           stock: values.stock,
@@ -144,8 +159,12 @@ export function ProductModal({ handleOpenModal, isOpen }: Props) {
     }
   };
 
+  const handleClose = () => {
+    resetForm();
+  }
+
   return (
-    <Modal isOpen={isOpen} onOpenChange={handleOpenModal} placement="center">
+    <Modal isOpen={isOpen} onOpenChange={handleOpenModal} placement="center" onClose={handleClose}>
       <ModalContent>
         {(onClose) => (
           <>
@@ -159,9 +178,8 @@ export function ProductModal({ handleOpenModal, isOpen }: Props) {
                 onBlur={handleBlur("name")}
                 value={values.name}
                 label="Nombre"
-                placeholder="Ingresa un nombre"
-                isInvalid={!!errors.name && touched.name }
-                errorMessage={ touched.name && errors.name}
+                isInvalid={!!errors.name && touched.name}
+                errorMessage={touched.name && errors.name}
                 variant="bordered"
               />
               <Textarea
@@ -170,7 +188,9 @@ export function ProductModal({ handleOpenModal, isOpen }: Props) {
                 onBlur={handleBlur("description")}
                 value={values.description}
                 label="Descripcion"
-                placeholder="Ingresa una descripcion"
+                minRows={1}
+                isMultiline
+                placeholder="Describe el Producto..."
                 isInvalid={!!errors.description && touched.description}
                 errorMessage={touched.description && errors.description}
                 variant="bordered"
@@ -180,13 +200,14 @@ export function ProductModal({ handleOpenModal, isOpen }: Props) {
                 items={subcategories}
                 label="Sub Categoria"
                 variant="bordered"
-                placeholder="Selecciona una subcategoria"
                 onChange={handleChange("subCategory")}
                 onBlur={handleBlur("subCategory")}
                 value={values.subCategory}
                 isInvalid={!!errors.subCategory && touched.subCategory}
                 errorMessage={touched.subCategory && errors.subCategory}
-                defaultSelectedKeys={selected && [selected.subCategory.id] as any}
+                defaultSelectedKeys={
+                  selected && ([selected.subCategory.id] as any)
+                }
               >
                 {(subcategory) => (
                   <SelectItem value={subcategory.id} key={subcategory.id}>
@@ -198,13 +219,17 @@ export function ProductModal({ handleOpenModal, isOpen }: Props) {
                 items={collections}
                 label="Colleccion"
                 variant="bordered"
-                placeholder="Selecciona una colleccion"
                 onChange={handleChange("collection")}
                 onBlur={handleBlur("collection")}
                 value={values.collection}
                 isInvalid={!!errors.collection && touched.collection}
                 errorMessage={touched.collection && errors.collection}
-                defaultSelectedKeys={selected && [selected.collection ? selected.collection.id : undefined ] as any}
+                defaultSelectedKeys={
+                  selected &&
+                  ([
+                    selected.collection ? selected.collection.id : undefined,
+                  ] as any)
+                }
               >
                 {(collection) => (
                   <SelectItem value={collection.id} key={collection.id}>
@@ -218,7 +243,6 @@ export function ProductModal({ handleOpenModal, isOpen }: Props) {
                 onBlur={handleBlur("price")}
                 value={values.price}
                 label="Precio"
-                placeholder="0.00"
                 isInvalid={!!errors.price && touched.price}
                 errorMessage={touched.price && errors.price}
                 variant="bordered"
@@ -228,18 +252,17 @@ export function ProductModal({ handleOpenModal, isOpen }: Props) {
                 onChange={handleChange("stock")}
                 onBlur={handleBlur("stock")}
                 type="number"
-                value={values.stock + ""}
+                value={values.stock === 0 ? undefined : values.stock + ""}
                 label="Stock"
-                placeholder="0"
                 isInvalid={!!errors.stock && touched.stock}
                 errorMessage={touched.stock && errors.stock}
                 variant="bordered"
               />
               <InputImage
-                label="Imagen"
+                label="Imagenes"
                 multiple={true}
                 accept=".jpg,.png,.webp"
-                onBlur={ handleBlur("file") }
+                onBlur={handleBlur("file")}
                 onChange={(event: ChangeEvent<HTMLInputElement>) => {
                   const fileList = event.currentTarget.files;
                   if (fileList) {
@@ -252,11 +275,18 @@ export function ProductModal({ handleOpenModal, isOpen }: Props) {
                   }
                 }}
                 isInvalid={!!errors.files && touched.files}
-                errorMessage={ touched.files && errors.files + ""}
+                errorMessage={touched.files && errors.files + ""}
               />
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" variant="flat" onPress={onClose}>
+              <Button
+                color="danger"
+                variant="flat"
+                onPress={() => {
+                  resetForm();
+                  onClose();
+                }}
+              >
                 Cerrar
               </Button>
               <Button

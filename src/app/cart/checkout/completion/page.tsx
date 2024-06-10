@@ -1,0 +1,25 @@
+"use client";
+import { Button } from "@nextui-org/button";
+import { useRouter } from "next/navigation";
+import React from "react";
+
+export default function CompletionPage() {
+
+  const router = useRouter();
+
+  const handleShowOrders = () => {
+    router.replace("/orders")
+  }
+
+  return (
+    <div className="w-[100vw] h-full flex items-center justify-center">
+      <div className="flex flex-col gap-4 w-[300px] mt-[100px]">
+        <h1 className="text-lg font-semibold text-center">¡GRACIAS POR TU COMPRA!</h1>
+        <div className="flex flex-col gap-2 items-center">
+          <p>Puedes ver tu pedido aqui</p>
+          <Button onClick={handleShowOrders} color="primary" className="hover:text-white" variant="ghost">Ver mis Pedidos</Button>
+        </div>
+      </div>
+    </div>
+  )
+}

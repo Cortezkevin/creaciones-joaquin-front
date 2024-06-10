@@ -135,7 +135,7 @@ export default function ProductPage() {
       <DataTable
         isLoading={ loadingData }
         renderCell={renderCell}
-        typeName="coleccion"
+        typeName="productos"
         filterBy="name"
         data={products}
         columns={columns}

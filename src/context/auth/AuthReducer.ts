@@ -1,5 +1,5 @@
 "use client";
-import { IAddress, ILoginAction } from '@/declarations';
+import { IAddress, ILoginAction, IUpdateProfile } from '@/declarations';
 import { AuthState } from './'
 
 type AuthAction = 
@@ -12,8 +12,16 @@ type AuthAction =
   payload: boolean
 } | 
 { 
+  type: '[Auth] - Saving Profile',
+  payload: boolean
+} | 
+{ 
   type: '[Auth] - Update Address',
   payload: IAddress
+} |
+{
+  type: '[Auth] - Update Profile',
+  payload: IUpdateProfile
 } |
 {
   type: "[Auth] - Logout"
@@ -42,6 +50,25 @@ export const AuthReducer = ( state: AuthState, action: AuthAction ): AuthState =
           profile: {
             ...state.user.profile,
             address: action.payload,
+          }
+        }
+      }
+    case '[Auth] - Saving Profile':
+      return {
+        ...state,
+        isSavingProfile: action.payload
+      }
+    case '[Auth] - Update Profile':
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          firstName: action.payload.firstName,
+          lastName: action.payload.lastName,
+          profile: {
+            ...state.user.profile,
+            phone: action.payload.phone,
+            birthDate: action.payload.birthdate
           }
         }
       }

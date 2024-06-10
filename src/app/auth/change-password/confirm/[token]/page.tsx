@@ -76,7 +76,12 @@ export default function ConfirmChangePasswordPage({
                 isRequired
                 variant="bordered"
                 type="password"
-                label="Password"
+                label={
+                  <>
+                    <i className="fa-solid fa-lock text-slate-600 mr-2"></i>
+                    Password
+                  </>
+                }
                 onChange={ handleChange("password")}
                 onBlur={ handleBlur("password")}
                 value={ values.password }
@@ -87,7 +92,12 @@ export default function ConfirmChangePasswordPage({
                 isRequired
                 variant="bordered"
                 type="password"
-                label="Confirm Password"
+                label={
+                  <>
+                    <i className="fa-solid fa-lock text-slate-600 mr-2"></i>
+                    Confirm Password
+                  </>
+                }
                 onChange={ handleChange("confirmPassword")}
                 onBlur={ handleBlur("confirmPassword")}
                 value={ values.confirmPassword }
@@ -95,7 +105,7 @@ export default function ConfirmChangePasswordPage({
                 errorMessage={ touched.confirmPassword && errors.confirmPassword }
               />
             </div>
-            <Button type="submit" size="lg" color="primary" variant="flat" isDisabled={ !isValid } isLoading={isLoading}>
+            <Button type="submit" size="lg" color="primary" className="text-white" isDisabled={ !isValid } isLoading={isLoading}>
               Confirmar
             </Button>
           </CardBody>

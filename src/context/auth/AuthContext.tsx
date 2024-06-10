@@ -1,6 +1,6 @@
 "use client";
 
-import { IAddress, IUser, NewUser } from '@/declarations';
+import { IAddress, IUpdateProfile, IUser, NewUser } from '@/declarations';
 import { createContext } from 'react';
 
 export interface AuthProps {
@@ -9,6 +9,7 @@ export interface AuthProps {
   user: IUser;
   isLoadingUserData: boolean;
   isSavingAddress: boolean;
+  isSavingProfile: boolean;
   validateSession: () => void;
   onLogin: ( email: string, password: string ) => Promise<boolean>;
   onRegister: ( newUser: NewUser ) => Promise<boolean>;
@@ -16,5 +17,6 @@ export interface AuthProps {
   onLogout: () => void;
   onUpdateAddress: ( address: IAddress ) => void;
   onUpdateAddressMemory: ( address: IAddress ) => void;
+  onUpdateProfile: ( profile: IUpdateProfile ) => Promise<boolean>;
 }
 export const AuthContext = createContext({} as AuthProps);

@@ -58,6 +58,16 @@ export const AdminMenu = () => {
       <div>
         <div className="w-full max-w-[260px] px-1 py-2 rounded-small">
         <Listbox variant="flat" aria-label="Listbox menu with sections">
+          <ListboxSection title="Tienda" showDivider>
+            <ListboxItem
+              key="Home"
+              startContent={<i className="fa-solid fa-shop"></i>}
+            >
+              <NextLink passHref legacyBehavior href={"/"}>
+                <Link href={"#"}>Home</Link>
+              </NextLink>
+            </ListboxItem>
+          </ListboxSection>
           <ListboxSection title="Analiticas" showDivider>
             <ListboxItem
               key="Dashboard"
@@ -69,6 +79,16 @@ export const AdminMenu = () => {
             </ListboxItem>
           </ListboxSection>
           <ListboxSection title="Mantenimiento" showDivider>
+            <ListboxItem
+              key="Usuarios"
+              startContent={<i className="fa-solid fa-users"></i>}
+            >
+              <NextLink passHref legacyBehavior href={"/admin/users"} >
+                <Link href={""}>
+                  <p>Usuarios</p>
+                </Link>
+              </NextLink>
+            </ListboxItem>
             <ListboxItem
               key="Categorias"
               startContent={<i className="fa-solid fa-layer-group"></i>}

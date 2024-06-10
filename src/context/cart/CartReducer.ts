@@ -59,7 +59,6 @@ export const CartReducer = ( state: CartState, action: CartAction ): CartState =
     case '[Cart] - clear':
       return {
         ...state,
-        id: "",
         items: [],
         count: 0,
         tax: "0.00",

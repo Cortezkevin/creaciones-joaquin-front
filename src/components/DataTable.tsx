@@ -12,7 +12,7 @@ import React, { useState } from "react";
 import { Input } from "@nextui-org/input";
 
 export type DataTableModalProps<T> = {
-  openModal: ( isOpen: boolean ) => void;
+  openModal: (isOpen: boolean) => void;
   openModalWithData: (selectedData: T | undefined) => void;
 };
 
@@ -22,6 +22,7 @@ type Props<T> = {
   isLoading: boolean;
   filterBy: keyof T;
   columns: { key: string; title: string }[];
+  showHeader?: boolean;
   renderCell: (
     item: T,
     columnKey: keyof T | "actions",
@@ -42,7 +43,8 @@ export function DataTable<T>({
   renderCell,
   columns,
   modal,
-  isLoading
+  isLoading,
+  showHeader = true,
 }: Props<T>) {
   const [itemSelected, setItemSelected] = useState<T | undefined>(undefined);
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -128,17 +130,19 @@ export function DataTable<T>({
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
-          <div className="flex gap-3">
-            <Button
-              color="primary"
-              variant="solid"
-              className="text-white"
-              onPress={() => handleOpenModal(true)}
-              endContent={<i className="fa-solid fa-plus"></i>}
-            >
-              Add New
-            </Button>
-          </div>
+          {showHeader && (
+            <div className="flex gap-3">
+              <Button
+                color="primary"
+                variant="solid"
+                className="text-white"
+                onPress={() => handleOpenModal(true)}
+                endContent={<i className="fa-solid fa-plus"></i>}
+              >
+                Add New
+              </Button>
+            </div>
+          )}
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
@@ -216,7 +220,7 @@ export function DataTable<T>({
           ))}
         </TableHeader>
         <TableBody
-          isLoading={ isLoading }
+          isLoading={isLoading}
           emptyContent={"No se encontraron " + typeName + "s"}
           items={items}
         >
@@ -226,7 +230,7 @@ export function DataTable<T>({
                 <TableCell>
                   {renderCell(item, columnKey as keyof T, {
                     openModalWithData: handleOpenModalWithData,
-                    openModal: handleOpenModal
+                    openModal: handleOpenModal,
                   })}
                 </TableCell>
               )}

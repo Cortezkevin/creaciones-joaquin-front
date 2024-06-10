@@ -1,8 +1,12 @@
 export * from './authAPI';
 export * from './axios';
 export * as cartAPI from './cartAPI';
+export * as userAPI from './userAPI';
+export * as orderAPI from './orderAPI';
+export * as profileAPI from './profileAPI';
 export * as addressAPI from './addressAPI';
 export * as productAPI from './productAPI';
+export * as paymentAPI from './paymentAPI';
 export * as categoryAPI from './categoryAPI';
 export * as collectionAPI from './collectionAPI';
 export * as subcategoryAPI from './subcategoryAPI';

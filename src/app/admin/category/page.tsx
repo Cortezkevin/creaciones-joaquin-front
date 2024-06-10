@@ -67,9 +67,7 @@ export default function CategoryPage() {
         default:
           return <>{cellValue}</>;
       }
-    },
-    []
-  );
+    }, []);
 
   return (
     <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto">

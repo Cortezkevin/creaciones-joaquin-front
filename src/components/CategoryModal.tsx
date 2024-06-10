@@ -34,7 +34,6 @@ export function CategoryModal({ handleOpenModal, isOpen }: Props) {
   const { category: { selected, loading }, onCreateOrEditCategory, onSelectCategory } =  React.useContext( AdminContext );
 
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
-  const [isEditValid, setIsEditValid] = React.useState(false);
 
   useEffect(() => {
     if(!isOpen){
@@ -64,11 +63,6 @@ export function CategoryModal({ handleOpenModal, isOpen }: Props) {
 
   React.useEffect(() => {
     setIsEditing(selected !== undefined ? true : false);
-    if (isEditing) {
-      setIsEditValid(
-        values.name.length > 0 && selected ? selected!.url_image.length > 0 : false
-      );
-    }
   }, [values]);
 
   const onSubmit = async () => {
@@ -85,13 +79,17 @@ export function CategoryModal({ handleOpenModal, isOpen }: Props) {
     }
   };
 
+  const handleClose = () => {
+    resetForm();
+  }
+
   return (
-    <Modal isOpen={isOpen} onOpenChange={handleOpenModal} placement="center">
+    <Modal isOpen={isOpen} onOpenChange={handleOpenModal} placement="center" onClose={handleClose}>
       <ModalContent>
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Mantenimiento
+              { isEditing ? "Editar Categoria" : "Crear nueva Categoria" }
             </ModalHeader>
             <ModalBody>
               <Input
@@ -129,7 +127,10 @@ export function CategoryModal({ handleOpenModal, isOpen }: Props) {
               />
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" variant="flat" onPress={onClose}>
+              <Button color="danger" variant="flat" onPress={() => {
+                resetForm();
+                onClose();
+              }}>
                 Cerrar
               </Button>
               <Button

@@ -2,10 +2,11 @@
 
 import { ReactElement, useEffect, useReducer, useState } from "react";
 import { AuthContext, AuthReducer } from "./";
-import { IAddress, ICart, IUser, NewUser } from "@/declarations";
-import { addressAPI, changePassword, login, register, validateToken } from "@/api";
+import { IAddress, ICart, IUpdateProfile, IUser, NewUser } from "@/declarations";
+import { addressAPI, changePassword, login, profileAPI, register, validateToken } from "@/api";
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 interface Props {
   children: ReactElement | ReactElement[];
@@ -14,6 +15,7 @@ export interface AuthState {
   isLogged: boolean;
   isAdmin: boolean;
   isSavingAddress: boolean;
+  isSavingProfile: boolean;
   user: IUser;
 }
 
@@ -21,6 +23,7 @@ const name_INITIAL_STATE: AuthState = {
   isAdmin: false,
   isLogged: false,
   isSavingAddress: false,
+  isSavingProfile: false,
   user: {
     id: "",
     email: "",
@@ -38,6 +41,7 @@ const name_INITIAL_STATE: AuthState = {
 export default function AuthProvider({ children }: Props) {
   const [isLoadingUserData, setIsLoadingUserData] = useState(false);
   const [state, dispatch] = useReducer(AuthReducer, name_INITIAL_STATE);
+  const router = useRouter();
 
   useEffect(() => {
     const user = JSON.parse(Cookies.get("user") || "null") as IUser;
@@ -59,7 +63,6 @@ export default function AuthProvider({ children }: Props) {
         });
       }
     }
-    console.log("NO HAY USUARIO" , user);
     const address = JSON.parse(Cookies.get("address") || "null") as IAddress;
     dispatch({
       type: "[Auth] - Update Address",
@@ -160,6 +163,7 @@ export default function AuthProvider({ children }: Props) {
       type: "[Auth] - Logout",
     });
     toast.success("Se cerro la sesion");
+    router.replace("/auth/login");
   };
 
   const handleUpdateAddressMemory = (address: IAddress) => {
@@ -181,6 +185,33 @@ export default function AuthProvider({ children }: Props) {
     }
   }
 
+  const handleUpdateProfile = async ( profile: IUpdateProfile ) => {
+    dispatch({
+      type: "[Auth] - Saving Profile",
+      payload: true
+    })
+    const response = await profileAPI.update( profile );
+    if( response?.success ){
+      dispatch({
+        type: "[Auth] - Update Profile",
+        payload: response.content
+      })
+      toast.success(response.message);
+      dispatch({
+        type: "[Auth] - Saving Profile",
+        payload: true
+      })
+      return true;
+    }else {
+      toast.error(response?.message || "Ocurrio un error");
+      dispatch({
+        type: "[Auth] - Saving Profile",
+        payload: true
+      })
+      return false;
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -192,6 +223,7 @@ export default function AuthProvider({ children }: Props) {
         onUpdateAddress: handleUpdateAddress,
         onUpdateAddressMemory: handleUpdateAddressMemory,
         onChangePassword: handleChangePassword,
+        onUpdateProfile: handleUpdateProfile,
         isLoadingUserData,
       }}
     >

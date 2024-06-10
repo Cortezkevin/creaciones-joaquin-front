@@ -6,6 +6,11 @@ export type IProfile = {
   phone: string;
 }
 
+export type IRole = {
+  value: string;
+  key: string;
+}
+
 export type IUser = {
   id: string;
   firstName: string;

@@ -1,5 +1,14 @@
-import { ICategory, ICollection, IProduct, ISubCategory } from "@/declarations";
+import {
+  ICategory,
+  ICollection,
+  IOrder,
+  IOrderTableCell,
+  IProduct,
+  ISubCategory,
+  IUser,
+} from "@/declarations";
 import { AdminState } from "./";
+import { IUsersTableCell } from "@/declarations/table/users";
 
 type AdminAction =
   | {
@@ -81,6 +90,36 @@ type AdminAction =
   | {
       type: "[Admin] - Select Product";
       payload: IProduct | null;
+    }
+  | {
+      type: "[Admin] - Load Users";
+      payload: IUser[];
+    }
+  | {
+      type: "[Admin] - Saving User";
+    }
+  | {
+      type: "[Admin] - User Updated";
+      payload: IUser;
+    }
+  | {
+      type: "[Admin] - Select User";
+      payload: IUsersTableCell | null;
+    }
+  | {
+      type: "[Admin] - Load Orders";
+      payload: IOrder[];
+    }
+  | {
+      type: "[Admin] - Saving Order";
+    }
+  | {
+      type: "[Admin] - Order Updated";
+      payload: IOrder;
+    }
+  | {
+      type: "[Admin] - Select Order";
+      payload: IOrderTableCell | null;
     };
 
 export const AdminReducer = (
@@ -280,6 +319,84 @@ export const AdminReducer = (
       return {
         ...state,
         loadingData: action.payload,
+      };
+    case "[Admin] - Load Users":
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          users: action.payload,
+        },
+      };
+    case "[Admin] - Select User":
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          selected:
+            state.user.users.find((u) => u.id === action.payload?.id) || null,
+        },
+      };
+    case "[Admin] - Saving User":
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          loading: true,
+        },
+      };
+    case "[Admin] - User Updated":
+      return {
+        ...state,
+        user: {
+          users: state.user.users.map((u) => {
+            if (u.id === action.payload.id) {
+              return action.payload;
+            }
+            return u;
+          }),
+          selected: null,
+          loading: false,
+        },
+      };
+    case "[Admin] - Load Orders":
+      return {
+        ...state,
+        order: {
+          ...state.order,
+          orders: action.payload,
+        },
+      };
+    case "[Admin] - Select Order":
+      return {
+        ...state,
+        order: {
+          ...state.order,
+          selected:
+            state.order.orders.find((u) => u.id === action.payload?.id) || null,
+        },
+      };
+    case "[Admin] - Saving Order":
+      return {
+        ...state,
+        order: {
+          ...state.order,
+          loading: true,
+        },
+      };
+    case "[Admin] - Order Updated":
+      return {
+        ...state,
+        order: {
+          orders: state.order.orders.map((u) => {
+            if (u.id === action.payload.id) {
+              return action.payload;
+            }
+            return u;
+          }),
+          selected: null,
+          loading: false,
+        },
       };
     default:
       return state;

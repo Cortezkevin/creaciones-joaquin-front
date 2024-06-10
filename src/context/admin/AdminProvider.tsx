@@ -5,19 +5,25 @@ import { AdminContext, AdminReducer } from "./";
 import {
   ICategory,
   ICollection,
+  IOrder,
+  IOrderTableCell,
   IProduct,
   ISubCategory,
+  IUser,
   NewCategory,
   NewCollection,
   NewProduct,
   NewSubCategory,
   UpdateCategory,
   UpdateCollection,
+  UpdateOrder,
   UpdateProduct,
   UpdateSubCategory,
+  UpdateUser,
 } from "@/declarations";
-import { categoryAPI, collectionAPI, productAPI, subcategoryAPI } from "@/api";
+import { categoryAPI, collectionAPI, orderAPI, productAPI, subcategoryAPI, userAPI } from "@/api";
 import toast from "react-hot-toast";
+import { IUsersTableCell } from "@/declarations/table/users";
 
 interface Props {
   children: ReactElement | ReactElement[];
@@ -39,9 +45,19 @@ export interface AdminState {
     selected: ISubCategory | null;
   };
   product: {
-    products: IProduct[],
-    loading: boolean,
-    selected: IProduct | null
+    products: IProduct[];
+    loading: boolean;
+    selected: IProduct | null;
+  };
+  user: {
+    users: IUser[];
+    loading: boolean;
+    selected: IUser | null;
+  };
+  order: {
+    orders: IOrder[];
+    loading: boolean;
+    selected: IOrder | null;
   };
   loadingData: boolean;
 }
@@ -66,6 +82,16 @@ const Admin_INITIAL_STATE: AdminState = {
     products: [],
     selected: null,
     loading: false,
+  },
+  user: {
+    users: [],
+    selected: null,
+    loading: false
+  },
+  order: {
+    orders: [],
+    selected: null,
+    loading: false
   },
   loadingData: false,
 };
@@ -107,6 +133,20 @@ export const AdminProvider: FC<Props> = ({ children }) => {
           payload: products?.content,
         });
       }
+      const users = await userAPI.getUsers();
+      if (users?.success) {
+        dispatch({
+          type: "[Admin] - Load Users",
+          payload: users?.content,
+        });
+      }
+      const orders = await orderAPI.getAllOrders();
+      if (orders?.success) {
+        dispatch({
+          type: "[Admin] - Load Orders",
+          payload: orders?.content,
+        });
+      }
     })();
     dispatch({
       type: "[Admin] - Loading",
@@ -142,6 +182,20 @@ export const AdminProvider: FC<Props> = ({ children }) => {
     });
   };
 
+  const onSelectUser = (user: IUsersTableCell | null) => {
+    dispatch({
+      type: "[Admin] - Select User",
+      payload: user,
+    });
+  };
+
+  const onSelectOrder = (order: IOrderTableCell | null) => {
+    dispatch({
+      type: "[Admin] - Select Order",
+      payload: order,
+    });
+  };
+
   const onCreateOrEditCategory = async (
     type: "Edit" | "Create",
     id: string | null,
@@ -164,6 +218,7 @@ export const AdminProvider: FC<Props> = ({ children }) => {
           payload: response.content,
         });
         toast.success(response.message);
+        onTerminate();
         return;
       }
       toast.error(response!.message);
@@ -175,6 +230,7 @@ export const AdminProvider: FC<Props> = ({ children }) => {
           payload: response.content,
         });
         toast.success(response.message);
+        onTerminate();
         return;
       }
       toast.error(response!.message);
@@ -202,6 +258,7 @@ export const AdminProvider: FC<Props> = ({ children }) => {
           payload: response.content,
         });
         toast.success(response.message);
+        onTerminate();
         return;
       }
       toast.error(response!.message);
@@ -216,6 +273,7 @@ export const AdminProvider: FC<Props> = ({ children }) => {
           payload: response.content,
         });
         toast.success(response.message);
+        onTerminate();
         return;
       }
       toast.error(response!.message);
@@ -243,6 +301,7 @@ export const AdminProvider: FC<Props> = ({ children }) => {
           payload: response.content,
         });
         toast.success(response.message);
+        onTerminate();
         return;
       }
       toast.error(response!.message);
@@ -257,6 +316,7 @@ export const AdminProvider: FC<Props> = ({ children }) => {
           payload: response.content,
         });
         toast.success(response.message);
+        onTerminate();
         return;
       }
       toast.error(response!.message);
@@ -284,6 +344,7 @@ export const AdminProvider: FC<Props> = ({ children }) => {
           payload: response.content,
         });
         toast.success(response.message);
+        onTerminate();
         return;
       }
       toast.error(response!.message);
@@ -298,12 +359,55 @@ export const AdminProvider: FC<Props> = ({ children }) => {
           payload: response.content,
         });
         toast.success(response.message);
+        onTerminate();
         return;
       }
       toast.error(response!.message);
     }
     onTerminate();
   }
+
+  const onEditUser = async (
+    user: UpdateUser,
+    onTerminate: () => void
+  ) => {
+    dispatch({
+      type: "[Admin] - Saving User",
+    });
+    const response = await userAPI.update( user );
+    if (response?.success) {
+      dispatch({
+        type: "[Admin] - User Updated",
+        payload: response.content,
+      });
+      toast.success(response.message);
+      onTerminate();
+      return;
+    }
+    toast.error(response!.message);
+    onTerminate();
+  };
+
+  const onEditOrder = async (
+    order: UpdateOrder,
+    onTerminate: () => void
+  ) => {
+    dispatch({
+      type: "[Admin] - Saving Order",
+    });
+    const response = await orderAPI.update( order );
+    if (response?.success) {
+      dispatch({
+        type: "[Admin] - Order Updated",
+        payload: response.content,
+      });
+      toast.success(response.message);
+      onTerminate();
+      return;
+    }
+    toast.error(response!.message);
+    onTerminate();
+  };
 
   return (
     <AdminContext.Provider
@@ -316,7 +420,11 @@ export const AdminProvider: FC<Props> = ({ children }) => {
         onCreateOrEditCategory,
         onCreateOrEditCollection,
         onCreateOrEditSubCategory,
-        onCreateOrEditProduct
+        onCreateOrEditProduct,
+        onEditUser,
+        onSelectUser,
+        onEditOrder,
+        onSelectOrder
       }}
     >
       {children}

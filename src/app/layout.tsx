@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <div className="w-full h-[100vh] flex flex-col justify-between">
+        <div className="w-full h-[100vh] flex flex-col justify-between bg-slate-100">
           <div>
             <AppProviders>
               <NextUIProvider>

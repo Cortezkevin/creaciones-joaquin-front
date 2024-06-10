@@ -48,7 +48,6 @@ export function SubCategoryModal({ handleOpenModal, isOpen }: Props) {
   } = React.useContext(AdminContext);
 
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
-  const [isEditValid, setIsEditValid] = React.useState(false);
 
   React.useEffect(() => {
     if(!isOpen){
@@ -85,14 +84,6 @@ export function SubCategoryModal({ handleOpenModal, isOpen }: Props) {
 
   React.useEffect(() => {
     setIsEditing(selected !== null ? true : false);
-    if (isEditing) {
-      console.log("IS EDITING " , isEditing);
-      setIsEditValid(
-        values.name.length > 0 && values.category.length > 0 && selected
-          ? selected!.url_image.length > 0
-          : false
-      );
-    }
   }, [values]);
 
   const onSubmit = async () => {
@@ -128,8 +119,12 @@ export function SubCategoryModal({ handleOpenModal, isOpen }: Props) {
     }
   };
 
+  const handleClose = () => {
+    resetForm();
+  }
+
   return (
-    <Modal isOpen={isOpen} onOpenChange={handleOpenModal} placement="center">
+    <Modal isOpen={isOpen} onOpenChange={handleOpenModal} placement="center" onClose={handleClose}>
       <ModalContent>
         {(onClose) => (
           <>
@@ -155,6 +150,9 @@ export function SubCategoryModal({ handleOpenModal, isOpen }: Props) {
                 label="Descripcion"
                 isInvalid={!!errors.description && touched.description}
                 errorMessage={touched.description && errors.description}
+                minRows={1}
+                isMultiline
+                placeholder="Describe la Sub Categoria..."
                 variant="bordered"
               />
               <Select
@@ -162,7 +160,6 @@ export function SubCategoryModal({ handleOpenModal, isOpen }: Props) {
                 items={categories}
                 label="Categoria"
                 variant="bordered"
-                placeholder="Selecciona una categoria"
                 onChange={handleChange("category")}
                 onBlur={handleBlur("category")}
                 value={values.category}
@@ -195,7 +192,7 @@ export function SubCategoryModal({ handleOpenModal, isOpen }: Props) {
               )}
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" variant="flat" onPress={onClose}>
+              <Button color="danger" variant="flat" onPress={() => { resetForm(); onClose();}}>
                 Cerrar
               </Button>
               <Button color="primary" className="text-white" onPress={onSubmit} isDisabled={!isValid} isLoading={ loading }>

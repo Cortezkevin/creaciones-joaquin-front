@@ -58,7 +58,7 @@ export const CartSummary = () => {
           <i className="fa-solid fa-list text-white"></i>
         </Button>
       </div>
-      <h2 className="text-lg font-semibold">Summary</h2>
+      <h2 className="text-lg font-semibold">Resumen del Carrito</h2>
       <form className="flex flex-col gap-4">
         <h2 className="text-md font-semibold">Direccion de Entrega</h2>
         <div className="flex flex-col gap-2">
@@ -135,7 +135,7 @@ export const CartSummary = () => {
       </div>
       <Button
         onClick={handleCheckout}
-        isDisabled={count === 0 || (user.profile.address === undefined || user.profile.address.fullAddress === "") }
+        isDisabled={count === 0 || ( user.profile.address && (user.profile.address === undefined || user.profile.address.fullAddress === "")) }
         size="lg"
         className="w-full text-white font-semibold rounded-md"
         color="primary"

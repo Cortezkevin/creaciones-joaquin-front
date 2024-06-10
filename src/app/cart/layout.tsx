@@ -7,7 +7,7 @@ export default function CartLayout({
 }>) {
   return (
     <main >
-     <NavbarUI />
+      <NavbarUI />
       { children }
     </main>
   );

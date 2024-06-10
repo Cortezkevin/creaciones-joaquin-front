@@ -60,9 +60,15 @@ export default function ChangePasswordPage() {
           <CardBody className="overflow-visible py-2 flex flex-col gap-4 mt-[10px]">
             <div className='flex flex-col gap-4'>
               <Input
+                isRequired
                 variant="bordered"
                 type="email"
-                label="Email"
+                label={
+                  <>
+                    <i className="fa-solid fa-envelope text-slate-600 mr-2"></i>
+                    Email
+                  </>
+                }
                 onChange={ handleChange("email")}
                 value={ values.email }
                 isInvalid={ !!errors.email }

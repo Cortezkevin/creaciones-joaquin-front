@@ -39,14 +39,14 @@ export default function Home() {
       <NavbarUI />
       <div className="w-full bg-primary-200 flex items-center justify-center min-h-[750px] h-auto bg-slate-200">
         <Image
-          width={1750}
-          height={600}
+          width={1800}
+          height={700}
           alt="NextUI hero Image with delay"
           src="https://colineal.pe/cdn/shop/files/AF6C577C-85F8-452F-A865-2D8C9932C86C_2000x.jpg?v=1714842610"
         />
       </div>
-      <div className="flex flex-col gap-4 ">
-        <div className="w-full p-6 flex flex-col gap-6 items-center">
+      <div className="flex flex-col gap-4 mt-[40px]">
+        <div className="w-full flex flex-col gap-6 items-center justify-center">
           <h1 className="text-lg font-semibold">Categorias</h1>
           <div className="flex flex-wrap w-full gap-4 items-center justify-center min-h-[300px]">
             {

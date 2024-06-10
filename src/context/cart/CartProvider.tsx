@@ -46,6 +46,9 @@ export default function CartProvider({ children }: { children: ReactNode }){
 
   React.useEffect(() => {
     validateSession();
+  }, []);
+
+  React.useEffect(() => {
     if( isLogged && (Cookies.get("token") || '').length > 0 ){
       dispatch({
         type: "[Cart] - loading items"
@@ -240,8 +243,19 @@ export default function CartProvider({ children }: { children: ReactNode }){
     });
   }
 
-  const handleClear = () => {
-    Cookies.remove("cart");
+  const handleClear = async () => {
+    const newMemoryCart: ICart = {
+      id: "",
+      user_id : "",
+      cartItems: [],
+      tax: "0.00",
+      discount: "0.00",
+      subtotal: "0.00",
+      shippingCost: "0.00",
+      total: "0.00"
+    }
+    Cookies.set("cart", JSON.stringify(newMemoryCart));
+
     dispatch({
       type: "[Cart] - clear"
     })
@@ -276,6 +290,13 @@ export default function CartProvider({ children }: { children: ReactNode }){
     }
   }
 
+  const handleChangeCart = ( cart: ICart) => {
+    dispatch({
+      type: "[Cart] - load cart",
+      payload: cart
+    })
+  }
+
   return (
     <CartContext.Provider value={{
       ...state,
@@ -285,7 +306,8 @@ export default function CartProvider({ children }: { children: ReactNode }){
       onChangeShippingCost: handleChangeShippingCost,
       onRemoveMemoryItem: handleRemoveMemoryItem,
       onChangeShippingCostMemory: handleChangeShippingCostMemory,
-      onClear: handleClear
+      onClear: handleClear,
+      onChangeCart: handleChangeCart
     }} >
       { children }
     </CartContext.Provider>

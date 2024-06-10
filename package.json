@@ -29,6 +29,8 @@
     "@nextui-org/system": "^2.1.2",
     "@nextui-org/table": "^2.0.33",
     "@nextui-org/theme": "^2.2.3",
+    "@stripe/react-stripe-js": "^2.7.1",
+    "@stripe/stripe-js": "^3.5.0",
     "@types/google.maps": "^3.55.9",
     "axios": "^1.6.8",
     "formik": "^2.4.6",

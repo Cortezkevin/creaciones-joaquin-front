@@ -2,7 +2,7 @@
 
 import { Button } from "@nextui-org/button";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
-import { Image, Input } from "@nextui-org/react";
+import { divider, Image, Input } from "@nextui-org/react";
 import NextLink from "next/link";
 import { Link } from "@nextui-org/link";
 import React, { useContext, useState } from "react";
@@ -63,9 +63,14 @@ export default function LoginPage() {
             <div className="flex flex-col gap-4">
               <Input
                 isRequired
-                variant="faded"
+                variant="bordered"
                 type="email"
-                label="Email"
+                label={
+                  <>
+                    <i className="fa-solid fa-envelope text-slate-600 mr-2"></i>
+                    Email
+                  </>
+                }
                 onChange={ handleChange("email")}
                 onBlur={ handleBlur("email")}
                 value={ values.email }
@@ -74,9 +79,14 @@ export default function LoginPage() {
               />
               <Input
                 isRequired
-                variant="faded"
+                variant="bordered"
                 type="password"
-                label="Password"
+                label={
+                  <>
+                    <i className="fa-solid fa-lock text-slate-600 mr-2"></i>
+                    Password
+                  </>
+                }
                 onChange={ handleChange("password")}
                 onBlur={ handleBlur("password")}
                 value={ values.password }
@@ -91,7 +101,7 @@ export default function LoginPage() {
                 </Button>
               </NextLink>
             </div>
-            <Button type="submit" size="lg" variant="flat" color="primary" isDisabled={ !isValid } isLoading={ isLoading }>
+            <Button type="submit" size="lg" className="text-white" color="primary" isDisabled={ !isValid } isLoading={ isLoading }>
               Confirmar
             </Button>
           </CardBody>

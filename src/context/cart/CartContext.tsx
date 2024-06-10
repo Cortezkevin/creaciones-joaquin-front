@@ -1,6 +1,6 @@
 "use client";
 
-import { AddItem, ICartItem, RemoveItem } from '@/declarations';
+import { AddItem, ICart, ICartItem, RemoveItem } from '@/declarations';
 import { createContext } from 'react';
 
 export interface CartProps {
@@ -22,6 +22,7 @@ export interface CartProps {
   onRemoveMemoryItem: ( removeItem: { productId: string, amount: number, removeAll: boolean } ) => void;
   onChangeShippingCost: ( cost: string ) => void;
   onChangeShippingCostMemory: ( cost: string) => void;
+  onChangeCart: (cart:ICart) => void;
   onClear: () => void;
 }
 export const CartContext = createContext({} as CartProps);

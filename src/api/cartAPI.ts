@@ -82,3 +82,24 @@ export const updateShippingCost = async (shippingCost: string, cartId: string) =
     }
   } 
 }
+
+export const clearCart = async (id: string) => {
+  try{
+    const { data } = await AxiosInstance.post<ResponseWrapper<ICart>>(PATH + "/clear?cart="+id, {
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + Cookies.get("token")
+      }
+    } );
+    console.log("CART CLEAR" ,data);
+    return data;
+  }catch(e){
+    console.log(e);
+    if(isAxiosError(e)){
+      if( e.response?.status === 404){
+        return e.response!.data as ResponseWrapper<String>;
+      }
+      return e.response!.data as ResponseWrapper<any>;
+    }
+  } 
+}
