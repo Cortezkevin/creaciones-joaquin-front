@@ -1,38 +1,15 @@
 "use client";
-
-import { categoryAPI, productAPI } from "@/api";
 import { CategoryCard } from "@/components/CategoryCard";
 import { NavbarUI } from "@/components/NavbarUI";
 import { ProductCard } from "@/components/ProductCard";
-import { ICategory, IProduct } from "@/declarations";
+import { ShopContext } from "@/context/shop";
 import { Image } from "@nextui-org/image";
 import { Spinner } from "@nextui-org/react";
 import React from "react";
 
 export default function Home() {
 
-  const [isLoadingProducts, setIsLoadingProducts] = React.useState(false);
-  const [isLoadingCategories, setIsLoadingCategories] = React.useState(false);
-
-  const [products, setProducts] = React.useState<IProduct[]>([]);
-  const [categories, setCategories] = React.useState<ICategory[]>([]);
-
-  React.useEffect(() => {
-    ( async () => {
-      setIsLoadingProducts( true );
-      setIsLoadingCategories( true );
-      const productsResponse = await productAPI.getAll();
-      const categoriesResponse = await categoryAPI.getAll();
-      if(productsResponse?.success){
-        setProducts( productsResponse.content );
-        setIsLoadingProducts( false );
-      }
-      if(categoriesResponse?.success){
-        setCategories( categoriesResponse.content );
-        setIsLoadingCategories( false );
-      }
-    })();
-  }, [])
+  const { categories, products } = React.useContext( ShopContext );
 
   return (
     <main className="pb-[100px] bg-red-100">
@@ -50,10 +27,10 @@ export default function Home() {
           <h1 className="text-lg font-semibold">Categorias</h1>
           <div className="flex flex-wrap w-full gap-4 items-center justify-center min-h-[300px]">
             {
-              isLoadingCategories
+              categories.loading
               ? <Spinner label="Cargando..." size="lg" color="warning" />
-              : categories
-              && categories.map( c => 
+              : categories.data
+              && categories.data.map( c => 
                 (
                   <CategoryCard key={c.id} category={ c } />
                 )
@@ -65,10 +42,10 @@ export default function Home() {
           <h1 className="text-lg font-semibold">Productos</h1>
           <div className="flex justify-center gap-4">
             {
-              isLoadingProducts
+              products.loading
               ? <Spinner label="Cargando..." size="lg" color="warning" />
-              : products 
-              && products.map( p => 
+              : products.data
+              && products.data.map( p => 
                 (
                   <ProductCard key={p.id} product={ p} />
                 )
