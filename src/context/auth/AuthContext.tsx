@@ -11,6 +11,7 @@ export interface AuthProps {
   isSavingAddress: boolean;
   isSavingProfile: boolean;
   validateSession: () => void;
+  onAvailableStatus: ( id: string, type: "Carrier" | "Grocer" ) => void;
   onLogin: ( email: string, password: string ) => Promise<boolean>;
   onRegister: ( newUser: NewUser ) => Promise<boolean>;
   onChangePassword: ( password: string, confirmPassword: string, token: string ) => Promise<boolean>;

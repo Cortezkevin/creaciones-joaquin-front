@@ -9,6 +9,8 @@ import {
 } from "@/declarations";
 import { AdminState } from "./";
 import { IUsersTableCell } from "@/declarations/table/users";
+import { ICarrier } from "@/declarations/model/carrier";
+import { IGrocer } from "@/declarations/model/grocer";
 
 type AdminAction =
   | {
@@ -120,6 +122,36 @@ type AdminAction =
   | {
       type: "[Admin] - Select Order";
       payload: IOrderTableCell | null;
+    }
+  | {
+      type: "[Admin] - Load Carrier";
+      payload: ICarrier[];
+    }
+  | {
+      type: "[Admin] - Saving Carrier";
+    }
+  | {
+      type: "[Admin] - Carrier Created";
+      payload: ICarrier;
+    }
+  | {
+      type: "[Admin] - Select Carrier";
+      payload: ICarrier | null;
+    }
+  | {
+      type: "[Admin] - Load Grocer";
+      payload: IGrocer[];
+    }
+  | {
+      type: "[Admin] - Saving Grocer";
+    }
+  | {
+      type: "[Admin] - Grocer Created";
+      payload: IGrocer;
+    }
+  | {
+      type: "[Admin] - Select Grocer";
+      payload: IGrocer | null;
     };
 
 export const AdminReducer = (
@@ -398,6 +430,84 @@ export const AdminReducer = (
           loading: false,
         },
       };
+      case "[Admin] - Load Carrier":
+        return {
+          ...state,
+          carrier: {
+            ...state.carrier,
+            carriers: action.payload,
+          },
+        };
+      case "[Admin] - Select Carrier":
+        return {
+          ...state,
+          carrier: {
+            ...state.carrier,
+            selected:
+              state.carrier.carriers.find((u) => u.id === action.payload?.id) || null,
+          },
+        };
+      case "[Admin] - Saving Carrier":
+        return {
+          ...state,
+          carrier: {
+            ...state.carrier,
+            loading: true,
+          },
+        };
+      case "[Admin] - Carrier Created":
+        return {
+          ...state,
+          carrier: {
+            carriers: state.carrier.carriers.map((u) => {
+              if (u.id === action.payload.id) {
+                return action.payload;
+              }
+              return u;
+            }),
+            selected: null,
+            loading: false,
+          },
+        };
+        case "[Admin] - Load Grocer":
+          return {
+            ...state,
+            grocer: {
+              ...state.grocer,
+              grocers: action.payload,
+            },
+          };
+        case "[Admin] - Select Grocer":
+          return {
+            ...state,
+            grocer: {
+              ...state.grocer,
+              selected:
+                state.grocer.grocers.find((u) => u.id === action.payload?.id) || null,
+            },
+          };
+        case "[Admin] - Saving Grocer":
+          return {
+            ...state,
+            grocer: {
+              ...state.grocer,
+              loading: true,
+            },
+          };
+        case "[Admin] - Grocer Created":
+          return {
+            ...state,
+            grocer: {
+              grocers: state.grocer.grocers.map((u) => {
+                if (u.id === action.payload.id) {
+                  return action.payload;
+                }
+                return u;
+              }),
+              selected: null,
+              loading: false,
+            },
+          };
     default:
       return state;
   }

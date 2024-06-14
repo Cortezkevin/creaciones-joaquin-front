@@ -15,7 +15,6 @@ export const update = async (address: IAddress ) => {
     });
     return data;
   }catch(e){
-    console.log(e);
     if(isAxiosError(e)){
       if( e.response?.status === 404){
         return e.response!.data as ResponseWrapper<String>;

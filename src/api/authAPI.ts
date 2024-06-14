@@ -92,7 +92,7 @@ export const changePassword = async ({ password, confirmPassword, tokenPassword 
 
 export const validateToken = async ( token: string  ) => {
   try{
-    const response = await fetch("https://creaciones-joaquin-back.onrender.com/api/auth/getUserFromToken", 
+    const response = await fetch("http://localhost:4000/api/auth/getUserFromToken", 
     { method: "GET", credentials: "omit", headers: { "Authorization": "Bearer " + token }, }
     );
     const data = await response.json() as ResponseWrapper<IUser>;

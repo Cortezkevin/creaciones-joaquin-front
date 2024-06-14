@@ -13,7 +13,7 @@ import React from "react";
 
 type ExtraData = {
   phone: string;
-  especificAddress: string;
+  specificAddress: string;
   note: string;
 };
 
@@ -34,7 +34,7 @@ export default function Checkout() {
   const [isValidPhone, setIsValidPhone] = React.useState(false);
   const [extraData, setExtraData] = React.useState<ExtraData>({
     phone: user.profile.phone || "",
-    especificAddress: "",
+    specificAddress: "",
     note: "",
   });
 
@@ -49,7 +49,7 @@ export default function Checkout() {
       Cookies.set(
         "extraOrderData",
         JSON.stringify({
-          especificAddress: extraData.especificAddress,
+          specific: extraData.specificAddress,
           note: extraData.note,
         })
       );
@@ -150,8 +150,8 @@ export default function Checkout() {
               <div className="flex flex-col gap-2">
                 <Textarea
                   label="Especificar Direccion"
-                  value={extraData.especificAddress}
-                  onChange={handleChange("especificAddress")}
+                  value={extraData.specificAddress}
+                  onChange={handleChange("specificAddress")}
                   placeholder="Agrega informacion adicional sobre tu direccion de entrega..."
                 />
               </div>

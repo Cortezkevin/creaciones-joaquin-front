@@ -3,7 +3,7 @@
 import { ReactElement, useEffect, useReducer, useState } from "react";
 import { AuthContext, AuthReducer } from "./";
 import { IAddress, ICart, IUpdateProfile, IUser, NewUser } from "@/declarations";
-import { addressAPI, changePassword, login, profileAPI, register, validateToken } from "@/api";
+import { addressAPI, carrierAPI, changePassword, login, profileAPI, register, validateToken } from "@/api";
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
@@ -34,7 +34,8 @@ const name_INITIAL_STATE: AuthState = {
       birthDate: "",
       address: undefined,
       phone: ""
-    }
+    },
+    roleExtraData: null
   },
 };
 
@@ -47,6 +48,7 @@ export default function AuthProvider({ children }: Props) {
     const user = JSON.parse(Cookies.get("user") || "null") as IUser;
     setIsLoadingUserData(true);
     if( user ){
+      console.log("USUARIO", { user })
       if (user !== null && user !== undefined) {
         dispatch({
           type: "[Auth] - Login",
@@ -120,9 +122,10 @@ export default function AuthProvider({ children }: Props) {
         }
       })
     }else {
-      dispatch({
+      handleLogout();
+      /* dispatch({
         type: "[Auth] - Logout"
-      })
+      }) */
     }
   }
 
@@ -212,6 +215,22 @@ export default function AuthProvider({ children }: Props) {
     }
   }
 
+  const onAvailableStatus = async ( id: string, type: "Carrier" | "Grocer" ) => {
+    if(type === "Carrier"){
+      const response = await carrierAPI.availableStatus( id );
+      if( response?.success ){
+        toast.success( response.message );
+        dispatch({
+          type: "[Auth] - Available Status"
+        });
+      }else {
+        toast.error(response?.message || "Ocurrio un error");
+      }
+    }
+    
+    
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -224,6 +243,7 @@ export default function AuthProvider({ children }: Props) {
         onUpdateAddressMemory: handleUpdateAddressMemory,
         onChangePassword: handleChangePassword,
         onUpdateProfile: handleUpdateProfile,
+        onAvailableStatus,
         isLoadingUserData,
       }}
     >

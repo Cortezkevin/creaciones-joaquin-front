@@ -17,7 +17,6 @@ export const create = async (name: string, image: File) => {
     });
     return data;
   }catch(e){
-    console.log(e);
     if(isAxiosError(e)){
       if( e.response?.status === 404){
         return e.response!.data as ResponseWrapper<String>;
@@ -42,7 +41,6 @@ export const update = async (id:string, newName: string, image?: File) => {
     });
     return data;
   }catch(e){
-    console.log(e);
     if(isAxiosError(e)){
       if( e.response?.status === 404){
         return e.response!.data as ResponseWrapper<String>;

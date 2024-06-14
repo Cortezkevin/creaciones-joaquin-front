@@ -12,10 +12,8 @@ export const getCartFromSession = async (userId: string) => {
         'Authorization': 'Bearer ' + Cookies.get("token")
       }
     });
-    console.log("CARRITO " , data);
     return data;
   }catch(e){
-    console.log("ERROR CARRITO ", e);
     if(isAxiosError(e)){
       if( e.response?.status === 404){
         return e.response!.data as ResponseWrapper<String>;
@@ -34,7 +32,6 @@ export const addItem = async (addItem: AddItem) => {
     } );
     return data;
   }catch(e){
-    console.log(e);
     if(isAxiosError(e)){
       if( e.response?.status === 404){
         return e.response!.data as ResponseWrapper<String>;
@@ -53,7 +50,6 @@ export const removeItem = async (removeItem: RemoveItem) => {
     } );
     return data;
   }catch(e){
-    console.log(e);
     if(isAxiosError(e)){
       if( e.response?.status === 404){
         return e.response!.data as ResponseWrapper<String>;
@@ -73,7 +69,6 @@ export const updateShippingCost = async (shippingCost: string, cartId: string) =
     } );
     return data;
   }catch(e){
-    console.log(e);
     if(isAxiosError(e)){
       if( e.response?.status === 404){
         return e.response!.data as ResponseWrapper<String>;
@@ -91,10 +86,8 @@ export const clearCart = async (id: string) => {
         "Authorization": "Bearer " + Cookies.get("token")
       }
     } );
-    console.log("CART CLEAR" ,data);
     return data;
   }catch(e){
-    console.log(e);
     if(isAxiosError(e)){
       if( e.response?.status === 404){
         return e.response!.data as ResponseWrapper<String>;

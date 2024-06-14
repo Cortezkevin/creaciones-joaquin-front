@@ -21,7 +21,6 @@ export const create = async (newProduct: NewProduct, images: File[]) => {
     });
     return data;
   }catch(e){
-    console.log(e);
     if(isAxiosError(e)){
       if( e.response?.status === 404){
         return e.response!.data as ResponseWrapper<String>;
@@ -31,13 +30,7 @@ export const create = async (newProduct: NewProduct, images: File[]) => {
   } 
 }
 
-export const update = async (updateProduct: UpdateProduct/* , images: File[] */) => {
-  /* const formData = new FormData();
-  formData.append('newProductDTO', JSON.stringify(updateProduct));
-  for(let i = 0;i < images.length; i++ ){
-    formData.append('files', images[i]);
-  } */
-  
+export const update = async (updateProduct: UpdateProduct) => {
   try{
     const { data } = await AxiosInstance.put<ResponseWrapper<IProduct>>(PATH , updateProduct , {
       "headers": {
@@ -45,10 +38,8 @@ export const update = async (updateProduct: UpdateProduct/* , images: File[] */)
         "Authorization": "Bearer " + Cookies.get("token")
       }
     } );
-    console.log("UPDATE PRODUCT " , { data });
     return data;
   }catch(e){
-    console.log("UPDATE PRODUCT ERROR" , { e });
     if(isAxiosError(e)){
       if( e.response?.status === 404){
         return e.response!.data as ResponseWrapper<String>;

@@ -31,7 +31,11 @@ export const NavbarUI = () => {
   };
 
   const handleAdminAccount = () => {
-    router.push("/admin/category");
+    if( isAdmin ){
+      router.push("/admin/category");
+    }else{
+      router.push("/admin/orders");
+    }
   };
 
   const handleCart = () => {
@@ -98,7 +102,7 @@ export const NavbarUI = () => {
             </Button>
           </Badge>
         </NavbarItem>
-        {isAdmin && (
+        {(isAdmin || user.roles.includes("ROLE_WAREHOUSE") || user.roles.includes("ROLE_TRANSPORT")) && (
           <Button
             onClick={handleAdminAccount}
             color="primary"

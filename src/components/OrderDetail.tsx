@@ -11,12 +11,13 @@ interface Props {
   amount: number;
   price: string;
   total: string;
+  modeSoloImage?:boolean;
 }
 
 
-export const OrderDetail: FC<Props> = ({ amount, image, name, price, total }) => {
+export const OrderDetail: FC<Props> = ({ amount, image, name, price, total, modeSoloImage=false }) => {
   return (
-    <div className='flex items-center min-w-[600px]'>
+    <div className='flex items-center min-w-[300px]'>
       <div className='flex gap-3 items-center'>
         <div className='min-w-[140px]'>
           <Image
@@ -35,16 +36,21 @@ export const OrderDetail: FC<Props> = ({ amount, image, name, price, total }) =>
           </div>
         </div>
       </div>
-      <div className='flex justify-around w-full'>
-        <div className='flex flex-col items-center pl-6'>
-          <span className='font-semibold text-xs lg:text-sm'>Precio: </span>
-          <span className='text-xs lg:text-sm'>S/. { price }</span>
+     {
+      modeSoloImage &&
+      (
+        <div className='flex justify-around w-full'>
+          <div className='flex flex-col items-center pl-6'>
+            <span className='font-semibold text-xs lg:text-sm'>Precio: </span>
+            <span className='text-xs lg:text-sm'>S/. { price }</span>
+          </div>
+          <div className='text-xs lg:text-sm flex flex-col items-center'>
+            <span className='font-semibold text-xs lg:text-sm'>Total: </span>
+            <span>S/. { total }</span>
+          </div>
         </div>
-        <div className='text-xs lg:text-sm flex flex-col items-center'>
-          <span className='font-semibold text-xs lg:text-sm'>Total: </span>
-          <span>S/. { total }</span>
-        </div>
-      </div>
+      )
+     }
     </div>
   )
 }

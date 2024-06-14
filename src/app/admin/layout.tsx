@@ -16,7 +16,9 @@ export default function AdminLayout({
     <AdminProvider>
       <div className="flex overflow-hidden">
         <AdminMenu />
-        { children }
+        <div className="w-[calc(100vw-280px)]">
+          { children }
+        </div>
       </div>
     </AdminProvider>
   );

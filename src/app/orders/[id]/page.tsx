@@ -12,14 +12,13 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { OrderDetail } from "@/components/OrderDetail";
 import { OrderDetailSummary } from "@/components/OrderDetailSummary";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 export default function OrderDetailPage({
   params,
 }: {
   params: { id: string };
 }) {
-  
   const { isLogged } = React.useContext(AuthContext);
   const [order, setOrder] = React.useState<IDetailedOrder | undefined>();
 
@@ -27,10 +26,10 @@ export default function OrderDetailPage({
 
   React.useEffect(() => {
     const token = Cookies.get("token");
-    if( !token || token.length < 0 ){
-      router.push("/auth/login?prevPage=/orders/"+params.id);
+    if (!token || token.length < 0) {
+      router.push("/auth/login?prevPage=/orders/" + params.id);
     }
-  }, [])
+  }, []);
 
   React.useEffect(() => {
     (async () => {
@@ -51,11 +50,23 @@ export default function OrderDetailPage({
   return (
     <div className="w-[100vw] min-h-[450px] flex items-center justify-center">
       <div className="w-[1200px] flex flex-col gap-8">
-        <div className="w-full flex justify-between items-center">
-          <h1 className="text-2xl font-semibold">Detalle del Pedido</h1>
+        <div className="w-full flex justify-between items-center text-2xl font-semibold">
+          <h1>Detalle del Pedido</h1>
           <div className="flex gap-4">
-            <Chip variant="flat" size="lg" color={order.shippingStatus=== "EN_PREPARACION" ? 'warning' : order.shippingStatus === 'ENVIADO' ? 'success' : 'danger'}>{ order.shippingStatus}</Chip>
-            <Chip variant="flat" size="lg" color={order.status === "PENDIENTE" ? 'warning' : order.status === 'EN_PROCESO' ? 'success' : 'danger'}>{ order.status}</Chip>
+            <p>Estado:</p>
+            <Chip
+              variant="flat"
+              size="lg"
+              color={
+                order.status === "PENDIENTE"
+                  ? "warning"
+                  : order.status === "EN_PROCESO" || order.status === "ENTREGADO"
+                  ? "success"
+                  : "danger"
+              }
+            >
+              {order.status}
+            </Chip>
           </div>
         </div>
         {/* <div className="w-full flex p-4 items-center justify-center bg-red-300">
@@ -66,7 +77,7 @@ export default function OrderDetailPage({
             <div className="flex flex-col gap-4 p-4 shadow-lg rounded-lg w-[800px] bg-white">
               <h3 className="text-lg font-semibold">Productos Comprados</h3>
               {order.orderDetails.map((od) => (
-                <OrderDetail key={ od.id } { ...od } />
+                <OrderDetail key={od.id} {...od} modeSoloImage={true} />
               ))}
             </div>
             <div className="w-full min-h-[200px] bg-white p-4 shadow-lg rounded-lg">
@@ -76,27 +87,32 @@ export default function OrderDetailPage({
                 tax={order.tax}
                 discount={order.discount}
                 total={order.total}
-                shippingCost={order.shippingCost} 
+                shippingCost={order.shippingCost}
               />
             </div>
           </div>
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-4 w-[400px] p-4 shadow-lg rounded-lg bg-white">
-              <h3 className="text-lg font-semibold">Informacion de la Entrega</h3>
+              <h3 className="text-lg font-semibold">
+                Informacion de la Entrega
+              </h3>
               <div className="flex flex-col gap-2">
                 <Input
                   label="Nombre del Transportador"
-                  value={"Juan Torres"}
+                  value={ (order.shipping && order.shipping.carrier ) ? order.shipping.carrier.fullName : "Aun no empieza el envio" }
                   isReadOnly
                 />
-                <Input
-                  label="Telefono de Contacto"
-                  value={"985632124"}
-                  isReadOnly
-                />
+                {
+                  order.shipping && order.shipping.carrier &&
+                  <Input
+                    label="Telefono de Contacto"
+                    value={ order.shipping.carrier.phone }
+                    isReadOnly
+                  />
+                }
                 <Input
                   label="Direccion de Entrega"
-                  value={"Av. Los rosales. 123"}
+                  value={ order.shippingAddress }
                   isReadOnly
                 />
               </div>
@@ -106,7 +122,7 @@ export default function OrderDetailPage({
               <div className="flex flex-col gap-2">
                 <Textarea
                   label="Nota"
-                  value={"Por favor, cuidado con los productos y llega rapido"}
+                  value={ order.note }
                   isReadOnly
                 />
               </div>
@@ -114,10 +130,31 @@ export default function OrderDetailPage({
             <div className="flex flex-col gap-4 p-4 shadow-lg rounded-lg bg-white">
               <h3 className="text-lg font-semibold">Acciones</h3>
               <div className="flex flex-col gap-2">
-                <a href={ order.invoiceUrl } target="_blank" rel="noopener noreferrer" className="w-full">
-                  <Button color="primary" size="lg" className="w-full text-white">Ver Factura</Button>
+                <a
+                  href={order.invoiceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full"
+                >
+                  <Button
+                    color="primary"
+                    size="lg"
+                    className="w-full text-white"
+                  >
+                    Ver Factura
+                  </Button>
                 </a>
-                <Button color="danger" size="lg" className="w-full" isDisabled={ order.shippingStatus !== "EN_PREPARACION" || order.status !== "PENDIENTE" }>Anular Pedido</Button>
+                <Button
+                  color="danger"
+                  size="lg"
+                  className="w-full"
+                  isDisabled={
+                    order.shipping ? (order.shipping.status === "EN_TRANSITO" || order.shipping.status === "ENTREGADO") : false ||
+                    order.status !== "PENDIENTE"
+                  }
+                >
+                  Anular Pedido
+                </Button>
               </div>
             </div>
           </div>

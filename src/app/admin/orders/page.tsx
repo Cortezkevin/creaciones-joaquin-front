@@ -1,12 +1,18 @@
 "use client";
-import { userAPI } from "@/api";
 import { DataTable, DataTableModalProps } from "@/components/DataTable";
 import { UserModal } from "@/components/UserModal";
 import { AdminContext } from "@/context/admin";
-import { IOrderTableCell, IOrderTableColumn, IUser, OrderStatus, ShippingStatus } from "@/declarations";
-import { IUsersTableCell, IUsersTableColumn } from "@/declarations/table/users";
-import { Chip, Tooltip } from "@nextui-org/react";
-import { Table } from "@nextui-org/table";
+import { AuthContext } from "@/context/auth";
+import {
+  IOrderTableCell,
+  IOrderTableColumn,
+  OrderStatus,
+  PreparationStatus,
+  ShippingStatus,
+} from "@/declarations";
+import { Utils } from "@/utils";
+import { Button, Chip, Tooltip } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const columns: IOrderTableColumn[] = [
@@ -20,23 +26,27 @@ const columns: IOrderTableColumn[] = [
   },
   {
     key: "paymentMethod",
-    title: "Metodo de Pago"
+    title: "Metodo de Pago",
   },
   {
     key: "total",
     title: "Total",
-  },  
+  },
   {
     key: "createdDate",
-    title: "Fecha de Creacion"
+    title: "Fecha de Creacion",
+  },
+  {
+    key: "preparationStatus",
+    title: "Estado de Preparacion"
   },
   {
     key: "shippingStatus",
-    title: "Estado de Envio"
+    title: "Estado de Envio",
   },
   {
     key: "status",
-    title: "Estado del Pedido"
+    title: "Estado del Pedido",
   },
   {
     key: "actions",
@@ -45,10 +55,13 @@ const columns: IOrderTableColumn[] = [
 ];
 
 export default function OrdersPage() {
+  const router = useRouter();
+
+  const { user } = React.useContext(AuthContext);
+
   const {
     order: { orders },
-    loadingData,
-    onSelectUser,
+    loadOrders
   } = React.useContext(AdminContext);
 
   const renderCell = React.useCallback(
@@ -73,37 +86,76 @@ export default function OrdersPage() {
             <div className="flex flex-col">
               <p className="text-bold text-small capitalize">{cellValue}</p>
             </div>
-          )
+          );
         case "paymentMethod":
           return (
             <div className="flex flex-col">
               <p className="text-bold text-small capitalize">{cellValue}</p>
             </div>
-          )
+          );
         case "total":
           return (
             <div className="flex flex-col">
               <p className="text-bold text-small capitalize">{cellValue}</p>
             </div>
-          )
+          );
         case "createdDate":
           return (
             <div className="flex flex-col">
-              <p className="text-bold text-small capitalize">{cellValue}</p>
+              <p className="text-bold text-small capitalize">{Utils.formatDate(cellValue)}</p>
             </div>
-          )
+          );
+        case "preparationStatus":
+          return (
+            <Chip
+              size="lg"
+              variant="flat"
+              title={cellValue}
+              color={
+                (cellValue as PreparationStatus) === "PENDIENTE"
+                  ? "warning"
+                  : (cellValue as PreparationStatus) === "EN_PREPARACION" || (cellValue as PreparationStatus) === "LISTO_PARA_RECOGER"
+                  ? "success"
+                  : "danger"
+              }
+            >
+              {cellValue}
+            </Chip>
+          );
         case "shippingStatus":
           return (
-            <Chip size="lg" variant="flat" title={ cellValue } color={ cellValue as ShippingStatus === "EN_PREPARACION" ? 'warning' : cellValue as ShippingStatus === 'ENVIADO' ? 'success' : 'danger' }>
+            <Chip
+              size="lg"
+              variant="flat"
+              title={cellValue}
+              color={
+                (cellValue as ShippingStatus) === "PENDIENTE"
+                  ? "warning"
+                  : (cellValue as ShippingStatus) === "EN_PREPARACION" || (cellValue as ShippingStatus) === "ENTREGADO"
+                  ? "success"
+                  : "danger"
+              }
+            >
               {cellValue}
             </Chip>
-          )
+          );
         case "status":
           return (
-            <Chip size="lg" variant="flat" title={ cellValue } color={ cellValue as OrderStatus === "PENDIENTE" ? 'warning' : cellValue as OrderStatus === 'EN_PROCESO' ? 'success' : 'danger' }>
+            <Chip
+              size="lg"
+              variant="flat"
+              title={cellValue}
+              color={
+                (cellValue as OrderStatus) === "PENDIENTE" || (cellValue as OrderStatus) === "PREPARADO"
+                  ? "warning"
+                  : (cellValue as OrderStatus) === "EN_PROCESO" || (cellValue as OrderStatus) === "ENTREGADO"
+                  ? "success"
+                  : "danger"
+              }
+            >
               {cellValue}
             </Chip>
-          )
+          );
         case "actions":
           return (
             <div className="relative flex justify-center items-center gap-2">
@@ -126,9 +178,53 @@ export default function OrdersPage() {
     []
   );
 
+  const handleShowPreparationPendingOrders = () => {
+    router.push("/admin/orders/preparation");
+  };
+
+  const handleShowShippingPendingOrders = () => {
+    router.push("/admin/orders/shipping");
+  };
+
   return (
     <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto">
-      <h1 className="text-large font-semibold">Pedidos</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-large font-semibold">Pedidos</h1>
+        {user.roles.includes("ROLE_WAREHOUSE") ? (
+          <Button
+            onClick={handleShowPreparationPendingOrders}
+            color="primary"
+            className="text-white"
+          >
+            Ver Pedidos a preparar
+          </Button>
+        ) : user.roles.includes("ROLE_TRANSPORT") ? (
+          <Button
+            onClick={handleShowShippingPendingOrders}
+            color="primary"
+            className="text-white"
+          >
+            Ver Pedidos a enviar
+          </Button>
+        ) : (
+          <div className="flex gap-2">
+            <Button
+              onClick={handleShowPreparationPendingOrders}
+              color="primary"
+              className="text-white"
+            >
+              Ver Pedidos a preparar
+            </Button>
+            <Button
+              onClick={handleShowShippingPendingOrders}
+              color="primary"
+              className="text-white"
+            >
+              Ver Pedidos a enviar
+            </Button>
+          </div>
+        )}
+      </div>
       <DataTable
         columns={columns}
         data={orders}
@@ -137,7 +233,7 @@ export default function OrdersPage() {
         typeName={"Pedido"}
         modal={UserModal}
         renderCell={renderCell}
-        showHeader={ false }
+        showHeader={false}
       />
     </div>
   );

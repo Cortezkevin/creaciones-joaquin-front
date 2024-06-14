@@ -3,6 +3,8 @@ export * from './axios';
 export * as cartAPI from './cartAPI';
 export * as userAPI from './userAPI';
 export * as orderAPI from './orderAPI';
+export * as carrierAPI from './carrierAPI';
+export * as grocerAPI from './grocerAPI';
 export * as profileAPI from './profileAPI';
 export * as addressAPI from './addressAPI';
 export * as productAPI from './productAPI';

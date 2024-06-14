@@ -1,12 +1,9 @@
 "use client";
-import { userAPI } from "@/api";
 import { DataTable, DataTableModalProps } from "@/components/DataTable";
 import { UserModal } from "@/components/UserModal";
 import { AdminContext } from "@/context/admin";
-import { IUser } from "@/declarations";
 import { IUsersTableCell, IUsersTableColumn } from "@/declarations/table/users";
 import { Chip, Tooltip } from "@nextui-org/react";
-import { Table } from "@nextui-org/table";
 import React from "react";
 
 const columns: IUsersTableColumn[] = [
@@ -107,11 +104,6 @@ export default function UsersPage() {
                   ></i>
                 </span>
               </Tooltip>
-              {/* <Tooltip color="danger" content="Delete">
-                <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                  <i className="fa-solid fa-trash"></i>
-                </span>
-              </Tooltip> */}
             </div>
           );
         default:

@@ -7,7 +7,6 @@ import { IServerPaymentIntent } from "@/declarations/api/payment";
 const PATH = "payment";
 
 export const createPaymentIntent = async (userId: string) => {
-  console.log("USUARIO " , userId)
   try{
     const { data } = await AxiosInstance.post<ResponseWrapper<IServerPaymentIntent>>(PATH+"/createIndent?user="+userId, {
       "headers": {

@@ -21,9 +21,13 @@ import {
   UpdateSubCategory,
   UpdateUser,
 } from "@/declarations";
-import { categoryAPI, collectionAPI, orderAPI, productAPI, subcategoryAPI, userAPI } from "@/api";
+import { carrierAPI, categoryAPI, collectionAPI, grocerAPI, orderAPI, productAPI, subcategoryAPI, userAPI } from "@/api";
 import toast from "react-hot-toast";
 import { IUsersTableCell } from "@/declarations/table/users";
+import { IGrocer } from "@/declarations/model/grocer";
+import { ICarrier } from "@/declarations/model/carrier";
+import { NewCarrier } from "@/declarations/api/carrier";
+import { NewGrocer } from "@/declarations/api/grocer";
 
 interface Props {
   children: ReactElement | ReactElement[];
@@ -59,6 +63,16 @@ export interface AdminState {
     loading: boolean;
     selected: IOrder | null;
   };
+  grocer: {
+    grocers: IGrocer[];
+    loading: boolean;
+    selected: IGrocer | null;
+  };
+  carrier: {
+    carriers: ICarrier[];
+    loading: boolean;
+    selected: ICarrier | null;
+  };
   loadingData: boolean;
 }
 
@@ -90,6 +104,16 @@ const Admin_INITIAL_STATE: AdminState = {
   },
   order: {
     orders: [],
+    selected: null,
+    loading: false
+  },
+  carrier: {
+    carriers: [],
+    selected: null,
+    loading: false
+  },
+  grocer: {
+    grocers: [],
     selected: null,
     loading: false
   },
@@ -140,19 +164,45 @@ export const AdminProvider: FC<Props> = ({ children }) => {
           payload: users?.content,
         });
       }
-      const orders = await orderAPI.getAllOrders();
-      if (orders?.success) {
-        dispatch({
-          type: "[Admin] - Load Orders",
-          payload: orders?.content,
-        });
-      }
+      await loadOrders();
+      await loadGrocers();
+      await loadCarriers();
     })();
     dispatch({
       type: "[Admin] - Loading",
       payload: false,
     });
   }, []);
+
+  const loadOrders = async () => {
+    const orders = await orderAPI.getAllOrders();
+    if (orders?.success) {
+      dispatch({
+        type: "[Admin] - Load Orders",
+        payload: orders?.content,
+      });
+    }
+  }
+
+  const loadCarriers = async () => {
+    const carriers = await carrierAPI.getAll();
+    if (carriers?.success) {
+      dispatch({
+        type: "[Admin] - Load Carrier",
+        payload: carriers?.content,
+      });
+    }
+  }
+
+  const loadGrocers = async () => {
+    const grocers = await grocerAPI.getAll();
+    if (grocers?.success) {
+      dispatch({
+        type: "[Admin] - Load Grocer",
+        payload: grocers?.content,
+      });
+    }
+  }
 
   const onSelectCategory = (category: ICategory | null) => {
     dispatch({
@@ -193,6 +243,20 @@ export const AdminProvider: FC<Props> = ({ children }) => {
     dispatch({
       type: "[Admin] - Select Order",
       payload: order,
+    });
+  };
+
+  const onSelectCarrier = (carrier: ICarrier | null) => {
+    dispatch({
+      type: "[Admin] - Select Carrier",
+      payload: carrier,
+    });
+  };
+
+  const onSelectGrocer = (grocer: IGrocer | null) => {
+    dispatch({
+      type: "[Admin] - Select Grocer",
+      payload: grocer,
     });
   };
 
@@ -409,6 +473,48 @@ export const AdminProvider: FC<Props> = ({ children }) => {
     onTerminate();
   };
 
+  const onCreateCarrier = async (
+    carrier: NewCarrier,
+    onTerminate: () => void
+  ) => {
+    dispatch({
+      type: "[Admin] - Saving Carrier",
+    });
+    const response = await carrierAPI.create( carrier );
+    if (response?.success) {
+      dispatch({
+        type: "[Admin] - Carrier Created",
+        payload: response.content,
+      });
+      toast.success(response.message);
+      onTerminate();
+      return;
+    }
+    toast.error(response!.message);
+    onTerminate();
+  };
+
+  const onCreateGrocer = async (
+    grocer: NewGrocer,
+    onTerminate: () => void
+  ) => {
+    dispatch({
+      type: "[Admin] - Saving Grocer",
+    });
+    const response = await grocerAPI.create( grocer );
+    if (response?.success) {
+      dispatch({
+        type: "[Admin] - Grocer Created",
+        payload: response.content,
+      });
+      toast.success(response.message);
+      onTerminate();
+      return;
+    }
+    toast.error(response!.message);
+    onTerminate();
+  };
+
   return (
     <AdminContext.Provider
       value={{
@@ -417,14 +523,21 @@ export const AdminProvider: FC<Props> = ({ children }) => {
         onSelectCollection,
         onSelectSubCategory,
         onSelectProduct,
+        onSelectCarrier,
+        onSelectGrocer,
         onCreateOrEditCategory,
         onCreateOrEditCollection,
         onCreateOrEditSubCategory,
         onCreateOrEditProduct,
+        onCreateCarrier,
+        onCreateGrocer,
         onEditUser,
         onSelectUser,
         onEditOrder,
-        onSelectOrder
+        onSelectOrder,
+        loadOrders,
+        loadCarriers,
+        loadGrocers,
       }}
     >
       {children}

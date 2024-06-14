@@ -25,10 +25,23 @@ type AuthAction =
 } |
 {
   type: "[Auth] - Logout"
+} | {
+  type: "[Auth] - Available Status"
 };
 
 export const AuthReducer = ( state: AuthState, action: AuthAction ): AuthState => {
   switch( action.type ) {
+    case '[Auth] - Available Status':
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          roleExtraData: state.user.roleExtraData && {
+            ...state.user.roleExtraData,
+            status: "DISPONIBLE"
+          }
+        }
+      }
     case '[Auth] - Login':
       return {
         ...state,

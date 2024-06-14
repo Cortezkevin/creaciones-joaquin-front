@@ -1,4 +1,6 @@
 import { IAddress } from "./address";
+import { ICarrier } from "./carrier";
+import { IGrocer } from "./grocer";
 
 export type IProfile = {
   birthDate: string;
@@ -17,5 +19,6 @@ export type IUser = {
   lastName: string;
   email: string;
   roles: string[];
-  profile: IProfile
+  profile: IProfile,
+  roleExtraData?: IGrocer | ICarrier | null;
 }

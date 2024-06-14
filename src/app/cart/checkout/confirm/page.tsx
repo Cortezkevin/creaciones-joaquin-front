@@ -49,7 +49,7 @@ export default function ConfirmPage() {
   },[]);
 
   return (
-    <div className="w-[100vw] p-6 flex items-center justify-center">
+    <div className="w-[100vw] min-h-[500px] p-6 flex items-center justify-center">
       {
         isLoading && (
           <Spinner label="Cargando..." size="lg" />

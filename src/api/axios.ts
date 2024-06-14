@@ -8,7 +8,7 @@ import Cookies from 'js-cookie';
 */
 
 const AxiosInstance = axios.create({
-  baseURL: 'https://creaciones-joaquin-back.onrender.com/api/',
+  baseURL: 'http://localhost:4000/api/',
   headers: {
     "Authorization": "Bearer " + Cookies.get("token") || ''
   }
