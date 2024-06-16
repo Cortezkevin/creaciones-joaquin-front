@@ -69,6 +69,7 @@ export interface AdminProps {
   };
   loadingData: boolean;
 
+  loadUsers: () => void;
   loadOrders: () => void;
   loadCarriers: () => void;
   loadGrocers: () => void;

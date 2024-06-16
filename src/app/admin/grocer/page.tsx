@@ -34,7 +34,7 @@ const columns: IGrocerTableColumn[] = [
 
 export default function CarrierPage() {
 
-  const { grocer: { grocers }, loadingData, onSelectGrocer } = React.useContext(AdminContext);
+  const { grocer: { grocers }, loadingData, onSelectGrocer, loadGrocers } = React.useContext(AdminContext);
   const { isAdmin } = useContext( AuthContext );
 
   const renderCell = React.useCallback(
@@ -113,6 +113,10 @@ export default function CarrierPage() {
     },
     []
   );
+
+  React.useEffect(() => {
+    loadGrocers();
+  },[]);
 
   return (
     <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto">

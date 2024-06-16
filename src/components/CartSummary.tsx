@@ -34,9 +34,9 @@ export const CartSummary = () => {
   const handleCheckout = () => {
     if (!isLogged) {
       toast.error(
-        "Debes tener una cuenta para realizar compras, por favor crea una para continuar o inicia sesion si ya tienes una"
+        "Crea una cuenta para continuar con tu pedido"
       );
-      router.push("/auth/login?prevPage=/cart");
+      router.push("/auth/register?prevPage=/cart");
     } else {
       router.push("/cart/checkout");
     }
@@ -106,7 +106,7 @@ export const CartSummary = () => {
         <div className="flex justify-between text-sm">
           <span className="font-[500] flex gap-3 items-center">
             <i className="fa-solid fa-percent"></i>
-            <p>Impuestos</p>
+            <p>Impuestos (IGV 18%)</p>
           </span>
           <span>S/ {tax}</span>
         </div>
@@ -116,13 +116,6 @@ export const CartSummary = () => {
             <p>Descuento</p>
           </span>
           <span>- S/ {discount}</span>
-        </div>
-        <div className="flex justify-between text-sm">
-          <span className="font-[500] flex gap-3 items-center">
-            <i className="fa-solid fa-money-bill"></i>
-            <p>Total parcial</p>
-          </span>
-          <span>S/ {subtotal}</span>
         </div>
       </div>
       <Divider />

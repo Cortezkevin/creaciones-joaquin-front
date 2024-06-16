@@ -51,10 +51,13 @@ export const CartReducer = ( state: CartState, action: CartAction ): CartState =
         isRemovingItem: false
       }
     case '[Cart] - change shipping cost':
+      const newTotal = parseFloat(state.subtotal) + parseFloat(action.payload);
+      const newTax = newTotal * 0.18;
       return {
         ...state,
         shippingCost: action.payload,
-        total: parseFloat(state.subtotal) + parseFloat(action.payload) + ""
+        tax: newTax.toFixed(2),
+        total: (newTotal + newTax).toFixed(2)
       }
     case '[Cart] - clear':
       return {

@@ -33,6 +33,7 @@ export default function UsersPage() {
   const {
     user: { users },
     loadingData,
+    loadUsers,
     onSelectUser,
   } = React.useContext(AdminContext);
 
@@ -113,6 +114,10 @@ export default function UsersPage() {
     []
   );
 
+  React.useEffect(() => {
+    loadUsers();
+  }, [])
+
   return (
     <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto">
       <h1 className="text-large font-semibold">Usuarios</h1>
@@ -120,7 +125,7 @@ export default function UsersPage() {
         columns={columns}
         data={users}
         filterBy="firstName"
-        isLoading={false}
+        isLoading={loadingData}
         typeName={"Usuario"}
         modal={UserModal}
         renderCell={renderCell}

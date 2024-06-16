@@ -57,7 +57,7 @@ export default function OrderShippingPage({
             toast.success(response.message);
             setOrderShipping({
               ...orderShipping,
-              preparedDate: response.content.shippingDate,
+              preparedDate: response.content.preparedDate,
               status: response.content.status,
             });
             loadOrders();

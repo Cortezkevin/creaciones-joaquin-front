@@ -41,7 +41,7 @@ const columns: ICarrierTableColumn[] = [
 
 export default function SubCategoryPage() {
 
-  const { carrier: { carriers }, loadingData, onSelectCarrier } = React.useContext(AdminContext);
+  const { carrier: { carriers }, loadingData, onSelectCarrier, loadCarriers } = React.useContext(AdminContext);
   const { isAdmin } = React.useContext( AuthContext );
 
   const renderCell = React.useCallback(
@@ -124,6 +124,10 @@ export default function SubCategoryPage() {
     },
     []
   );
+
+  React.useEffect(() => {
+    loadCarriers();
+  },[]);
 
   return (
     <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto">

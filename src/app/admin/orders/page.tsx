@@ -48,10 +48,10 @@ const columns: IOrderTableColumn[] = [
     key: "status",
     title: "Estado del Pedido",
   },
-  {
+/*   {
     key: "actions",
     title: "Acciones",
-  },
+  }, */
 ];
 
 export default function OrdersPage() {
@@ -156,7 +156,7 @@ export default function OrdersPage() {
               {cellValue}
             </Chip>
           );
-        case "actions":
+        /* case "actions":
           return (
             <div className="relative flex justify-center items-center gap-2">
               <Tooltip color="warning" content="Ver Detalles">
@@ -170,13 +170,17 @@ export default function OrdersPage() {
                 </span>
               </Tooltip>
             </div>
-          );
+          ); */
         default:
           return <>{cellValue}</>;
       }
     },
     []
   );
+  
+  React.useEffect(() => {
+    loadOrders();
+  },[]);
 
   const handleShowPreparationPendingOrders = () => {
     router.push("/admin/orders/preparation");

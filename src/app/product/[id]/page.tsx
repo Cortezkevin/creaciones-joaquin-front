@@ -6,7 +6,7 @@ import { AuthContext } from "@/context/auth";
 import { CartContext } from "@/context/cart";
 import { IProduct } from "@/declarations";
 import { Image } from "@nextui-org/image";
-import { Button, Divider, Spinner } from "@nextui-org/react";
+import { Button, Chip, Divider, Spinner } from "@nextui-org/react";
 import React from "react";
 
 export default function ProductDetailPage({
@@ -168,18 +168,20 @@ export default function ProductDetailPage({
                 </div>
               </div>
             </div>
-            <div className="flex gap-3">
-              <Button className="text-white" variant="solid" color="primary">
-                Comprar Ahora
-              </Button>
-              <Button
-                onClick={handleAddToCart}
-                isLoading={isAddingItem}
-                variant="bordered"
-                color="primary"
-              >
-                Agregar al Carrito
-              </Button>
+            <div className="flex gap-3 justify-center">
+              {product.stock === 0 ? (
+                <Chip color="danger" size="lg" className="w-full" variant="flat">Agotado</Chip>
+              ) : (
+                <Button
+                  className="w-full"
+                  onClick={handleAddToCart}
+                  isLoading={isAddingItem}
+                  variant="bordered"
+                  color="primary"
+                >
+                  Agregar al Carrito
+                </Button>
+              )}
             </div>
           </div>
         </div>

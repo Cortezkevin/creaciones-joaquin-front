@@ -122,10 +122,10 @@ export default function AuthProvider({ children }: Props) {
         }
       })
     }else {
-      handleLogout();
-      /* dispatch({
+      /* handleLogout(); */
+      dispatch({
         type: "[Auth] - Logout"
-      }) */
+      })
     }
   }
 

@@ -205,21 +205,41 @@ export default function ShippingOrdersPage() {
           >
             {item.status !== "ENTREGADO" ? "Continuar Proceso" : "Completado"}
           </Button>
-        ) : (
-          <Button
-            className="text-white"
-            color="primary"
-            onClick={() => handleStartPreparation(item.id, item.orderId)}
-            isDisabled={
-              item.status !== "PENDIENTE" ||
-              (user.roleExtraData
-                ? (user.roleExtraData as ICarrier).status !== "DISPONIBLE"
-                : false)
-            }
-          >
-            Iniciar Proceso
-          </Button>
-        );
+        ) : item.status !== "PENDIENTE" && item.status !== "ENTREGADO" ?
+          (
+            <Button
+              className="text-white"
+              color="primary"
+              onClick={() => router.push("/admin/orders/shipping/" + item.id)}
+              isDisabled={
+                true
+              }
+            >
+              En Proceso
+            </Button>
+          )
+          : (  
+            <Button
+              className="text-white"
+              color={`${item.status === "ENTREGADO" ? "warning" : "primary"}`}
+              onClick={() => {
+                if( item.status !== "ENTREGADO"){
+                  handleStartPreparation(item.id, item.orderId);
+                }else{
+                  router.push("/admin/orders/shipping/" + item.id);
+                }
+              }}
+              isDisabled={
+                (user.roleExtraData
+                  ? (user.roleExtraData as ICarrier).status !== "DISPONIBLE"
+                  : false)
+              }
+            >
+              {item.status !== "ENTREGADO"
+              ? "Iniciar Proceso"
+              : "Completado"}
+            </Button>
+          );
       default:
         return <>{cellValue}</>;
     }

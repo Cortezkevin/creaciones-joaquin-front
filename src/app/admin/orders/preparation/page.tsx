@@ -173,22 +173,45 @@ export default function PreparationOrdersPage() {
             onClick={() => router.push("/admin/orders/preparation/" + item.id)}
           >
             {item.status !== "LISTO_PARA_RECOGER"
-              ? "Continuar Proceso"
+              ? isAdmin
+                ? "Iniciar Proceso"
+                : "Continuar Proceso"
               : "Completado"}
+          </Button>
+        ) : item.status !== "PENDIENTE" &&
+          item.status !== "LISTO_PARA_RECOGER" ? (
+          <Button
+            className="text-white"
+            color="primary"
+            onClick={() => router.push("/admin/orders/preparation/" + item.id)}
+            isDisabled={true}
+          >
+            En proceso
           </Button>
         ) : (
           <Button
             className="text-white"
-            color="primary"
-            onClick={() => handleStartPreparation(item.id, item.orderId)}
+            color={`${
+              item.status === "LISTO_PARA_RECOGER" ? "warning" : "primary"
+            }`}
+            onClick={() => {
+              if (item.status !== "LISTO_PARA_RECOGER") {
+                handleStartPreparation(item.id, item.orderId);
+              } else {
+                router.push("/admin/orders/preparation/" + item.id);
+              }
+            }}
             isDisabled={
-              item.status !== "PENDIENTE" ||
-              (user.roleExtraData
-                ? (user.roleExtraData as IGrocer).status !== "DISPONIBLE"
-                : false)
+              item.status === "LISTO_PARA_RECOGER"
+              ? false
+              : user.roleExtraData
+              ? (user.roleExtraData as IGrocer).status !== "DISPONIBLE"
+              : false
             }
           >
-            Iniciar Proceso
+            {item.status !== "LISTO_PARA_RECOGER"
+              ? "Iniciar Proceso"
+              : "Completado"}
           </Button>
         );
       default:

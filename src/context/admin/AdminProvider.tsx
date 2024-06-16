@@ -157,13 +157,7 @@ export const AdminProvider: FC<Props> = ({ children }) => {
           payload: products?.content,
         });
       }
-      const users = await userAPI.getUsers();
-      if (users?.success) {
-        dispatch({
-          type: "[Admin] - Load Users",
-          payload: users?.content,
-        });
-      }
+      await loadUsers();
       await loadOrders();
       await loadGrocers();
       await loadCarriers();
@@ -173,6 +167,16 @@ export const AdminProvider: FC<Props> = ({ children }) => {
       payload: false,
     });
   }, []);
+
+  const loadUsers = async () => {
+    const users = await userAPI.getUsers();
+    if (users?.success) {
+      dispatch({
+        type: "[Admin] - Load Users",
+        payload: users?.content,
+      });
+    }
+  }
 
   const loadOrders = async () => {
     const orders = await orderAPI.getAllOrders();
@@ -538,6 +542,7 @@ export const AdminProvider: FC<Props> = ({ children }) => {
         loadOrders,
         loadCarriers,
         loadGrocers,
+        loadUsers
       }}
     >
       {children}

@@ -134,13 +134,13 @@ export default function CartProvider({ children }: { children: ReactNode }){
         if(i.product_id === itemToAdd.product_id){
           const newAmount = i.amount + itemToAdd.amount;
           if( newAmount > i.stock ){
-            toast.error("La cantidad a agregar supera las existencias del producto");
+            toast.error("La cantidad a agregar supera el stock");
             return i;
           }
           return {
             ...i,
             amount: newAmount,
-            total: (parseFloat(i.price) * newAmount) + ""
+            total: (parseFloat(i.price) * newAmount).toFixed(2)
           };
         }
         return i;
@@ -149,15 +149,18 @@ export default function CartProvider({ children }: { children: ReactNode }){
       newItems = [ ...state.items, itemToAdd ];
     }
     
+    const subtotal = getSubTotal( newItems );
+    const total = getTotal( newItems, state.shippingCost );
+
     const newCart: ICart = {
       id: "",
       user_id: "",
       cartItems: newItems,
       discount: "0.00",
-      subtotal: getSubTotal( newItems ) + "",
+      subtotal: subtotal,
       shippingCost: state.shippingCost,
-      total: getTotal( newItems, state.shippingCost ) + "",
-      tax: "0.00"
+      total: total.total,
+      tax: total.tax.toFixed(2)
     }
 
     Cookies.set("cart", JSON.stringify( newCart ));
@@ -181,22 +184,26 @@ export default function CartProvider({ children }: { children: ReactNode }){
             return {
               ...i,
               amount: newAmount,
-              total: (parseFloat(i.price) * newAmount) + ""
+              total: (parseFloat(i.price) * newAmount).toFixed(2)
             };
           }
           return i;
         });
       }
     }
+
+    const subtotal = getSubTotal( newItems );
+    const total = getTotal( newItems, state.shippingCost );
+
     const newCart: ICart = {
       id: state.id,
       user_id: "",
       cartItems: newItems,
       discount: "0.00",
-      subtotal: getSubTotal( newItems ) + "",
+      subtotal: subtotal,
       shippingCost: state.shippingCost,
-      total: getTotal( newItems, state.shippingCost ) + "",
-      tax: "0.00"
+      total: total.total,
+      tax: total.tax.toFixed(2)
     }
     
     Cookies.set("cart", JSON.stringify( newCart ));
@@ -212,7 +219,7 @@ export default function CartProvider({ children }: { children: ReactNode }){
     items.forEach(i => {
       total += parseFloat(i.total);
     });
-    return total;
+    return total.toFixed(2);
   }
 
   const getTotal = ( items: ICartItem[], shippingCost: string ) => {
@@ -220,8 +227,15 @@ export default function CartProvider({ children }: { children: ReactNode }){
     items.forEach(i => {
       total += parseFloat(i.total);
     });
-    total += parseFloat(shippingCost);
-    return total;
+    if( total < 2500 ){
+      total += parseFloat(shippingCost);
+    }
+    const tax = total * 0.18;
+    total += tax;
+    return {
+      total: total.toFixed(2),
+      tax: tax
+    };
   }
 
   const handleRemoveItem = async ( itemToRemove: RemoveItem ) => {
@@ -281,10 +295,12 @@ export default function CartProvider({ children }: { children: ReactNode }){
         type: "[Cart] - change shipping cost",
         payload: shippingCost
       })
+      const newTotal = getTotal(state.items, shippingCost);
       const newCart: ICart = {
         ...cart,
         shippingCost,
-        total: getTotal(cart.cartItems, shippingCost) + ""
+        tax: newTotal.tax.toFixed(2),
+        total: newTotal.total
       }
       Cookies.set("cart", JSON.stringify(newCart));
     }

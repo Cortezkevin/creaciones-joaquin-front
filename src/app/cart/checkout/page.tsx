@@ -96,7 +96,7 @@ export default function Checkout() {
   };
 
   return (
-    <div className="flex flex-col w-full p-6 gap-10 mb-5">
+    <div className="flex flex-col w-full p-6 gap-10 h-full bg-slate-100">
       <h1 className="text-center text-2xl font-semibold">
         Detalles del pedido
       </h1>
@@ -172,13 +172,13 @@ export default function Checkout() {
         <div className="w-[700px] h-[300px] flex flex-col gap-4">
           <div className="flex justify-between items-center">
             <h2 className="font-semibold p-2">Informacion de la compra</h2>
-            <Button size="sm" color="secondary" variant="bordered">
+            <Button size="sm" color="secondary" variant="bordered" onClick={() => router.push("/cart")}>
               Editar Compra
             </Button>
           </div>
           <div className="flex flex-col gap-2 ">
             {items.map((i) => (
-              <OrderDetail key={i.id} {...i} />
+              <OrderDetail  key={i.id} {...i} modeSoloImage={true} />
             ))}
           </div>
           <OrderDetailSummary

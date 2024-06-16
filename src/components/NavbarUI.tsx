@@ -30,6 +30,10 @@ export const NavbarUI = () => {
     router.push("/auth/login");
   };
 
+  const handleProfile = () => {
+    router.push("/profile");
+  }
+
   const handleAdminAccount = () => {
     if( isAdmin ){
       router.push("/admin/category");
@@ -63,13 +67,13 @@ export const NavbarUI = () => {
           height={140}
         />
       </NavbarBrand>
-      <NavbarContent className="hidden sm:flex gap-6" justify="center">
+      <NavbarContent className="hidden sm:flex gap-6 w-[400px]" justify="center">
         <NavbarItem isActive>
           <Link color="foreground" href="#">
             Home
           </Link>
         </NavbarItem>
-        <NavbarItem>
+       {/*  <NavbarItem>
           <Link href="#" aria-current="page">
             Sobre Nosotros
           </Link>
@@ -78,7 +82,7 @@ export const NavbarUI = () => {
           <Link color="foreground" href="#">
             Contactanos
           </Link>
-        </NavbarItem>
+        </NavbarItem> */}
       </NavbarContent>
       <NavbarContent className="flex items-center justify-center ml-[50px]">
         <NavbarItem>
@@ -138,7 +142,7 @@ export const NavbarUI = () => {
                     className="transition-transform"
                   />
                 </DropdownItem>
-                <DropdownItem key="MiPerfil">Mi perfil</DropdownItem>
+                <DropdownItem key="MiPerfil" onClick={handleProfile}>Mi perfil</DropdownItem>
                 <DropdownItem key="MisPedidos" onClick={handleOrdersHistory}>
                   Mis pedidos
                 </DropdownItem>

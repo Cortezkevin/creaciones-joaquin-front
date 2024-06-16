@@ -169,7 +169,7 @@ export const Map: FC<Props> = ({ onSelectDirection, initDestination = { lat: -12
           urbanization: selectedUrbanizacion,
           fullAddress: selectedAddress
         },
-        distanceCost: distance?.value ? (distance?.value * 2)+"" : ""
+        distanceCost: distance?.value ? (distance?.value * 2).toFixed(2) : ""
       });
       setAddressSearch( user.profile.address.fullAddress );
     }else {
@@ -186,7 +186,7 @@ export const Map: FC<Props> = ({ onSelectDirection, initDestination = { lat: -12
           urbanization: selectedUrbanizacion,
           fullAddress: selectedAddress
         },
-        distanceCost: distance?.value ? (distance?.value * 2)+ "" : ""
+        distanceCost: distance?.value ? (distance?.value * 2).toFixed(2) : ""
       });
     }
   }, [selectedLocality, selectedDepartamento, selectedCalle, selectedPostalCode, selectedProvincia, selectedUrbanizacion, distance])
@@ -341,7 +341,7 @@ export const Map: FC<Props> = ({ onSelectDirection, initDestination = { lat: -12
         <h2 className='font-semibold'>Distancia y Calculo de Precio</h2>
         <div className='flex gap-2'>
           <Input readOnly value={ distance?.text || "" } size='sm' label="Distancia" />
-          <Input readOnly value={ distance?.value ? "S/. " + (distance?.value * 2) : "" } size='sm' label="Costo de envio"/>
+          <Input readOnly value={ distance?.value ? "S/. " + (distance?.value * 2).toFixed(2) : "" } size='sm' label="Costo de envio"/>
         </div>
       </div>
     </div>

@@ -16,6 +16,7 @@ export function middleware(req: NextRequest) {
       return validateRoleCarrierGrocerOrAdmin( req );
     case "/auth/login":
       return validateAuth(req);
+    case "/profile":
     case "/orders":
     case "/orders/:id":
     case "/cart/checkout":
@@ -109,6 +110,7 @@ export const config = {
     "/auth/login",
     "/cart/checkout",
     "/cart/checkout/confirm",
+    "/profile",
     "/orders",
     "/orders/:id",
   ],

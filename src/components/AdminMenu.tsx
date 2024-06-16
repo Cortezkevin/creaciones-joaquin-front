@@ -9,7 +9,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/dropdown";
-import { Image, Tooltip, User } from "@nextui-org/react";
+import { Divider, Image, Tooltip, User } from "@nextui-org/react";
 import NextLink from "next/link";
 import Link from "next/link";
 import { useContext } from "react";
@@ -27,15 +27,15 @@ export const AdminMenu = () => {
   };
 
   return (
-    <div className="h-[100vh] w-[280px] bg-white border p-4 flex flex-col gap-6 select-none">
-      <div className="flex justify-between items-center">
+    <div className="h-[100vh] w-[280px] bg-white border p-4 flex flex-col gap-4 select-none">
+      <div className="flex justify-center items-center">
         <Image
           src="/LOGO.jpeg"
           alt="Creaciones joaquin"
           width={140}
           height={140}
         />
-        <Button isIconOnly variant="light" radius="full">
+        {/* <Button isIconOnly variant="light" radius="full">
           <Badge
             size="sm"
             content="5"
@@ -45,9 +45,9 @@ export const AdminMenu = () => {
           >
             <i className="fa-solid fa-bell text-[20px]"></i>
           </Badge>
-        </Button>
+        </Button> */}
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 w-full">
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
             <User
@@ -64,15 +64,15 @@ export const AdminMenu = () => {
                   : undefined,
                 name: user.firstName,
               }}
-              className="transition-transform"
+              className="transition-transform w-full"
               description={
-                <p className="text-sm">
+                <p className="text-xs">
                   { 
                   user.roles.includes("ROLE_ADMIN") 
-                  ? "Administrador" 
+                  ? "Administrador"
                   : user.roles.includes("ROLE_WAREHOUSE") 
-                  ? "Almacenero"
-                  : "Repartidor"
+                  ? `Almacenero`
+                  : `Repartidor`
                   }
                 </p>
               }
@@ -80,6 +80,15 @@ export const AdminMenu = () => {
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
+            <DropdownItem
+              key="Estado actual"
+              isReadOnly
+              className="text-center font-semibold"
+            >
+              <p className="font-semibold">
+                { user.roleExtraData && user.roleExtraData.status.replaceAll("_", " ") }
+              </p>
+            </DropdownItem>
             <DropdownItem
               key="Estado"
               isReadOnly
@@ -118,8 +127,9 @@ export const AdminMenu = () => {
           </DropdownMenu>
         </Dropdown>
       </div>
+      <Divider />
       <div>
-        <div className="w-full max-w-[260px] px-1 py-2 rounded-small">
+        <div className="w-full max-w-[260px] px-1 rounded-small">
           <Listbox variant="flat" aria-label="Listbox menu with sections">
             <ListboxSection title="Tienda" showDivider>
               <ListboxItem
@@ -133,7 +143,7 @@ export const AdminMenu = () => {
                 </NextLink>
               </ListboxItem>
             </ListboxSection>
-            <ListboxSection title="Analiticas" showDivider>
+           {/*  <ListboxSection title="Analiticas" showDivider>
               <ListboxItem
                 key="Dashboard"
                 shouldHighlightOnFocus
@@ -144,7 +154,7 @@ export const AdminMenu = () => {
                   <Link href={"#"}>Dashboard</Link>
                 </NextLink>
               </ListboxItem>
-            </ListboxSection>
+            </ListboxSection> */}
             <ListboxSection title="Mantenimiento" showDivider>
               <ListboxItem
                 key="Usuarios"

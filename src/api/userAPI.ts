@@ -1,4 +1,4 @@
-import { IRole, IUser, ResponseWrapper, UpdateUser } from "@/declarations";
+import { IRole, IUser, ResponseWrapper, UpdateProfile, UpdateUser } from "@/declarations";
 import { AxiosInstance } from "./axios"
 import Cookies from 'js-cookie';
 
@@ -33,6 +33,20 @@ export const getRoles = async () => {
 export const update = async (user: UpdateUser) => {
   try {
     const response = await AxiosInstance.put<ResponseWrapper<IUser>>(PATH, user, {
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + Cookies.get("token")
+      }
+    });
+    return response.data;
+  } catch (e: any) {
+    return null;
+  }
+}
+
+export const updateProfile = async (user: UpdateProfile) => {
+  try {
+    const response = await AxiosInstance.put<ResponseWrapper<IUser>>(PATH+"/profile", user, {
       "headers": {
         "Content-Type": "application/json",
         "Authorization": "Bearer " + Cookies.get("token")
