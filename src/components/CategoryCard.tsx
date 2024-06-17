@@ -19,8 +19,8 @@ export const CategoryCard: FC<Props> = ({ category }) => {
       <Image
         alt={ category.name }
         isZoomed
-        className="object-cover"
-        height={350}
+        className="object-cover min-h-[260px]"
+        height={250}
         src={ category.url_image }
         width={350}
       />

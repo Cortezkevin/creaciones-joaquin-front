@@ -24,12 +24,12 @@ export const ProductCard: FC<Props> = ({ product }) => {
   }
 
   return (
-    <div className="flex flex-col gap-2 shadow-lg cursor-pointer" onClick={handleClick}>
-      <div className='p-2 bg-white min-h-[200px] flex items-center justify-center'>
+    <div className="flex flex-col gap-2 shadow-lg cursor-pointer min-w-[250px] max-w-[250px]" onClick={handleClick}>
+      <div className='p-2 bg-white min-h-[250px] flex items-center justify-center'>
         <Image className='rounded-none' src={image} width={200} height={200} alt={product.name} onMouseOver={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}/>
       </div>
       <div className='flex flex-col px-4 py-4 gap-3'>
-        <h3 className="text-sm font-semibold">{ product.name.toUpperCase() }</h3>
+        <h3 className="text-sm font-semibold text-wrap">{ product.name.toUpperCase() }</h3>
         <span className="text-red-600">Desde: S/. { product.price }</span>
       </div>
     </div>
