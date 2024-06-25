@@ -20,7 +20,7 @@ import React, { ChangeEvent, ChangeEventHandler } from "react";
 import toast from "react-hot-toast";
 import * as yup from "yup";
 import { InputImage } from "./InputImage";
-import { AdminContext } from "@/context/admin";
+import { StoreContext } from "@/context";
 
 type Props = {
   handleOpenModal: (isOpen: boolean) => void;
@@ -53,7 +53,7 @@ export function ProductModal({ handleOpenModal, isOpen }: Props) {
     product: { selected, loading },
     onCreateOrEditProduct,
     onSelectProduct,
-  } = React.useContext(AdminContext);
+  } = React.useContext(StoreContext);
 
   React.useEffect(() => {
     if (!isOpen) {

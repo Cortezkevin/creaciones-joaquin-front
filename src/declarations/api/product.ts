@@ -4,6 +4,7 @@ export type NewProduct = {
   price: string;
   stock: number;
   subcategory_id: string;
+  supplierId?: string;
   files: File[];
 }
 
@@ -15,5 +16,6 @@ export type UpdateProduct = {
   newStock: number;
   newSubCategoryId: string;
   newCollectionId: string;
+  newSupplierId?: string;
   files?: File[];
 }

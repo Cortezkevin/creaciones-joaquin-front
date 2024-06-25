@@ -13,7 +13,7 @@ export default function CompletionPage() {
 
   return (
     <div className="w-[100vw] h-full flex items-center justify-center">
-      <div className="flex flex-col gap-4 w-[300px] mt-[100px]">
+      <div className="flex flex-col gap-4 w-[300px] min-h-[435px] justify-center">
         <h1 className="text-lg font-semibold text-center">¡GRACIAS POR TU COMPRA!</h1>
         <div className="flex flex-col gap-2 items-center">
           <p>Puedes ver tu pedido aqui</p>

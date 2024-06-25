@@ -2,7 +2,7 @@
 
 import { CollectionModal } from "@/components/CollectionModal";
 import { DataTable, DataTableModalProps } from "@/components/DataTable";
-import { AdminContext } from "@/context/admin";
+import { StoreContext } from "@/context/admin";
 import { ICollectionTableCell, ICollectionTableColumn } from "@/declarations";
 import { Image } from "@nextui-org/image";
 import { Tooltip } from "@nextui-org/react";
@@ -29,7 +29,7 @@ const columns: ICollectionTableColumn[] = [
 
 export default function CollectionPage() {
 
-  const { collection: { collections }, loadingData, onSelectCollection } = useContext(AdminContext);
+  const { collection: { collections }, loadingData, onSelectCollection } = useContext(StoreContext);
 
   const renderCell = React.useCallback(
     (
@@ -86,7 +86,7 @@ export default function CollectionPage() {
   );
 
   return (
-    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto">
+    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto animate__animated animate__fadeIn animate__fast">
       <h1 className="text-large font-semibold">Colecciones</h1>
       <DataTable
         isLoading={ loadingData }

@@ -76,7 +76,8 @@ export default function RegisterPage() {
                 amount: i.amount,
                 productId: i.product_id
               }
-            })
+            }),
+            shippingCost: cart.shippingCost
           } : undefined,
           memoryAddress: address ? {
             ...address
@@ -90,7 +91,7 @@ export default function RegisterPage() {
       validationSchema: schema,
     });
   return (
-    <div className="w-full h-[100vh] flex flex-col items-center justify-center gap-6 bg-slate-100">
+    <div className="w-full h-[100vh] flex flex-col items-center justify-center gap-6 bg-slate-100 animate__animated animate__fadeIn">
       <div className="flex flex-col items-center gap-2">
         <Image src="/LOGO.jpeg" alt="LOGO" width={170} height={170} />
         <p className="text-sm">"Tu destino para muebles de calidad."</p>

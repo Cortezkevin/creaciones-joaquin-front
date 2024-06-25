@@ -7,6 +7,9 @@ export type IProduct = {
   description: string;
   subCategory: ISubCategory,
   collection?: ICollection,
+  type: "COMPRADO" | "FABRICADO",
+  supplier?: string;
+  supplierId?: string;
   price: string;
   stock: number;
   images: string[];

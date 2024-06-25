@@ -2,13 +2,10 @@
 
 import { CarrierModal } from "@/components/CarrierModal";
 import { DataTable, DataTableModalProps } from "@/components/DataTable";
-import { SubCategoryModal } from "@/components/SubCategoryModal";
-import { AdminContext } from "@/context/admin";
+import { EmployeeContext } from "@/context/admin";
 import { AuthContext } from "@/context/auth";
-import { ISubCategoryTableCell, ISubCategoryTableColumn } from "@/declarations";
 import { CarrierStatus } from "@/declarations/model/carrier";
 import { ICarrierTableCell, ICarrierTableColumn } from "@/declarations/table/carrier";
-import { Image } from "@nextui-org/image";
 import { Chip, Tooltip } from "@nextui-org/react";
 import React from "react";
 
@@ -41,7 +38,7 @@ const columns: ICarrierTableColumn[] = [
 
 export default function SubCategoryPage() {
 
-  const { carrier: { carriers }, loadingData, onSelectCarrier, loadCarriers } = React.useContext(AdminContext);
+  const { carrier: { carriers }, loadingData, onSelectCarrier, loadCarriers } = React.useContext(EmployeeContext);
   const { isAdmin } = React.useContext( AuthContext );
 
   const renderCell = React.useCallback(
@@ -130,7 +127,7 @@ export default function SubCategoryPage() {
   },[]);
 
   return (
-    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto">
+    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto animate__animated animate__fadeIn animate__fast">
       <h1 className="text-large font-semibold">Repartidores</h1>
       <DataTable
         isLoading={ loadingData }
@@ -140,6 +137,7 @@ export default function SubCategoryPage() {
         data={carriers}
         columns={columns}
         modal={CarrierModal}
+        showCreateButton={ isAdmin }
       />
     </div>
   );

@@ -76,3 +76,17 @@ export const getAll = async () => {
     }
   } 
 }
+
+export const getBySupplier = async ( supplierId: string ) => {
+  try{
+    const { data } = await AxiosInstance.get<ResponseWrapper<IProduct[]>>(PATH + "/bySupplier?supplier=" + supplierId);
+    return data;
+  }catch(e){
+    if(isAxiosError(e)){
+      if( e.response?.status === 404){
+        return e.response!.data as ResponseWrapper<String>;
+      }
+      return e.response!.data as ResponseWrapper<any>;
+    }
+  } 
+}

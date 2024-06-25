@@ -1,7 +1,8 @@
 "use client";
 import { DataTable, DataTableModalProps } from "@/components/DataTable";
 import { UserModal } from "@/components/UserModal";
-import { AdminContext } from "@/context/admin";
+import { StoreContext } from "@/context";
+import { Status } from "@/declarations";
 import { IUsersTableCell, IUsersTableColumn } from "@/declarations/table/users";
 import { Chip, Tooltip } from "@nextui-org/react";
 import React from "react";
@@ -24,6 +25,10 @@ const columns: IUsersTableColumn[] = [
     title: "Roles",
   },
   {
+    key: "status",
+    title: "Estado"
+  },
+  {
     key: "actions",
     title: "Acciones",
   },
@@ -35,7 +40,7 @@ export default function UsersPage() {
     loadingData,
     loadUsers,
     onSelectUser,
-  } = React.useContext(AdminContext);
+  } = React.useContext(StoreContext);
 
   const renderCell = React.useCallback(
     (
@@ -91,6 +96,10 @@ export default function UsersPage() {
               ))}
             </div>
           );
+        case "status":
+          return (
+            <Chip variant="flat" color={ cellValue as Status === "ACTIVO" ? "success" : "danger" } >{ cellValue }</Chip>
+          )
         case "actions":
           return (
             <div className="relative flex justify-center items-center gap-2">
@@ -119,7 +128,7 @@ export default function UsersPage() {
   }, [])
 
   return (
-    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto">
+    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto animate__animated animate__fadeIn animate__fast">
       <h1 className="text-large font-semibold">Usuarios</h1>
       <DataTable
         columns={columns}
@@ -129,7 +138,7 @@ export default function UsersPage() {
         typeName={"Usuario"}
         modal={UserModal}
         renderCell={renderCell}
-        showHeader={ false }
+        showCreateButton={ false }
       />
     </div>
   );

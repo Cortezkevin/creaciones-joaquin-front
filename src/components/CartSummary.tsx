@@ -15,11 +15,16 @@ export const CartSummary = () => {
   const [showSummary, setShowSummary] = useState(false);
   const [direction, setDirection] = useState<IAddress | undefined>(user.profile.address);
 
+  const [isDisableButton, setIsDisableButton] = useState(true);
+
   const [openModal, setOpenModal] = useState(false);
+
+  console.log(user);
 
   React.useEffect(() => {
     if( user.profile.address ){
       setDirection(user.profile.address);
+      setIsDisableButton(count === 0 || !user.profile.address || user.profile.address.fullAddress === "" );
     }else {
       const address = JSON.parse( Cookies.get("address") || "null" ) as IAddress;
       if( address ){
@@ -128,7 +133,7 @@ export const CartSummary = () => {
       </div>
       <Button
         onClick={handleCheckout}
-        isDisabled={count === 0 || ( user.profile.address && (user.profile.address === undefined || user.profile.address.fullAddress === "")) }
+        isDisabled={ isDisableButton }
         size="lg"
         className="w-full text-white font-semibold rounded-md"
         color="primary"

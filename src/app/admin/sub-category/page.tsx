@@ -2,7 +2,7 @@
 
 import { DataTable, DataTableModalProps } from "@/components/DataTable";
 import { SubCategoryModal } from "@/components/SubCategoryModal";
-import { AdminContext } from "@/context/admin";
+import { StoreContext } from "@/context/admin";
 import { ISubCategoryTableCell, ISubCategoryTableColumn } from "@/declarations";
 import { Image } from "@nextui-org/image";
 import { Tooltip } from "@nextui-org/react";
@@ -29,7 +29,7 @@ const columns: ISubCategoryTableColumn[] = [
 
 export default function SubCategoryPage() {
 
-  const { subcategory: { subcategories }, loadingData, onSelectSubCategory } = React.useContext(AdminContext);
+  const { subcategory: { subcategories }, loadingData, onSelectSubCategory } = React.useContext(StoreContext);
 
   const renderCell = React.useCallback(
     (
@@ -92,7 +92,7 @@ export default function SubCategoryPage() {
   );
 
   return (
-    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto">
+    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto animate__animated animate__fadeIn animate__fast">
       <h1 className="text-large font-semibold">Sub Categorias</h1>
       <DataTable
         isLoading={ loadingData }

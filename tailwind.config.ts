@@ -1,4 +1,4 @@
-import {ConfigTheme, ConfigThemes, nextui} from '@nextui-org/theme';
+import { nextui } from '@nextui-org/theme';
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -9,16 +9,6 @@ const config: Config = {
     "./node_modules/@nextui-org/theme/dist/components/(avatar|badge|button|card|dropdown|image|input|link|listbox|modal|navbar|pagination|select|skeleton|table|ripple|spinner|menu|divider|popover|scroll-shadow|checkbox|spacer).js"
   ],
   theme: {
-    /* colors: {
-      white: "#FFFFFF",
-      primary: {
-        100: "#DEAF84",
-        200: "#97704F",
-        300: "#714423",
-        400: "#2F1B12",
-        500: "#43392F"
-      }
-    }, */
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

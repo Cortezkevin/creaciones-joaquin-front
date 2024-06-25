@@ -8,8 +8,8 @@ import React from "react";
 import { OrderDetail } from "@/components/OrderDetail";
 import { AuthContext } from "@/context/auth";
 import toast from "react-hot-toast";
-import { AdminContext } from "@/context/admin";
 import { Utils } from "@/utils";
+import { OrderContext } from "@/context";
 
 export default function OrderPreparationPage({
   params,
@@ -17,7 +17,7 @@ export default function OrderPreparationPage({
   params: { id: string };
 }) {
   const { user } = React.useContext(AuthContext);
-  const { loadOrders } = React.useContext(AdminContext);
+  const { loadOrders } = React.useContext(OrderContext);
 
   const [orderPreparation, setOrderPreparation] = React.useState<
     IDetailedPreparationOrder | undefined

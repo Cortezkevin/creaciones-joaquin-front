@@ -1,6 +1,7 @@
 "use client";
 
 import { productAPI } from "@/api";
+import { Footer } from "@/components/Footer";
 import { NavbarUI } from "@/components/NavbarUI";
 import { AuthContext } from "@/context/auth";
 import { CartContext } from "@/context/cart";
@@ -78,12 +79,12 @@ export default function ProductDetailPage({
     );
 
   return (
-    <div className="w-full pb-[100px]">
+    <div className="w-full">
       <NavbarUI />
-      <div className="w-[1000px] h-auto min-h-[300px] p-3 m-auto flex mt-[60px]">
+      <div className="w-[1000px] h-auto min-h-[300px] m-auto flex p-12">
         <div className="flex gap-4 w-full">
           <div className="flex flex-col w-full gap-4">
-            <div className="p-6 flex gap-4 w-full border border-slate-300">
+            <div className="p-6 flex gap-4 w-full border border-slate-400">
               <div className="flex flex-col gap-3">
                 {product.images.map((i) => (
                   <Image
@@ -106,12 +107,12 @@ export default function ProductDetailPage({
                 height={500}
               />
             </div>
-            <div className="p-6 border border-slate-300">
+            <div className="p-6 border border-slate-400">
               <p className="text-sm font-semibold">Descripcion:</p>
               <p>{product.description}</p>
             </div>
           </div>
-          <div className="p-6 border border-slate-300 flex flex-col gap-6 w-[80%]">
+          <div className="p-6 border border-slate-400 flex flex-col gap-6 w-[80%]">
             <h1 className="text-2xl font-semibold">
               {product.name.toUpperCase()}{" "}
             </h1>
@@ -186,6 +187,7 @@ export default function ProductDetailPage({
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

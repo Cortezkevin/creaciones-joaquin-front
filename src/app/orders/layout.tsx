@@ -1,3 +1,4 @@
+import { Footer } from "@/components/Footer";
 import { NavbarUI } from "@/components/NavbarUI";
 
 export default function OrderLayout({
@@ -8,9 +9,10 @@ export default function OrderLayout({
   return (
     <main >
       <NavbarUI />
-      <div className="p-6 bg-slate-100">
+      <div className="p-6 ">
         { children }
       </div>
+      <Footer />
     </main>
   );
 }

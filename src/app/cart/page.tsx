@@ -11,7 +11,7 @@ export default function Cart() {
 
   const router = useRouter();
   const { count, items } = React.useContext( CartContext );
-
+  console.log(items);
   return (
     <div className="flex h-full w-full relative overflow-hidden min-h-[650px]">
       <div className="lg:w-[70%] w-full p-4 lg:py-5 lg:px-10 overflow-auto">
@@ -28,7 +28,7 @@ export default function Cart() {
               </div>
             )
             : items.map(i => (
-              <NormalCartItem key={i.id} item={ i }/>
+              <NormalCartItem key={i.id || i.product_id} item={ i }/>
             ))
           }
         </div>

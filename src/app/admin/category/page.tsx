@@ -2,7 +2,7 @@
 
 import { CategoryModal } from "@/components/CategoryModal";
 import { DataTable, DataTableModalProps } from "@/components/DataTable";
-import { AdminContext } from "@/context/admin";
+import { StoreContext } from "@/context";
 import { ICategoryTableCell, ICategoryTableColumn } from "@/declarations";
 import { Image, Tooltip } from "@nextui-org/react";
 import React from "react";
@@ -24,7 +24,7 @@ const columns: ICategoryTableColumn[] = [
 
 export default function CategoryPage() {
 
-  const { category: { categories }, loadingData, onSelectCategory } = React.useContext( AdminContext );
+  const { category: { categories }, loadingData, onSelectCategory } = React.useContext( StoreContext );
 
   const renderCell = React.useCallback(
     (
@@ -70,7 +70,7 @@ export default function CategoryPage() {
     }, []);
 
   return (
-    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto">
+    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto animate__animated animate__fadeIn animate__fast">
       <h1 className="text-large font-semibold">Categorias</h1>
       <DataTable
         isLoading={ loadingData }

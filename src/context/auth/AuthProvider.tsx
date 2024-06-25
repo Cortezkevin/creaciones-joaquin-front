@@ -29,7 +29,9 @@ const name_INITIAL_STATE: AuthState = {
     email: "",
     firstName: "",
     lastName: "",
+    photoUrl: "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg",
     roles: [],
+    status: "ACTIVO",
     profile: {
       birthDate: "",
       address: undefined,
@@ -47,8 +49,15 @@ export default function AuthProvider({ children }: Props) {
   useEffect(() => {
     const user = JSON.parse(Cookies.get("user") || "null") as IUser;
     setIsLoadingUserData(true);
+    const addressMemory = JSON.parse(Cookies.get("address") || "null") as IAddress ;
+      if(addressMemory){
+        console.log("ADDRESS MEMOREY", addressMemory);
+        dispatch({
+          type: "[Auth] - Update Address",
+          payload: addressMemory
+        });
+      }
     if( user ){
-      console.log("USUARIO", { user })
       if (user !== null && user !== undefined) {
         dispatch({
           type: "[Auth] - Login",
@@ -75,6 +84,7 @@ export default function AuthProvider({ children }: Props) {
 
   const handleLogin = async (email: string, password: string) => {
     const data = await login(email, password);
+    console.log("LOGIN RESPONSE" + data);
     if (data && data.success) {
       dispatch({
         type: "[Auth] - Login",
@@ -85,8 +95,9 @@ export default function AuthProvider({ children }: Props) {
       });
       toast.success(data.message);
       return true;
+    }else {
+      toast.error(data!.message || "Ocurrio un error");
     }
-    toast.error(data!.message + "");
     return false;
   };
 
@@ -113,6 +124,7 @@ export default function AuthProvider({ children }: Props) {
   
   const validateSession = async () => {
     const data = await validateToken(Cookies.get("token") || '');
+    console.log(data);
     if( data && data.success){
       dispatch({
         type: "[Auth] - Login",
@@ -123,9 +135,13 @@ export default function AuthProvider({ children }: Props) {
       })
     }else {
       /* handleLogout(); */
+      if(Cookies.get("token")){
+        toast.error("Sesion expirada");
+      }
       dispatch({
         type: "[Auth] - Logout"
-      })
+      });
+      console.log("SESION CERRADA", state.isLogged);
     }
   }
 
@@ -188,12 +204,12 @@ export default function AuthProvider({ children }: Props) {
     }
   }
 
-  const handleUpdateProfile = async ( profile: IUpdateProfile ) => {
+  const handleUpdateProfile = async ( profile: IUpdateProfile, file?: File ) => {
     dispatch({
       type: "[Auth] - Saving Profile",
       payload: true
     })
-    const response = await profileAPI.update( profile );
+    const response = await profileAPI.update( profile, file );
     if( response?.success ){
       dispatch({
         type: "[Auth] - Update Profile",

@@ -50,7 +50,7 @@ export default function ChangePasswordPage() {
     });
 
   return (
-    <div className='w-full h-[100vh] flex items-center justify-center'>
+    <div className='w-full h-[100vh] flex items-center justify-center animate__animated animate__fadeIn'>
       <form onSubmit={handleSubmit}>
         <Card className="p-6 w-[400px]" isBlurred>
           <CardHeader className="pb-0 pt-2 px-4 flex-col items-center">

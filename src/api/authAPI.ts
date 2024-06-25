@@ -7,21 +7,25 @@ const PATH = "auth/";
 export const login = async (email: string, password: string) => {
   try{
     const { data } = await AxiosInstance.post<ResponseWrapper<JwtToken>>(PATH + "login", { email, password });
-    Cokkies.set('token', data.content.token);
-    Cokkies.set('user',JSON.stringify(data.content.user));
-    const newMemoryCart: ICart = {
-      id: "",
-      user_id : "",
-      cartItems: [],
-      tax: "0.00",
-      discount: "0.00",
-      subtotal: "0.00",
-      shippingCost: "0.00",
-      total: "0.00"
+    if( data.success ){
+      Cokkies.set('token', data.content.token);
+      Cokkies.set('user',JSON.stringify(data.content.user));
+      const newMemoryCart: ICart = {
+        id: "",
+        user_id : "",
+        cartItems: [],
+        tax: "0.00",
+        discount: "0.00",
+        subtotal: "0.00",
+        shippingCost: "0.00",
+        total: "0.00"
+      }
+      Cokkies.set("cart", JSON.stringify(newMemoryCart));
+      Cokkies.remove("address");
+      return data;
+    }else {
+      return data;
     }
-    Cokkies.set("cart", JSON.stringify(newMemoryCart));
-    Cokkies.remove("address");
-    return data;
   }catch(e){
     if(isAxiosError(e)){
       if( e.response?.status === 404){
@@ -102,8 +106,8 @@ export const validateToken = async ( token: string  ) => {
     }else {
       Cokkies.remove("token");
       Cokkies.remove("user");
+      return data;
     }
-    return null;
   }catch(e){
     Cokkies.remove("token");
     Cokkies.remove("user");

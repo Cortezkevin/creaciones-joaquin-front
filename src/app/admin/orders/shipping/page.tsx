@@ -1,6 +1,6 @@
 "use client";
 import { orderAPI } from "@/api";
-import { AdminContext } from "@/context/admin";
+import { OrderContext } from "@/context";
 import { AuthContext } from "@/context/auth";
 import {
   IShippingOrder,
@@ -73,7 +73,7 @@ export default function ShippingOrdersPage() {
   const router = useRouter();
 
   const { user, validateSession } = React.useContext(AuthContext);
-  const { loadOrders } = React.useContext(AdminContext);
+  const { loadOrders } = React.useContext(OrderContext);
 
   const [shippingOrders, setShippingOrders] = React.useState<IShippingOrder[]>(
     []
@@ -260,7 +260,7 @@ export default function ShippingOrdersPage() {
   };
 
   return (
-    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto">
+    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto animate__animated animate__fadeIn animate__fast">
       <h1 className="text-large font-semibold">
         Pedidos Pendientes para Entregar
       </h1>

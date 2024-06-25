@@ -1,3 +1,4 @@
+import { Footer } from "@/components/Footer";
 import { NavbarUI } from "@/components/NavbarUI";
 
 export default function CartLayout({
@@ -9,6 +10,7 @@ export default function CartLayout({
     <main >
       <NavbarUI />
       { children }
+      <Footer />
     </main>
   );
 }

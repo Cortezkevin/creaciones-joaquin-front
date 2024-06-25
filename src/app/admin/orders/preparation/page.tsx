@@ -1,6 +1,6 @@
 "use client";
 import { orderAPI } from "@/api";
-import { AdminContext } from "@/context/admin";
+import { OrderContext } from "@/context/admin";
 import { AuthContext } from "@/context/auth";
 import {
   IPreparationOrder,
@@ -61,7 +61,7 @@ export default function PreparationOrdersPage() {
   const router = useRouter();
 
   const { user, isAdmin, validateSession } = React.useContext(AuthContext);
-  const { loadOrders } = React.useContext(AdminContext);
+  const { loadOrders } = React.useContext(OrderContext);
 
   const [preparationOrders, setPreparationOrders] = React.useState<
     IPreparationOrder[]
@@ -234,7 +234,7 @@ export default function PreparationOrdersPage() {
   };
 
   return (
-    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto">
+    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto animate__animated animate__fadeIn animate__fast">
       <h1 className="text-large font-semibold">
         Pedidos Pendientes para Preparar
       </h1>

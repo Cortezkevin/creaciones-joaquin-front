@@ -11,8 +11,8 @@ import { Select, SelectItem } from "@nextui-org/select";
 import { useFormik } from "formik";
 import React from "react";
 import * as yup from "yup";
-import { AdminContext } from "@/context/admin";
 import { CarrierStatus } from "@/declarations/model/carrier";
+import { EmployeeContext, StoreContext } from "@/context";
 
 type Props = {
   handleOpenModal: (isOpen: boolean) => void;
@@ -50,10 +50,13 @@ export function CarrierModal({ handleOpenModal, isOpen }: Props) {
 
   const {
     carrier: { selected, loading },
-    user: { users },
     onCreateCarrier,
     onSelectCarrier
-  } = React.useContext(AdminContext);
+  } = React.useContext(EmployeeContext);
+
+  const {
+    user: { users }
+  } = React.useContext(StoreContext);
 
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
 

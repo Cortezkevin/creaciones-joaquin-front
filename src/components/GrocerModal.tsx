@@ -1,5 +1,4 @@
 import { Button } from "@nextui-org/button";
-import { Input } from "@nextui-org/input";
 import {
   Modal,
   ModalContent,
@@ -11,7 +10,7 @@ import { Select, SelectItem } from "@nextui-org/select";
 import { useFormik } from "formik";
 import React from "react";
 import * as yup from "yup";
-import { AdminContext } from "@/context/admin";
+import {  EmployeeContext, StoreContext } from "@/context/admin";
 
 type Props = {
   handleOpenModal: (isOpen: boolean) => void;
@@ -30,10 +29,14 @@ export function GrocerModal({ handleOpenModal, isOpen }: Props) {
 
   const {
     grocer: { selected, loading },
-    user: { users },
     onCreateGrocer,
     onSelectGrocer
-  } = React.useContext(AdminContext);
+  } = React.useContext(EmployeeContext);
+
+  const {
+    user: { users }
+  } = React.useContext(StoreContext);
+
 
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
 

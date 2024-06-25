@@ -124,7 +124,7 @@ export const NavbarUI = () => {
                   as="button"
                   avatarProps={{
                     name: user.firstName,
-                    //src: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+                    src: user.photoUrl !== "" ? user.photoUrl : undefined,
                   }}
                   name={undefined}
                   className="transition-transform"
@@ -135,7 +135,7 @@ export const NavbarUI = () => {
                   <User
                     avatarProps={{
                       name: user.firstName,
-                      //src: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+                      src: user.photoUrl !== "" ? user.photoUrl : undefined,
                     }}
                     name={user.firstName + " " + user.lastName}
                     description={user.email}

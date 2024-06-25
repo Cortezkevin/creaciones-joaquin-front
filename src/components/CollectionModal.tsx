@@ -17,7 +17,7 @@ import { useFormik } from "formik";
 import React from "react";
 import * as yup from "yup";
 import { InputImage } from "./InputImage";
-import { AdminContext } from "@/context/admin";
+import { StoreContext } from "@/context";
 
 type Props = {
   handleOpenModal: (isOpen: boolean) => void;
@@ -42,7 +42,7 @@ export function CollectionModal({ handleOpenModal, isOpen }: Props) {
     collection: { selected, loading },
     onCreateOrEditCollection,
     onSelectCollection
-  } = React.useContext(AdminContext);
+  } = React.useContext(StoreContext);
 
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
 

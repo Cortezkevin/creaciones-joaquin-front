@@ -2,7 +2,7 @@
 
 import { DataTable, DataTableModalProps } from "@/components/DataTable";
 import { GrocerModal } from "@/components/GrocerModal";
-import { AdminContext } from "@/context/admin";
+import { EmployeeContext } from "@/context/admin";
 import { AuthContext } from "@/context/auth";
 import { GrocerStatus } from "@/declarations/model/grocer";
 import { IGrocerTableCell, IGrocerTableColumn } from "@/declarations/table/grocer";
@@ -34,7 +34,7 @@ const columns: IGrocerTableColumn[] = [
 
 export default function CarrierPage() {
 
-  const { grocer: { grocers }, loadingData, onSelectGrocer, loadGrocers } = React.useContext(AdminContext);
+  const { grocer: { grocers }, loadingData, onSelectGrocer, loadGrocers } = React.useContext(EmployeeContext);
   const { isAdmin } = useContext( AuthContext );
 
   const renderCell = React.useCallback(
@@ -119,7 +119,7 @@ export default function CarrierPage() {
   },[]);
 
   return (
-    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto">
+    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto animate__animated animate__fadeIn animate__fast">
       <h1 className="text-large font-semibold">Almaceneros</h1>
       <DataTable
         isLoading={ loadingData }
@@ -127,6 +127,7 @@ export default function CarrierPage() {
         typeName="almacenero"
         filterBy="fullName"
         data={grocers}
+        showCreateButton={ isAdmin }
         columns={columns}
         modal={GrocerModal}
       />

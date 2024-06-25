@@ -1,6 +1,4 @@
 "use client";
-import { Button } from "@nextui-org/button";
-import { Badge } from "@nextui-org/badge";
 import { usePathname, useRouter } from "next/navigation";
 import { Listbox, ListboxSection, ListboxItem } from "@nextui-org/listbox";
 import {
@@ -26,9 +24,13 @@ export const AdminMenu = () => {
     router.replace("/auth/login");
   };
 
+  const handleProfile = () => {
+    router.push("/profile");
+  };
+
   return (
-    <div className="h-[100vh] w-[280px] bg-white border p-4 flex flex-col gap-4 select-none">
-      <div className="flex justify-center items-center">
+    <div className="h-[100vh] w-[280px] bg-white border p-4 flex flex-col gap-4 select-none animate__animated animate__fadeInLeft animate__slow overflow-auto">
+      <div className="flex justify-center items-center animate__animated animate__fadeInDown animate__slow ">
         <Image
           src="/LOGO.jpeg"
           alt="Creaciones joaquin"
@@ -63,17 +65,17 @@ export const AdminMenu = () => {
                     : "danger"
                   : undefined,
                 name: user.firstName,
+                src: user.photoUrl !== "" ? user.photoUrl : undefined,
+                size: "md",
               }}
-              className="transition-transform w-full"
+              className="transition-transform w-full animate__animated animate__fadeInLeft animate__slow"
               description={
                 <p className="text-xs">
-                  { 
-                  user.roles.includes("ROLE_ADMIN") 
-                  ? "Administrador"
-                  : user.roles.includes("ROLE_WAREHOUSE") 
-                  ? `Almacenero`
-                  : `Repartidor`
-                  }
+                  {user.roles.includes("ROLE_ADMIN")
+                    ? "Administrador"
+                    : user.roles.includes("ROLE_WAREHOUSE")
+                    ? `Almacenero`
+                    : `Repartidor`}
                 </p>
               }
               name={user.firstName + " " + user.lastName}
@@ -83,10 +85,11 @@ export const AdminMenu = () => {
             <DropdownItem
               key="Estado actual"
               isReadOnly
-              className="text-center font-semibold"
+              className="text-center font-semibold "
             >
               <p className="font-semibold">
-                { user.roleExtraData && user.roleExtraData.status.replaceAll("_", " ") }
+                {user.roleExtraData &&
+                  user.roleExtraData.status.replaceAll("_", " ")}
               </p>
             </DropdownItem>
             <DropdownItem
@@ -120,7 +123,9 @@ export const AdminMenu = () => {
                 </div>
               </div>
             </DropdownItem>
-            <DropdownItem key="MiPerfil">Mi perfil</DropdownItem>
+            <DropdownItem key="MiPerfil" onClick={handleProfile}>
+              Mi perfil
+            </DropdownItem>
             <DropdownItem key="logout" color="danger" onClick={handleLogout}>
               Cerrar Sesion
             </DropdownItem>
@@ -129,12 +134,13 @@ export const AdminMenu = () => {
       </div>
       <Divider />
       <div>
-        <div className="w-full max-w-[260px] px-1 rounded-small">
+        <div className="w-full max-w-[260px] px-1 rounded-small animate__animated animate__fadeInLeft animate__slow">
           <Listbox variant="flat" aria-label="Listbox menu with sections">
             <ListboxSection title="Tienda" showDivider>
               <ListboxItem
                 key="Home"
                 shouldHighlightOnFocus
+                textValue="Home"
                 className="text-slate-500"
                 startContent={<i className="fa-solid fa-shop"></i>}
               >
@@ -143,10 +149,11 @@ export const AdminMenu = () => {
                 </NextLink>
               </ListboxItem>
             </ListboxSection>
-           {/*  <ListboxSection title="Analiticas" showDivider>
+            <ListboxSection title="Analiticas" showDivider>
               <ListboxItem
                 key="Dashboard"
                 shouldHighlightOnFocus
+                textValue="Dashboard"
                 className="text-slate-500"
                 startContent={<i className="fa-solid fa-chart-line"></i>}
               >
@@ -154,12 +161,15 @@ export const AdminMenu = () => {
                   <Link href={"#"}>Dashboard</Link>
                 </NextLink>
               </ListboxItem>
-            </ListboxSection> */}
+            </ListboxSection>
             <ListboxSection title="Mantenimiento" showDivider>
               <ListboxItem
                 key="Usuarios"
                 shouldHighlightOnFocus
-                className={`text-slate-600 ${user.roles.includes("ROLE_ADMIN") ? "" : "hidden"}`}
+                textValue="Usuarios"
+                className={`text-slate-600 ${
+                  user.roles.includes("ROLE_ADMIN") ? "" : "hidden"
+                }`}
                 startContent={<i className="fa-solid fa-users"></i>}
               >
                 <NextLink passHref legacyBehavior href={"/admin/users"}>
@@ -171,7 +181,10 @@ export const AdminMenu = () => {
               <ListboxItem
                 key="Categorias"
                 shouldHighlightOnFocus
-                className={`text-slate-600 ${user.roles.includes("ROLE_ADMIN") ? "" : "hidden"}`}
+                textValue="Categorias"
+                className={`text-slate-600 ${
+                  user.roles.includes("ROLE_ADMIN") ? "" : "hidden"
+                }`}
                 startContent={<i className="fa-solid fa-layer-group"></i>}
               >
                 <NextLink passHref legacyBehavior href={"/admin/category"}>
@@ -183,7 +196,10 @@ export const AdminMenu = () => {
               <ListboxItem
                 key="SubCategorias"
                 shouldHighlightOnFocus
-                className={`text-slate-600 ${user.roles.includes("ROLE_ADMIN") ? "" : "hidden"}`}
+                textValue="SubCategorias"
+                className={`text-slate-600 ${
+                  user.roles.includes("ROLE_ADMIN") ? "" : "hidden"
+                }`}
                 startContent={<i className="fa-solid fa-list"></i>}
               >
                 <NextLink passHref legacyBehavior href={"/admin/sub-category"}>
@@ -195,7 +211,10 @@ export const AdminMenu = () => {
               <ListboxItem
                 key="Colecciones"
                 shouldHighlightOnFocus
-                className={`text-slate-600 ${user.roles.includes("ROLE_ADMIN") ? "" : "hidden"}`}
+                textValue="Colecciones"
+                className={`text-slate-600 ${
+                  user.roles.includes("ROLE_ADMIN") ? "" : "hidden"
+                }`}
                 startContent={<i className="fa-solid fa-object-group"></i>}
               >
                 <NextLink passHref legacyBehavior href={"/admin/collection"}>
@@ -207,10 +226,13 @@ export const AdminMenu = () => {
               <ListboxItem
                 key="Productos"
                 shouldHighlightOnFocus
-                className={`text-slate-600 ${user.roles.includes("ROLE_ADMIN") ? "" : "hidden"}`}
+                textValue="Productos"
+                className={`text-slate-600 ${
+                  user.roles.includes("ROLE_ADMIN") ? "" : "hidden"
+                }`}
                 startContent={<i className="fa-solid fa-couch"></i>}
               >
-                <NextLink passHref legacyBehavior href={"/admin/product"} >
+                <NextLink passHref legacyBehavior href={"/admin/product"}>
                   <Link href={""}>
                     <p>Productos</p>
                   </Link>
@@ -219,6 +241,7 @@ export const AdminMenu = () => {
               <ListboxItem
                 key="Pedidos"
                 shouldHighlightOnFocus
+                textValue="Pedidos"
                 className="text-slate-600"
                 startContent={<i className="fa-solid fa-money-bill"></i>}
               >
@@ -228,9 +251,12 @@ export const AdminMenu = () => {
                   </Link>
                 </NextLink>
               </ListboxItem>
+            </ListboxSection>
+            <ListboxSection title="Empleados" showDivider>
               <ListboxItem
-                key="Repartidor"
+                key="Repartidores"
                 shouldHighlightOnFocus
+                textValue="Repartidores"
                 className="text-slate-600"
                 startContent={<i className="fa-solid fa-truck"></i>}
               >
@@ -243,14 +269,105 @@ export const AdminMenu = () => {
               <ListboxItem
                 key="Almaceneros"
                 shouldHighlightOnFocus
-                className={`text-slate-600 ${ pathname == "/admin/grocer" ? "active" : ""}`}
-                startContent={
-                  <i className=" fa-solid fa-boxes-stacked"></i>
-                }
+                textValue="Almaceneros"
+                className={`text-slate-600 ${
+                  pathname == "/admin/grocer" ? "active" : ""
+                }`}
+                startContent={<i className=" fa-solid fa-boxes-stacked"></i>}
               >
                 <NextLink passHref legacyBehavior href={"/admin/grocer"}>
                   <Link href={""}>
                     <p>Almaceneros</p>
+                  </Link>
+                </NextLink>
+              </ListboxItem>
+              <ListboxItem
+                key="Operadores"
+                shouldHighlightOnFocus
+                textValue="Operadores"
+                className="text-slate-600"
+                startContent={<i className="fa-solid fa-hands"></i>}
+              >
+                <NextLink passHref legacyBehavior href={"/admin/operator"}>
+                  <Link href={""}>
+                    <p>Operadores</p>
+                  </Link>
+                </NextLink>
+              </ListboxItem>
+            </ListboxSection>
+            <ListboxSection title="Compras" showDivider className={`text-slate-600 ${
+                  user.roles.includes("ROLE_ADMIN") ? "" : user.roles.includes("ROLE_WAREHOUSE") ? "" : "hidden"
+                }`}>
+              <ListboxItem
+                key="Proveedores"
+                shouldHighlightOnFocus
+                textValue="Proveedores"
+                className="text-slate-600"
+                startContent={<i className="fa-solid fa-parachute-box"></i>}
+              >
+                <NextLink passHref legacyBehavior href={"/admin/supplier"}>
+                  <Link href={""}>
+                    <p>Proveedores</p>
+                  </Link>
+                </NextLink>
+              </ListboxItem>
+              <ListboxItem
+                key="Materia Prima"
+                shouldHighlightOnFocus
+                textValue="Materia Prima"
+                className="text-slate-600"
+                startContent={
+                  <i className="fa-solid fa-screwdriver-wrench"></i>
+                }
+              >
+                <NextLink passHref legacyBehavior href={"/admin/material"}>
+                  <Link href={""}>
+                    <p>Materiales</p>
+                  </Link>
+                </NextLink>
+              </ListboxItem>
+              <ListboxItem
+                key="Ordenes de Compra"
+                shouldHighlightOnFocus
+                textValue="Ordenes de Compra"
+                className="text-slate-600"
+                startContent={<i className="fa-solid fa-basket-shopping"></i>}
+              >
+                <NextLink passHref legacyBehavior href={"/admin/purchase"}>
+                  <Link href={""}>
+                    <p>Ordenes de Compra</p>
+                  </Link>
+                </NextLink>
+              </ListboxItem>
+            </ListboxSection>
+            <ListboxSection title="Almacen" showDivider className={`text-slate-600 ${
+                  user.roles.includes("ROLE_ADMIN") ? "" : user.roles.includes("ROLE_WAREHOUSE") ? "" : "hidden"
+                }`}>
+              <ListboxItem
+                key="Almacenes"
+                shouldHighlightOnFocus
+                textValue="Almacenes"
+                className="text-slate-600"
+                startContent={<i className="fa-solid fa-warehouse"></i>}
+              >
+                <NextLink passHref legacyBehavior href={"/admin/warehouse"}>
+                  <Link href={""}>
+                    <p>Almacenes</p>
+                  </Link>
+                </NextLink>
+              </ListboxItem>
+              <ListboxItem
+                key="Movimientos"
+                shouldHighlightOnFocus
+                textValue="Movimientos"
+                className="text-slate-600"
+                startContent={
+                  <i className="fa-solid fa-cart-flatbed"></i>
+                }
+              >
+                <NextLink passHref legacyBehavior href={"/admin/movements"}>
+                  <Link href={""}>
+                    <p>Movimientos</p>
                   </Link>
                 </NextLink>
               </ListboxItem>

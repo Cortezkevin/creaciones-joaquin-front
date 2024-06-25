@@ -5,7 +5,6 @@ import Script from "next/script";
 import { NextUIProvider } from "@nextui-org/system";
 import AppProviders from "@/context/AppProviders";
 import { Toaster } from "react-hot-toast";
-import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Creaciones Joaquin",
@@ -19,17 +18,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+        />
+      </head>
       <body className={poppins.className}>
-        <div className="w-full h-[100vh] flex flex-col justify-between bg-slate-100">
-          <div>
-            <AppProviders>
-              <NextUIProvider>
-                {children}
-                <Toaster />
-              </NextUIProvider>
-            </AppProviders>
-          </div>
-          <Footer />
+        <div className="w-full h-full bg-slate-100">
+          <AppProviders>
+            <NextUIProvider>
+              {children}
+              <Toaster />
+            </NextUIProvider>
+          </AppProviders>
         </div>
         <Script
           src="https://kit.fontawesome.com/40a42e87f5.js"

@@ -1,7 +1,7 @@
 "use client";
 import { DataTable, DataTableModalProps } from "@/components/DataTable";
 import { UserModal } from "@/components/UserModal";
-import { AdminContext } from "@/context/admin";
+import { OrderContext } from "@/context/admin";
 import { AuthContext } from "@/context/auth";
 import {
   IOrderTableCell,
@@ -62,7 +62,7 @@ export default function OrdersPage() {
   const {
     order: { orders },
     loadOrders
-  } = React.useContext(AdminContext);
+  } = React.useContext(OrderContext);
 
   const renderCell = React.useCallback(
     (
@@ -191,7 +191,7 @@ export default function OrdersPage() {
   };
 
   return (
-    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto">
+    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto animate__animated animate__fadeIn animate__fast">
       <div className="flex justify-between items-center">
         <h1 className="text-large font-semibold">Pedidos</h1>
         {user.roles.includes("ROLE_WAREHOUSE") ? (
@@ -237,7 +237,7 @@ export default function OrdersPage() {
         typeName={"Pedido"}
         modal={UserModal}
         renderCell={renderCell}
-        showHeader={false}
+        showCreateButton={false}
       />
     </div>
   );

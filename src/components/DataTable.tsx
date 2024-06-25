@@ -22,7 +22,7 @@ type Props<T> = {
   isLoading: boolean;
   filterBy: keyof T;
   columns: { key: string; title: string }[];
-  showHeader?: boolean;
+  showCreateButton?: boolean;
   renderCell: (
     item: T,
     columnKey: keyof T | "actions",
@@ -44,7 +44,7 @@ export function DataTable<T>({
   columns,
   modal,
   isLoading,
-  showHeader = true,
+  showCreateButton = true,
 }: Props<T>) {
   const [itemSelected, setItemSelected] = useState<T | undefined>(undefined);
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -124,13 +124,13 @@ export function DataTable<T>({
           <Input
             isClearable
             className="w-full sm:max-w-[44%]"
-            placeholder="Buscar por nombre..."
+            placeholder={`Buscar por ${filterBy.toString()}...`}
             startContent={<i className="fa-solid fa-magnifying-glass"></i>}
             value={filterValue}
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
-          {showHeader && (
+          {showCreateButton && (
             <div className="flex gap-3">
               <Button
                 color="primary"

@@ -1,5 +1,5 @@
 import { AdminMenu } from "@/components/AdminMenu";
-import { AdminProvider } from "@/context/admin";
+import AdminProviders from "@/context/AppProviders";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,13 +13,13 @@ export default function AdminLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <AdminProvider>
-      <div className="flex overflow-hidden">
+    <AdminProviders>
+      <div className="flex bg-slate-200 h-[100vh]">
         <AdminMenu />
-        <div className="w-[calc(100vw-280px)]">
+        <div className="w-[calc(100vw-280px)] animate__animated animate__fadeIn animate__slower overflow-auto">
           { children }
         </div>
       </div>
-    </AdminProvider>
+    </AdminProviders>
   );
 }

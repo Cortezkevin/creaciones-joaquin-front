@@ -89,7 +89,7 @@ const validateSession = async (req: NextRequest) => {
 
 const validateAuth = async (req: NextRequest) => {
   const session = await validateToken(req.cookies.get("token")?.value + "");
-  if (session) {
+  if (session && session.success ) {
     const url = req.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);

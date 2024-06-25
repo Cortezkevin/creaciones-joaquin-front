@@ -18,6 +18,6 @@ export interface AuthProps {
   onLogout: () => void;
   onUpdateAddress: ( address: IAddress ) => void;
   onUpdateAddressMemory: ( address: IAddress ) => void;
-  onUpdateProfile: ( profile: IUpdateProfile ) => Promise<boolean>;
+  onUpdateProfile: ( profile: IUpdateProfile, file?: File ) => Promise<boolean>;
 }
 export const AuthContext = createContext({} as AuthProps);

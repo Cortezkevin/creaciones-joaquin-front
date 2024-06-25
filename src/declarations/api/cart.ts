@@ -12,7 +12,8 @@ export type RemoveItem = {
 }
 
 export type MemoryCart = {
-  itemList: MemoryItem[]
+  itemList: MemoryItem[];
+  shippingCost: string;
 }
 
 export type MemoryItem = {

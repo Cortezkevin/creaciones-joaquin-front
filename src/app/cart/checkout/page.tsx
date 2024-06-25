@@ -59,6 +59,7 @@ export default function Checkout() {
         firstName: user.firstName,
         lastName: user.lastName,
         phone: extraData.phone,
+        email: user.email,
       });
       if( result ){
         router.push("/cart/checkout/confirm");
@@ -67,7 +68,7 @@ export default function Checkout() {
   };
 
   React.useEffect(() => {
-    if( user ){
+    if( user && user.profile.phone ){
       if( user.profile.phone.length > 0 ){
         setIsValidPhone( true );
       }

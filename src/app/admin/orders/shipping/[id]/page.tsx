@@ -10,7 +10,7 @@ import React from "react";
 import { OrderDetail } from "@/components/OrderDetail";
 import { AuthContext } from "@/context/auth";
 import toast from "react-hot-toast";
-import { AdminContext } from "@/context/admin";
+import { OrderContext } from "@/context/admin";
 import { Utils } from "@/utils";
 
 export default function OrderShippingPage({
@@ -19,7 +19,7 @@ export default function OrderShippingPage({
   params: { id: string };
 }) {
   const { validateSession } = React.useContext(AuthContext);
-  const { loadOrders } = React.useContext(AdminContext);
+  const { loadOrders } = React.useContext(OrderContext);
 
   const [orderShipping, setOrderShipping] = React.useState<
     IDetailedShippingOrder | undefined

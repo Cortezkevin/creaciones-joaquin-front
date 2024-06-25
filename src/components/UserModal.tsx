@@ -13,9 +13,9 @@ import React from "react";
 import * as yup from "yup";
 import { Select, SelectItem } from "@nextui-org/select";
 import { userAPI } from "@/api";
-import { IRole } from "@/declarations";
-import { AdminContext } from "@/context/admin";
+import { IRole, Status } from "@/declarations";
 import { Chip } from "@nextui-org/react";
+import { StoreContext } from "@/context";
 
 type Props = {
   handleOpenModal: (isOpen: boolean) => void;
@@ -26,8 +26,20 @@ type UserFormInputs = {
   firstName: string;
   lastName: string;
   email: string;
+  status: Status;
   roles: string[];
 };
+
+const statusArray = [
+  {
+    id: "ACTIVO",
+    value: "ACTIVO",
+  },
+  {
+    id: "INACTIVO",
+    value: "INACTIVO",
+  },
+];
 
 const schema = yup.object().shape({
   firstName: yup.string().required("Campo requerido"),
@@ -36,6 +48,7 @@ const schema = yup.object().shape({
     .string()
     .email("Ingrese un email valido")
     .required("Campo requerido"),
+  status: yup.string().required("Campo requerido"),
   roles: yup
     .array()
     .of(yup.string())
@@ -48,7 +61,8 @@ export function UserModal({ handleOpenModal, isOpen }: Props) {
     user: { selected, loading },
     onSelectUser,
     onEditUser,
-  } = React.useContext(AdminContext);
+  } = React.useContext(StoreContext);
+  
   const [roles, setRoles] = React.useState<IRole[]>([]);
 
   React.useEffect(() => {
@@ -83,6 +97,7 @@ export function UserModal({ handleOpenModal, isOpen }: Props) {
       lastName: "",
       email: "",
       roles: [""],
+      status: "ACTIVO",
     },
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
@@ -97,6 +112,7 @@ export function UserModal({ handleOpenModal, isOpen }: Props) {
         lastName: selected ? selected?.lastName : "",
         roles: selected ? selected.roles : [],
         email: selected ? selected.email : "",
+        status: selected ? selected.status : "ACTIVO",
       },
     });
   }, [selected]);
@@ -109,6 +125,7 @@ export function UserModal({ handleOpenModal, isOpen }: Props) {
           lastName: values.lastName,
           email: values.email,
           roles: values.roles,
+          status: values.status,
           userId: selected.id,
         },
         () => {
@@ -121,10 +138,15 @@ export function UserModal({ handleOpenModal, isOpen }: Props) {
 
   const handleClose = () => {
     resetForm();
-  }
+  };
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={handleOpenModal} placement="center" onClose={handleClose}>
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={handleOpenModal}
+      placement="center"
+      onClose={handleClose}
+    >
       <ModalContent>
         {(onClose) => (
           <>
@@ -194,12 +216,39 @@ export function UserModal({ handleOpenModal, isOpen }: Props) {
                   </SelectItem>
                 ))}
               </Select>
+              <Select
+                isRequired
+                items={ statusArray }
+                label="Estado"
+                variant="bordered"
+                onChange={handleChange("status")}
+                onBlur={handleBlur("status")}
+                value={values.status}
+                isInvalid={!!errors.status && touched.status}
+                errorMessage={touched.status && errors.status}
+                defaultSelectedKeys={selected && ([selected.status] as any)}
+              >
+                {(s) => (
+                  <SelectItem key={s.id} textValue={s.value}>
+                    <Chip
+                      variant="flat"
+                      color={s.value === "ACTIVO" ? "success" : "danger"}
+                    >
+                      {s.value}
+                    </Chip>
+                  </SelectItem>
+                )}
+              </Select>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" variant="flat" onPress={() => {
-                resetForm();
-                onClose();
-              }}>
+              <Button
+                color="danger"
+                variant="flat"
+                onPress={() => {
+                  resetForm();
+                  onClose();
+                }}
+              >
                 Cerrar
               </Button>
               <Button

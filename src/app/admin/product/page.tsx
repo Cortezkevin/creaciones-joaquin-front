@@ -2,7 +2,7 @@
 
 import { DataTable, DataTableModalProps } from "@/components/DataTable";
 import { ProductModal } from "@/components/ProductModal";
-import { AdminContext } from "@/context/admin";
+import { StoreContext } from "@/context/admin";
 import { IProductTableCell, IProductTableColumn } from "@/declarations";
 import { Image } from "@nextui-org/image";
 import { Tooltip } from "@nextui-org/react";
@@ -16,6 +16,14 @@ const columns: IProductTableColumn[] = [
   {
     key: "description",
     title: "Descripcion",
+  },
+  {
+    key: "type",
+    title: "Tipo de Producto"
+  },
+  {
+    key: "supplier",
+    title: "Proveedor"
   },
   {
     key: "subCategory",
@@ -41,7 +49,7 @@ const columns: IProductTableColumn[] = [
 
 export default function ProductPage() {
 
-  const { product: { products }, loadingData, onSelectProduct } = React.useContext(AdminContext);
+  const { product: { products }, loadingData, onSelectProduct } = React.useContext(StoreContext);
 
   const renderCell = React.useCallback(
     (
@@ -70,6 +78,18 @@ export default function ProductPage() {
           return (
             <div className="flex flex-col">
               <p className="text-bold text-small capitalize">{cellValue}</p>
+            </div>
+          );
+        case "type":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">{cellValue}</p>
+            </div>
+          );
+        case "supplier":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">{!cellValue ? "No aplica" : cellValue}</p>
             </div>
           );
         case "subCategory":
@@ -130,7 +150,7 @@ export default function ProductPage() {
   );
 
   return (
-    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto">
+    <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto animate__animated animate__fadeIn animate__fast">
       <h1 className="text-large font-semibold">Productos</h1>
       <DataTable
         isLoading={ loadingData }

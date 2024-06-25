@@ -12,7 +12,7 @@ import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import * as yup from "yup";
 import { InputImage } from "./InputImage";
-import { AdminContext } from "@/context/admin";
+import { StoreContext } from "@/context/admin";
 
 type Props = {
   handleOpenModal: (isOpen: boolean) => void;
@@ -31,7 +31,7 @@ const schema = yup.object().shape({
 
 export function CategoryModal({ handleOpenModal, isOpen }: Props) {
 
-  const { category: { selected, loading }, onCreateOrEditCategory, onSelectCategory } =  React.useContext( AdminContext );
+  const { category: { selected, loading }, onCreateOrEditCategory, onSelectCategory } =  React.useContext( StoreContext );
 
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
 

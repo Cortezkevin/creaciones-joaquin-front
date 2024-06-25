@@ -1,5 +1,5 @@
 "use client";
-import { IAddress, ILoginAction, IUpdateProfile } from '@/declarations';
+import { IAddress, ILoginAction, IUpdateProfile, IUser } from '@/declarations';
 import { AuthState } from './'
 
 type AuthAction = 
@@ -21,7 +21,7 @@ type AuthAction =
 } |
 {
   type: '[Auth] - Update Profile',
-  payload: IUpdateProfile
+  payload: IUser
 } |
 {
   type: "[Auth] - Logout"
@@ -74,16 +74,17 @@ export const AuthReducer = ( state: AuthState, action: AuthAction ): AuthState =
     case '[Auth] - Update Profile':
       return {
         ...state,
-        user: {
+        user: action.payload/* {
           ...state.user,
           firstName: action.payload.firstName,
           lastName: action.payload.lastName,
+          photoUrl: action.payload.photoUrl,
           profile: {
             ...state.user.profile,
-            phone: action.payload.phone,
-            birthDate: action.payload.birthdate
+            phone: action.payload.profile.phone,
+            birthDate: action.payload.profile.birthDate
           }
-        }
+        } */
       }
     case '[Auth] - Logout':
       return {
@@ -95,7 +96,9 @@ export const AuthReducer = ( state: AuthState, action: AuthAction ): AuthState =
           email: "",
           firstName: "",
           lastName: "",
+          photoUrl: "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg",
           roles: [],
+          status: "ACTIVO",
           profile: {
             birthDate: "",
             address: undefined,
