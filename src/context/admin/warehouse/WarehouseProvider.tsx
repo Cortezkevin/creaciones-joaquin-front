@@ -6,6 +6,7 @@ import { WarehouseContext, WarehouseReducer } from "./";
 import {  movementsAPI, warehouseAPI } from "@/api";
 import toast from "react-hot-toast";
 import { IMovements, IWarehouse } from "@/declarations/model/warehouse";
+import { CreateInventoryMovement, UpdateInventoryMovement } from "@/declarations";
 
 interface Props {
   children: ReactElement | ReactElement[];
@@ -19,6 +20,7 @@ export interface WarehouseState {
   movement: {
     movements: IMovements[];
     loading: boolean;
+    selected: IMovements | null;
   };
   loadingData: boolean;
 }
@@ -31,7 +33,8 @@ const Warehouse_INITIAL_STATE: WarehouseState = {
   },
   movement: {
     movements: [],
-    loading: false
+    loading: false,
+    selected: null
   },
   loadingData: false,
 };
@@ -81,6 +84,13 @@ export const WarehouseProvider: FC<Props> = ({ children }) => {
     });
   };
 
+  const onSelectMovement = (movement: IMovements | null) => {
+    dispatch({
+      type: "[Warehouse] - Select Movement",
+      payload: movement,
+    });
+  };
+
   const onCreateOrEditWarehouse = async (
     type: "Edit" | "Create",
     id: string | null,
@@ -119,12 +129,59 @@ export const WarehouseProvider: FC<Props> = ({ children }) => {
     onTerminate();
   };
 
+  const onCreateOrEditMovement = async (
+    type: "Edit" | "Create",
+    id: string | null,
+    movement: CreateInventoryMovement | UpdateInventoryMovement,
+    onTerminate: () => void
+  ) => {
+    dispatch({
+      type: "[Warehouse] - Saving Movement",
+    });
+
+    if (type === "Edit" && id ) {
+      const response = await movementsAPI.update({...movement as UpdateInventoryMovement, id});
+      if (response?.success) {
+        dispatch({
+          type: "[Warehouse] - Movement Updated",
+          payload: response.content,
+        });
+        toast.success(response.message);
+        onTerminate();
+        return;
+      }
+      toast.error(response!.message);
+    } else {
+      const response = await movementsAPI.create(movement as CreateInventoryMovement);
+      if (response?.success) {
+        (response.content as IMovements[]).forEach( i => {
+          dispatch({
+            type: "[Warehouse] - Movement Created",
+            payload: i,
+          });
+        })
+/*         dispatch({
+          type: "[Warehouse] - Movement Created",
+          payload: response.content,
+        }); */
+        toast.success(response.message);
+        onTerminate();
+        return;
+      }
+      toast.error(response!.message);
+    }
+    onTerminate();
+  };
+
+
   return (
     <WarehouseContext.Provider
       value={{
         ...state,
         onSelectWarehouse,
+        onSelectMovement,
         onCreateOrEditWarehouse,
+        onCreateOrEditMovement,
         loadWarehouses,
         loadMovements
       }}

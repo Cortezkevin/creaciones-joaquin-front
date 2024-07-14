@@ -170,7 +170,7 @@ export default function Checkout() {
             </div>
           </div>
         </div>
-        <div className="w-[700px] h-[300px] flex flex-col gap-4">
+        <div className="w-[700px] flex flex-col gap-4">
           <div className="flex justify-between items-center">
             <h2 className="font-semibold p-2">Informacion de la compra</h2>
             <Button size="sm" color="secondary" variant="bordered" onClick={() => router.push("/cart")}>

@@ -12,6 +12,7 @@ import { AuthContext } from "@/context/auth";
 import toast from "react-hot-toast";
 import { OrderContext } from "@/context/admin";
 import { Utils } from "@/utils";
+import { useRouter } from "next/navigation";
 
 export default function OrderShippingPage({
   params,
@@ -20,6 +21,7 @@ export default function OrderShippingPage({
 }) {
   const { validateSession } = React.useContext(AuthContext);
   const { loadOrders } = React.useContext(OrderContext);
+  const router = useRouter();
 
   const [orderShipping, setOrderShipping] = React.useState<
     IDetailedShippingOrder | undefined
@@ -45,6 +47,12 @@ export default function OrderShippingPage({
       </div>
     );
   }
+
+  const handleShowGuide = async () => {
+    router.push(
+      `http://localhost:3000/admin/exit-guide/${orderShipping.exitGuideId}`
+    );
+  };
 
   const handleContinueProccess = () => {
     switch (orderShipping.status) {
@@ -241,6 +249,14 @@ export default function OrderShippingPage({
                   value={orderShipping.order.note}
                   isReadOnly
                 />
+                <Button
+                  endContent={<i className="fa-solid fa-file-pdf"></i>}
+                  color="warning"
+                  variant="ghost"
+                  onClick={handleShowGuide}
+                >
+                  Ver Guia
+                </Button>
               </div>
             </div>
           </div>

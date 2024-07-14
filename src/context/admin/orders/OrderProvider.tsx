@@ -4,8 +4,7 @@ import React, { FC, ReactElement } from "react";
 import { OrderContext, OrderReducer } from "./";
 import {
   IOrder,
-  IOrderTableCell,
-  UpdateOrder,
+  IOrderTableCell
 } from "@/declarations";
 import { orderAPI } from "@/api";
 import toast from "react-hot-toast";
@@ -66,13 +65,13 @@ export const OrderProvider: FC<Props> = ({ children }) => {
   };
 
   const onEditOrder = async (
-    order: UpdateOrder,
+    order: any,
     onTerminate: () => void
   ) => {
     dispatch({
       type: "[Order] - Saving Order",
     });
-    const response = await orderAPI.update( order );
+   /*  const response = await orderAPI.update( order );
     if (response?.success) {
       dispatch({
         type: "[Order] - Order Updated",
@@ -82,7 +81,7 @@ export const OrderProvider: FC<Props> = ({ children }) => {
       onTerminate();
       return;
     }
-    toast.error(response!.message);
+    toast.error(response!.message); */
     onTerminate();
   };
 

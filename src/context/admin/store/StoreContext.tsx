@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  CreateUser,
   ICategory,
   ICollection,
   IProduct,
@@ -47,7 +48,7 @@ export interface StoreProps {
   };
 
   loadingData: boolean;
-  
+
   loadUsers: () => void;
 
   onSelectCategory: (category: ICategory | null) => void;
@@ -55,7 +56,7 @@ export interface StoreProps {
   onSelectSubCategory: (subCategory: ISubCategory | null) => void;
   onSelectProduct: (product: IProduct | null) => void;
   onSelectUser: (user: IUsersTableCell | null) => void;
-  
+
   onCreateOrEditCategory: (
     type: "Edit" | "Create",
     id: string | null,
@@ -81,6 +82,10 @@ export interface StoreProps {
     onTerminate: () => void
   ) => void;
 
-  onEditUser: (user: UpdateUser, onTerminate: () => void) => void;
+  onCreateOrEditUser: (
+    type: "Edit" | "Create",
+    user: CreateUser | UpdateUser,
+    onTerminate: () => void
+  ) => void;
 }
 export const StoreContext = createContext({} as StoreProps);

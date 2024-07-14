@@ -7,7 +7,6 @@ import {
   NewPurchaseDetail,
 } from "@/declarations";
 import { Button } from "@nextui-org/button";
-import { Input } from "@nextui-org/input";
 import {
   Modal,
   ModalContent,
@@ -76,12 +75,6 @@ export function PurchaseOrderModal({ handleOpenModal, isOpen }: Props) {
   const [selectedSupplier, setSelectedSupplier] = React.useState<
     ISupplier | undefined
   >();
-
-  /* React.useEffect(() => {
-    if (!isOpen) {
-      onSelectPurchaseOrder(null);
-    }
-  }, [isOpen]); */
 
   const {
     handleChange,
@@ -239,6 +232,18 @@ export function PurchaseOrderModal({ handleOpenModal, isOpen }: Props) {
     setFieldValue("details", values.details.filter(d => d.materialOrProductId !== itemId ), true);
   }
 
+  const stockStatus = (stock: number) => {
+    if( stock === 0 ){
+      return <p className="text-danger">Sin stock</p>
+    }else {
+      if( stock < 3 ){
+        return <p className="text-warning">Bajo stock</p>
+      }else {
+        return <p className="text-success">Buen stock</p>
+      }
+    }
+  }
+
   return (
     <Modal
       isOpen={isOpen}
@@ -284,7 +289,9 @@ export function PurchaseOrderModal({ handleOpenModal, isOpen }: Props) {
                     >
                       {(s) => (
                         <SelectItem key={s.id}>
-                          {s.name + " - " + "CANTIDAD"}
+                          <div className="flex gap-1">
+                            <p>{s.name + " - " + "CANTIDAD"}</p> - { stockStatus( s.stock ) }
+                          </div>
                         </SelectItem>
                       )}
                     </Select>
@@ -331,7 +338,9 @@ export function PurchaseOrderModal({ handleOpenModal, isOpen }: Props) {
                     >
                       {(s) => (
                         <SelectItem key={s.id}>
-                          {s.name + " - " + s.measurementUnit}
+                         <div className="flex gap-1">
+                          <p>{s.name + " - " + s.measurementUnit}</p> - { stockStatus( s.stock ) }
+                         </div>
                         </SelectItem>
                       )}
                     </Select>

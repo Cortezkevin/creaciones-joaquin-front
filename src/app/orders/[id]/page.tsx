@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { OrderDetail } from "@/components/OrderDetail";
 import { OrderDetailSummary } from "@/components/OrderDetailSummary";
 import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
 export default function OrderDetailPage({
   params,
@@ -40,12 +41,21 @@ export default function OrderDetailPage({
     })();
   }, []);
 
-  if (!order)
+  if (!order){
     return (
       <div className="w-[100vw] min-h-[450px] flex items-center justify-center">
         <Spinner label="Cargando..." size="lg" />
       </div>
     );
+  }
+
+  const handleCancelOrder = async () => {
+    const response = await orderAPI.cancel( order.id );
+    if( response?.success ){
+      toast.success( response.message );
+      setOrder({ ...order, status: response.content.status });
+    }
+  }
 
   return (
     <div className="w-[100vw] min-h-[450px] flex items-center justify-center">
@@ -69,9 +79,6 @@ export default function OrderDetailPage({
             </Chip>
           </div>
         </div>
-        {/* <div className="w-full flex p-4 items-center justify-center bg-red-300">
-          STEPPER
-        </div> */}
         <div className="flex gap-6  justify-center min-h-[300px]">
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-4 p-4 shadow-lg rounded-lg w-[800px] bg-white">
@@ -148,6 +155,7 @@ export default function OrderDetailPage({
                   color="danger"
                   size="lg"
                   className="w-full"
+                  onClick={ handleCancelOrder }
                   isDisabled={
                     order.shipping ? (order.shipping.status === "EN_TRANSITO" || order.shipping.status === "ENTREGADO") : false ||
                     order.status !== "PENDIENTE"

@@ -13,8 +13,12 @@ export type IWarehouseTableColumn = {
 export type IMovementsTableCell = {
   id: string;
   type: InventoryMovementType;
+  grocer: string;
+  initialStock: number;
   amount: number;
+  newStock: number;
   date: string;
+  reason: string;
   productOrMaterial: string;
   warehouse: string;
 }

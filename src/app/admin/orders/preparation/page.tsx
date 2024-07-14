@@ -192,7 +192,7 @@ export default function PreparationOrdersPage() {
           <Button
             className="text-white"
             color={`${
-              item.status === "LISTO_PARA_RECOGER" ? "warning" : "primary"
+              item.status === "LISTO_PARA_RECOGER" ? "warning" : item.orderStatus === "ANULADO" ? "danger" : "primary"
             }`}
             onClick={() => {
               if (item.status !== "LISTO_PARA_RECOGER") {
@@ -209,9 +209,11 @@ export default function PreparationOrdersPage() {
               : false
             }
           >
-            {item.status !== "LISTO_PARA_RECOGER"
-              ? "Iniciar Proceso"
-              : "Completado"}
+            {item.status == "LISTO_PARA_RECOGER"
+              ? "Completado"
+              : item.orderStatus === "ANULADO"
+              ? "Anulado"
+              : "Iniciar Proceso"}
           </Button>
         );
       default:

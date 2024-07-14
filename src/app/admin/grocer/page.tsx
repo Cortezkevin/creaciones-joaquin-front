@@ -124,8 +124,8 @@ export default function CarrierPage() {
       <DataTable
         isLoading={ loadingData }
         renderCell={renderCell}
-        typeName="almacenero"
-        filterBy="fullName"
+       emptyMessage="No se encontraron almaceneros"
+        filterBy={{ key: "fullName", text: "Nombre" }}
         data={grocers}
         showCreateButton={ isAdmin }
         columns={columns}

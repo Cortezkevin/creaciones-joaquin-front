@@ -7,9 +7,11 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Selection
 } from "@nextui-org/table";
 import React, { useState } from "react";
 import { Input } from "@nextui-org/input";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/dropdown";
 
 export type DataTableModalProps<T> = {
   openModal: (isOpen: boolean) => void;
@@ -18,9 +20,10 @@ export type DataTableModalProps<T> = {
 
 type Props<T> = {
   data: T[];
-  typeName: String;
+  extraFilterOptions?: { options: string[], field: keyof T };
+  emptyMessage: string;
   isLoading: boolean;
-  filterBy: keyof T;
+  filterBy: { key: keyof T, text: string };
   columns: { key: string; title: string }[];
   showCreateButton?: boolean;
   renderCell: (
@@ -38,7 +41,8 @@ type Props<T> = {
 
 export function DataTable<T>({
   data,
-  typeName,
+  extraFilterOptions,
+  emptyMessage,
   filterBy,
   renderCell,
   columns,
@@ -46,6 +50,7 @@ export function DataTable<T>({
   isLoading,
   showCreateButton = true,
 }: Props<T>) {
+  const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   const [itemSelected, setItemSelected] = useState<T | undefined>(undefined);
   const [modalOpen, setModalOpen] = React.useState(false);
 
@@ -60,12 +65,20 @@ export function DataTable<T>({
 
     if (hasSearchFilter) {
       filteredData = filteredData.filter((d) =>
-        (d[filterBy] + "").toLowerCase().includes(filterValue.toLowerCase())
+        (d[filterBy.key] + "").toLowerCase().includes(filterValue.toLowerCase())
       );
     }
 
+    if( extraFilterOptions ){
+      if (statusFilter !== "all" && Array.from(statusFilter).length !== extraFilterOptions.options.length) {
+        filteredData = filteredData.filter((d) =>
+          Array.from(statusFilter).includes((d as any)[extraFilterOptions.field]),
+        );
+      }
+    }
+   
     return filteredData;
-  }, [data, filterValue]);
+  }, [data, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -121,15 +134,42 @@ export function DataTable<T>({
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
-          <Input
-            isClearable
-            className="w-full sm:max-w-[44%]"
-            placeholder={`Buscar por ${filterBy.toString()}...`}
-            startContent={<i className="fa-solid fa-magnifying-glass"></i>}
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
-          />
+          <div className="flex gap-2 w-full">
+            <Input
+              isClearable
+              className="w-full sm:max-w-[44%]"
+              placeholder={`Buscar por ${filterBy.text.toString()}...`}
+              startContent={<i className="fa-solid fa-magnifying-glass"></i>}
+              value={filterValue}
+              onClear={() => onClear()}
+              onValueChange={onSearchChange}
+            />
+            {
+              extraFilterOptions && (
+                <Dropdown>
+                  <DropdownTrigger className="hidden sm:flex">
+                    <Button endContent={<i className="fa-solid fa-caret-down"></i>} variant="flat" className="capitalize">
+                      { (extraFilterOptions.field as string) }
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu
+                    disallowEmptySelection
+                    aria-label="Table Columns"
+                    closeOnSelect={false}
+                    selectedKeys={statusFilter}
+                    selectionMode="multiple"
+                    onSelectionChange={setStatusFilter}
+                  >
+                    {extraFilterOptions.options.map((status) => (
+                      <DropdownItem key={status} className="capitalize">
+                        { status }
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </Dropdown>
+              )
+            }
+          </div>
           {showCreateButton && (
             <div className="flex gap-3">
               <Button
@@ -146,7 +186,7 @@ export function DataTable<T>({
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total: {data.length} {typeName}
+            Total: {data.length}
           </span>
           <label className="flex items-center text-default-400 text-small">
             Filas por pagina:
@@ -162,7 +202,7 @@ export function DataTable<T>({
         </div>
       </div>
     );
-  }, [filterValue, onSearchChange, onRowsPerPageChange, hasSearchFilter]);
+  }, [filterValue, onSearchChange, onRowsPerPageChange, hasSearchFilter, statusFilter, showCreateButton]);
 
   const bottomContent = React.useMemo(() => {
     return (
@@ -221,7 +261,7 @@ export function DataTable<T>({
         </TableHeader>
         <TableBody
           isLoading={isLoading}
-          emptyContent={"No se encontraron " + typeName + "s"}
+          emptyContent={emptyMessage}
           items={items}
         >
           {(item) => (

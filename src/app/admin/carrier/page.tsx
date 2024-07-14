@@ -132,8 +132,8 @@ export default function SubCategoryPage() {
       <DataTable
         isLoading={ loadingData }
         renderCell={renderCell}
-        typeName="repartidor"
-        filterBy="fullName"
+        emptyMessage="No se encontraron repartidores"
+        filterBy={{ key: "fullName", text: "Nombre" }}
         data={carriers}
         columns={columns}
         modal={CarrierModal}

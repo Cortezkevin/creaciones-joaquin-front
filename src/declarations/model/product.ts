@@ -1,3 +1,4 @@
+import { ProductMaterial } from "../api";
 import { ICollection } from "./collection";
 import { ISubCategory } from "./subcategory";
 
@@ -13,4 +14,5 @@ export type IProduct = {
   price: string;
   stock: number;
   images: string[];
+  materials?: ProductMaterial[];
 }

@@ -1,3 +1,12 @@
+import { MeasurementUnit } from "../model";
+
+export type ProductMaterial = {
+  materialId: string;
+  name: string;
+  measurementUnit: MeasurementUnit;
+  amount: number;
+};
+
 export type NewProduct = {
   name: string;
   description: string;
@@ -6,6 +15,7 @@ export type NewProduct = {
   subcategory_id: string;
   supplierId?: string;
   files: File[];
+  materials?: ProductMaterial[]
 }
 
 export type UpdateProduct = {
@@ -18,4 +28,5 @@ export type UpdateProduct = {
   newCollectionId: string;
   newSupplierId?: string;
   files?: File[];
+  materials?: ProductMaterial[]
 }

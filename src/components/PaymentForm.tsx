@@ -43,9 +43,9 @@ export const PaymentForm = () => {
       console.log(user.id)
 
       let returnUrl = "";
-      const extraData: { especificAddress: string, note: string } = JSON.parse(Cookies.get("extraOrderData") || "null");
+      const extraData: { specific: string, note: string } = JSON.parse(Cookies.get("extraOrderData") || "null");
       if( extraData ){
-        returnUrl = `http://localhost:4000/api/payment/success?user=${user.id}&note=${extraData.note}&specific=${extraData.especificAddress}`;
+        returnUrl = `http://localhost:4000/api/payment/success?user=${user.id}&note=${extraData.note}&specific=${extraData.specific}`;
       }else {
         returnUrl = `http://localhost:4000/api/payment/success?user=${user.id}`;
       }

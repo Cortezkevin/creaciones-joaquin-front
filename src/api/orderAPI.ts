@@ -1,4 +1,4 @@
-import { IAddress, IDetailedOrder, IDetailedPreparationOrder, IDetailedShippingOrder, IOrder, IPreparationOrder, IShippingOrder, ResponseWrapper, UpdateOrder } from "@/declarations";
+import { IAddress, IDetailedOrder, IDetailedPreparationOrder, IDetailedShippingOrder, IOrder, IPreparationOrder, IShippingOrder, ResponseWrapper, CompletedOrderPreparation } from "@/declarations";
 import { AxiosInstance } from "./axios"
 import { isAxiosError } from "axios";
 import Cookies from 'js-cookie';
@@ -138,9 +138,9 @@ export const getOrdersByUser = async (userId: string ) => {
   } 
 }
 
-export const update = async (order: UpdateOrder) => {
+export const cancel = async (orderId: string) => {
   try {
-    const response = await AxiosInstance.put<ResponseWrapper<IOrder>>(PATH, order, {
+    const response = await AxiosInstance.put<ResponseWrapper<IOrder>>(PATH + "/cancel/" + orderId, {
       "headers": {
         "Content-Type": "application/json",
         "Authorization": "Bearer " + Cookies.get("token")
@@ -236,9 +236,9 @@ export const checkPackagingPreparationOrder = async (data: { preparationOrderId:
   }
 }
 
-export const completePreparationOrder = async (data: { orderPreparationId: string }) => {
+export const completePreparationOrder = async (completePreparationOrder: CompletedOrderPreparation) => {
   try {
-    const response = await AxiosInstance.post<ResponseWrapper<IPreparationOrder>>(PATH + "/preparation/complete", data, {
+    const response = await AxiosInstance.post<ResponseWrapper<IPreparationOrder>>(PATH + "/preparation/complete", completePreparationOrder, {
       "headers": {
         "Content-Type": "application/json",
         "Authorization": "Bearer " + Cookies.get("token")

@@ -18,7 +18,7 @@ import React from "react";
 const columns: IOrderTableColumn[] = [
   {
     key: "user",
-    title: "Usuario",
+    title: "Cliente",
   },
   {
     key: "shippingAddress",
@@ -190,6 +190,11 @@ export default function OrdersPage() {
     router.push("/admin/orders/shipping");
   };
 
+  const getAllStatus = () => {
+    const statusArray: OrderStatus[] = ["ANULADO", "PENDIENTE", "EN_PROCESO", "ENTREGADO"];
+    return statusArray;
+  }
+
   return (
     <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto animate__animated animate__fadeIn animate__fast">
       <div className="flex justify-between items-center">
@@ -232,12 +237,16 @@ export default function OrdersPage() {
       <DataTable
         columns={columns}
         data={orders}
-        filterBy="user"
+        filterBy={{ key: "user", text: "Cliente" }}
         isLoading={false}
-        typeName={"Pedido"}
+        emptyMessage="No se encontraron pedidos"
         modal={UserModal}
         renderCell={renderCell}
         showCreateButton={false}
+        extraFilterOptions={{
+          options: getAllStatus(),
+          field: "status"
+        }}
       />
     </div>
   );

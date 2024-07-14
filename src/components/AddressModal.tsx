@@ -15,7 +15,7 @@ type Props = {
 
 export const AddressModal: FC<Props> = ({ isOpen, handleOpenModal }) => {
 
-  const [addressSelected, setAddressSelected] = React.useState<{ address: IAddress, distanceCost: string }>({
+  const [addressSelected, setAddressSelected] = React.useState<{ address: IAddress, distanceCost: string, distance: number }>({
     address: {
       id: "",
       department: "",
@@ -28,6 +28,7 @@ export const AddressModal: FC<Props> = ({ isOpen, handleOpenModal }) => {
       street: "",
       urbanization: ""
     },
+    distance: 0.0,
     distanceCost: "0.00",
   });
 
@@ -39,7 +40,7 @@ export const AddressModal: FC<Props> = ({ isOpen, handleOpenModal }) => {
   const handleSaveAddress = () => {
     if( isLogged ){
       onUpdateAddress( addressSelected.address );
-      onChangeShippingCost(  addressSelected.distanceCost );
+      onChangeShippingCost(  addressSelected.distanceCost, addressSelected.distance );
     }else {
       onUpdateAddressMemory( addressSelected.address );
       onChangeShippingCostMemory(  addressSelected.distanceCost );

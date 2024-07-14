@@ -51,7 +51,6 @@ export default function AuthProvider({ children }: Props) {
     setIsLoadingUserData(true);
     const addressMemory = JSON.parse(Cookies.get("address") || "null") as IAddress ;
       if(addressMemory){
-        console.log("ADDRESS MEMOREY", addressMemory);
         dispatch({
           type: "[Auth] - Update Address",
           payload: addressMemory

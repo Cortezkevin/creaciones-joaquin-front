@@ -227,9 +227,9 @@ export const AdminMenu = () => {
                 key="Productos"
                 shouldHighlightOnFocus
                 textValue="Productos"
-                className={`text-slate-600 ${
-                  user.roles.includes("ROLE_ADMIN") ? "" : "hidden"
-                }`}
+                /* className={`text-slate-600 ${
+                  user.roles.includes("ROLE_USER") ? "" : "hidden"
+                }`} */
                 startContent={<i className="fa-solid fa-couch"></i>}
               >
                 <NextLink passHref legacyBehavior href={"/admin/product"}>
@@ -278,19 +278,6 @@ export const AdminMenu = () => {
                 <NextLink passHref legacyBehavior href={"/admin/grocer"}>
                   <Link href={""}>
                     <p>Almaceneros</p>
-                  </Link>
-                </NextLink>
-              </ListboxItem>
-              <ListboxItem
-                key="Operadores"
-                shouldHighlightOnFocus
-                textValue="Operadores"
-                className="text-slate-600"
-                startContent={<i className="fa-solid fa-hands"></i>}
-              >
-                <NextLink passHref legacyBehavior href={"/admin/operator"}>
-                  <Link href={""}>
-                    <p>Operadores</p>
                   </Link>
                 </NextLink>
               </ListboxItem>
@@ -368,6 +355,36 @@ export const AdminMenu = () => {
                 <NextLink passHref legacyBehavior href={"/admin/movements"}>
                   <Link href={""}>
                     <p>Movimientos</p>
+                  </Link>
+                </NextLink>
+              </ListboxItem>
+              <ListboxItem
+                key="Guias de Entrada"
+                shouldHighlightOnFocus
+                textValue="Guias de Entrada"
+                className="text-slate-600"
+                startContent={
+                  <i className="fa-solid fa-plus"></i>
+                }
+              >
+                <NextLink passHref legacyBehavior href={"/admin/entry-guide"}>
+                  <Link href={""}>
+                    <p>Guias de Entrada</p>
+                  </Link>
+                </NextLink>
+              </ListboxItem>
+              <ListboxItem
+                key="Guias de Salida"
+                shouldHighlightOnFocus
+                textValue="Guias de Salida"
+                className="text-slate-600"
+                startContent={
+                  <i className="fa-solid fa-x"></i>
+                }
+              >
+                <NextLink passHref legacyBehavior href={"/admin/exit-guide"}>
+                  <Link href={""}>
+                    <p>Guias de Salida</p>
                   </Link>
                 </NextLink>
               </ListboxItem>

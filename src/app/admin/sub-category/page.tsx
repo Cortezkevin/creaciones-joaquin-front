@@ -2,6 +2,7 @@
 
 import { DataTable, DataTableModalProps } from "@/components/DataTable";
 import { SubCategoryModal } from "@/components/SubCategoryModal";
+import { AuthContext } from "@/context";
 import { StoreContext } from "@/context/admin";
 import { ISubCategoryTableCell, ISubCategoryTableColumn } from "@/declarations";
 import { Image } from "@nextui-org/image";
@@ -29,6 +30,7 @@ const columns: ISubCategoryTableColumn[] = [
 
 export default function SubCategoryPage() {
 
+  const { isAdmin } = React.useContext( AuthContext );
   const { subcategory: { subcategories }, loadingData, onSelectSubCategory } = React.useContext(StoreContext);
 
   const renderCell = React.useCallback(
@@ -68,7 +70,9 @@ export default function SubCategoryPage() {
           return <Image src={cellValue} width={120} height={120} />;
         case "actions":
           return (
-            <div className="relative flex justify-center items-center gap-2">
+            isAdmin 
+            ? (
+              <div className="relative flex justify-center items-center gap-2">
               <Tooltip color="warning" content="Edit">
                 <span className="text-lg text-warning cursor-pointer active:opacity-50">
                   <i className="fa-solid fa-pen-to-square" onClick={() => {
@@ -83,12 +87,15 @@ export default function SubCategoryPage() {
                 </span>
               </Tooltip>
             </div>
+            ) : (
+              <div>No puede realizar acciones</div>
+            )
           );
         default:
           return <>{cellValue}</>;
       }
     },
-    []
+    [ isAdmin ]
   );
 
   return (
@@ -97,8 +104,8 @@ export default function SubCategoryPage() {
       <DataTable
         isLoading={ loadingData }
         renderCell={renderCell}
-        typeName="sub categoria"
-        filterBy="name"
+        emptyMessage="No se encontraron sub categorias"
+        filterBy={{ key: "name", text: "Nombre" }}
         data={subcategories}
         columns={columns}
         modal={SubCategoryModal}

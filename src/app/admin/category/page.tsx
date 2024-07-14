@@ -2,7 +2,7 @@
 
 import { CategoryModal } from "@/components/CategoryModal";
 import { DataTable, DataTableModalProps } from "@/components/DataTable";
-import { StoreContext } from "@/context";
+import { AuthContext, StoreContext } from "@/context";
 import { ICategoryTableCell, ICategoryTableColumn } from "@/declarations";
 import { Image, Tooltip } from "@nextui-org/react";
 import React from "react";
@@ -25,6 +25,7 @@ const columns: ICategoryTableColumn[] = [
 export default function CategoryPage() {
 
   const { category: { categories }, loadingData, onSelectCategory } = React.useContext( StoreContext );
+  const { isAdmin } = React.useContext(AuthContext);
 
   const renderCell = React.useCallback(
     (
@@ -75,11 +76,12 @@ export default function CategoryPage() {
       <DataTable
         isLoading={ loadingData }
         renderCell={renderCell}
-        typeName="categoria"
-        filterBy="name"
+        emptyMessage="No se encontraron categorias"
+        filterBy={{ key: "name", text: "Nombre" }}
         data={categories}
         columns={columns}
         modal={ CategoryModal }
+        showCreateButton={ isAdmin }
       />
     </div>
   );

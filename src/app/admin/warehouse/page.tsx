@@ -63,7 +63,7 @@ export default function SupplierPage() {
         default:
           return <>{cellValue}</>;
       }
-    }, []);
+    }, [ isAdmin ]);
 
   return (
     <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto animate__animated animate__fadeIn animate__fast">
@@ -71,8 +71,8 @@ export default function SupplierPage() {
       <DataTable
         isLoading={ loadingData }
         renderCell={renderCell}
-        typeName="proveedor"
-        filterBy="location"
+        emptyMessage="No se encontraron almacenes"
+        filterBy={{ key: "location", text: "Ubicacion" }}
         data={warehouses}
         columns={columns}
         modal={ WarehouseModal }

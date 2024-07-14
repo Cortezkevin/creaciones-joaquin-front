@@ -16,6 +16,7 @@ export type ICart = {
   tax: string;
   discount: string;
   subtotal: string;
+  distance: number;
   shippingCost: string;
   total: string;
   user_id: string;

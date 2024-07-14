@@ -30,6 +30,7 @@ export type IPreparationOrderTableCell = {
   startDate: string;
   preparedDate: string;
   completedDate: string;
+  orderStatus: OrderStatus;
   status: PreparationStatus;
 }
 

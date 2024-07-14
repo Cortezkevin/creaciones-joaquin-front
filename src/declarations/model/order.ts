@@ -81,6 +81,7 @@ export type IPreparationOrder = {
   startDate: string;
   preparedDate: string;
   completedDate: string;
+  orderStatus: OrderStatus;
   status: PreparationStatus;
 }
 
@@ -103,5 +104,6 @@ export type IDetailedShippingOrder = {
   preparedDate: string;
   shippingDate: string;
   completedDate: string;
+  exitGuideId: string;
   status: ShippingStatus;
 }

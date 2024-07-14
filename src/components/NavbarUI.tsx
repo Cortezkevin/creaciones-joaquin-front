@@ -36,7 +36,7 @@ export const NavbarUI = () => {
 
   const handleAdminAccount = () => {
     if( isAdmin ){
-      router.push("/admin/category");
+      router.push("/admin/dashboard");
     }else{
       router.push("/admin/orders");
     }

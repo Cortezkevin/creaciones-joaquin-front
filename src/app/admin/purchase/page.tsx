@@ -167,8 +167,8 @@ export default function SupplierPage() {
         showCreateButton={isAdmin}
         isLoading={loadingData}
         renderCell={renderCell}
-        typeName="ordenes de compras"
-        filterBy="supplier"
+        emptyMessage="No se encontraron ordenes de compra"
+        filterBy={{ key: "supplier", text: "Proveedor" }}
         data={purchaseOrders}
         columns={columns}
         modal={PurchaseOrderModal}

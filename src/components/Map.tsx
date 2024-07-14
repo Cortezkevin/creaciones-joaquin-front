@@ -20,7 +20,7 @@ let matrix_service: google.maps.DistanceMatrixService;
 
 type Props = {
   initDestination?: { lat: number, lng: number };
-  onSelectDirection: ( direction: { address: IAddress, distanceCost: string } ) => void;
+  onSelectDirection: ( direction: { address: IAddress, distanceCost: string, distance: number } ) => void;
 }
 
 export const Map: FC<Props> = ({ onSelectDirection, initDestination = { lat: -12.190860, lng: -76.994641 } }) => {
@@ -169,6 +169,7 @@ export const Map: FC<Props> = ({ onSelectDirection, initDestination = { lat: -12
           urbanization: selectedUrbanizacion,
           fullAddress: selectedAddress
         },
+        distance: distance?.value ? distance.value : 0.0,
         distanceCost: distance?.value ? (distance?.value * 2).toFixed(2) : ""
       });
       setAddressSearch( user.profile.address.fullAddress );
@@ -186,6 +187,7 @@ export const Map: FC<Props> = ({ onSelectDirection, initDestination = { lat: -12
           urbanization: selectedUrbanizacion,
           fullAddress: selectedAddress
         },
+        distance: distance?.value ? distance.value : 0.0,
         distanceCost: distance?.value ? (distance?.value * 2).toFixed(2) : ""
       });
     }

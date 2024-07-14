@@ -3,6 +3,7 @@
 import React, { FC, ReactElement } from "react";
 import { StoreContext, StoreReducer } from "./";
 import {
+  CreateUser,
   ICategory,
   ICollection,
   IProduct,
@@ -162,6 +163,7 @@ export function StoreProvider ({ children }: Props) {
   };
 
   const onSelectProduct = (product: IProduct | null) => {
+    console.log("PRODUCT SELECTED CHANGE", product);
     dispatch({
       type: "[Store] - Select Product",
       payload: product,
@@ -313,6 +315,7 @@ export function StoreProvider ({ children }: Props) {
     });
 
     if( type === "Edit" ){
+      console.log("EDITANDO PRODUCTO" , product);
       const response = await productAPI.update(
         product as UpdateProduct/* ,
         product.files */
@@ -346,24 +349,39 @@ export function StoreProvider ({ children }: Props) {
     onTerminate();
   }
 
-  const onEditUser = async (
-    user: UpdateUser,
+  const onCreateOrEditUser = async (
+    type: "Edit" | "Create",
+    user: CreateUser | UpdateUser,
     onTerminate: () => void
   ) => {
     dispatch({
       type: "[Store] - Saving User",
     });
-    const response = await userAPI.update( user );
-    if (response?.success) {
-      dispatch({
-        type: "[Store] - User Updated",
-        payload: response.content,
-      });
-      toast.success(response.message);
-      onTerminate();
-      return;
+    if( type === "Edit" ){
+      const response = await userAPI.update( user as UpdateUser );
+      if (response?.success) {
+        dispatch({
+          type: "[Store] - User Updated",
+          payload: response.content,
+        });
+        toast.success(response.message);
+        onTerminate();
+        return;
+      }
+      toast.error(response!.message);
+    }else {
+      const response = await userAPI.create( user as CreateUser );
+      if (response?.success) {
+        dispatch({
+          type: "[Store] - User Created",
+          payload: response.content,
+        });
+        toast.success(response.message);
+        onTerminate();
+        return;
+      }
+      toast.error(response!.message);
     }
-    toast.error(response!.message);
     onTerminate();
   };
 
@@ -379,7 +397,7 @@ export function StoreProvider ({ children }: Props) {
         onCreateOrEditCollection,
         onCreateOrEditSubCategory,
         onCreateOrEditProduct,
-        onEditUser,
+        onCreateOrEditUser,
         onSelectUser,
         loadUsers
       }}

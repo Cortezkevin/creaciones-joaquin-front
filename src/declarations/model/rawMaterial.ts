@@ -5,7 +5,7 @@ export type IRawMaterial = {
   name: string;
   description: string;
   measurementUnit: MeasurementUnit;
-  stock: string;
+  stock: number;
   unitPrice: string;
   supplier: string;
   supplierId: string;

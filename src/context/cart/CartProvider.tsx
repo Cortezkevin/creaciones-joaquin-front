@@ -19,6 +19,7 @@ export interface CartState {
   discount: string;
   subtotal: string;
   total: string;
+  distance: number;
   shippingCost: string;
   loadingItems: boolean;
   isAddingItem: boolean;
@@ -32,6 +33,7 @@ const Cart_INITIAL_STATE: CartState = {
   tax: "0.00",
   discount: "0.00",
   subtotal: "0.00",
+  distance: 0.0,
   shippingCost: "0.00",
   total: "0.00",
   loadingItems: false,
@@ -95,6 +97,7 @@ export default function CartProvider({ children }: { children: ReactNode }){
           user_id : "",
           cartItems: [],
           tax: "0.00",
+          distance: 0.0,
           discount: "0.00",
           subtotal: "0.00",
           shippingCost: "0.00",
@@ -157,6 +160,7 @@ export default function CartProvider({ children }: { children: ReactNode }){
       user_id: "",
       cartItems: newItems,
       discount: "0.00",
+      distance: state.distance,
       subtotal: subtotal,
       shippingCost: state.shippingCost,
       total: total.total,
@@ -201,6 +205,7 @@ export default function CartProvider({ children }: { children: ReactNode }){
       cartItems: newItems,
       discount: "0.00",
       subtotal: subtotal,
+      distance: state.distance,
       shippingCost: state.shippingCost,
       total: total.total,
       tax: total.tax.toFixed(2)
@@ -263,6 +268,7 @@ export default function CartProvider({ children }: { children: ReactNode }){
       user_id : "",
       cartItems: [],
       tax: "0.00",
+      distance: 0.0,
       discount: "0.00",
       subtotal: "0.00",
       shippingCost: "0.00",
@@ -275,8 +281,8 @@ export default function CartProvider({ children }: { children: ReactNode }){
     })
   }
 
-  const handleChangeShippingCost = async ( shippingCost: string ) => {
-    const data = await cartAPI.updateShippingCost( shippingCost, state.id );
+  const handleChangeShippingCost = async ( shippingCost: string, distance: number ) => {
+    const data = await cartAPI.updateShippingCost( shippingCost, distance, state.id );
     if(data && data.success){
       dispatch({
         type: "[Cart] - change shipping cost",

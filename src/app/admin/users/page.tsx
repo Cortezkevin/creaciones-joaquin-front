@@ -1,11 +1,11 @@
 "use client";
 import { DataTable, DataTableModalProps } from "@/components/DataTable";
 import { UserModal } from "@/components/UserModal";
-import { StoreContext } from "@/context";
+import { AuthContext, StoreContext } from "@/context";
 import { Status } from "@/declarations";
 import { IUsersTableCell, IUsersTableColumn } from "@/declarations/table/users";
 import { Chip, Tooltip } from "@nextui-org/react";
-import React from "react";
+import React, { useContext } from "react";
 
 const columns: IUsersTableColumn[] = [
   {
@@ -40,8 +40,9 @@ export default function UsersPage() {
     loadingData,
     loadUsers,
     onSelectUser,
-  } = React.useContext(StoreContext);
-
+  } = React.useContext( StoreContext );
+  
+  const { isAdmin } = useContext( AuthContext );
   const renderCell = React.useCallback(
     (
       item: IUsersTableCell,
@@ -102,7 +103,9 @@ export default function UsersPage() {
           )
         case "actions":
           return (
-            <div className="relative flex justify-center items-center gap-2">
+            isAdmin
+            ? (
+              <div className="relative flex justify-center items-center gap-2">
               <Tooltip color="warning" content="Edit">
                 <span className="text-lg text-warning cursor-pointer active:opacity-50">
                   <i
@@ -115,12 +118,15 @@ export default function UsersPage() {
                 </span>
               </Tooltip>
             </div>
+            ) : (
+              <div>No puedes realizar acciones</div>
+            )
           );
         default:
           return <>{cellValue}</>;
       }
     },
-    []
+    [ isAdmin ]
   );
 
   React.useEffect(() => {
@@ -133,12 +139,12 @@ export default function UsersPage() {
       <DataTable
         columns={columns}
         data={users}
-        filterBy="firstName"
+        filterBy={{ key: "firstName", text: "Nombre" }}
         isLoading={loadingData}
-        typeName={"Usuario"}
+        emptyMessage="No se encontraron usuarios"
         modal={UserModal}
         renderCell={renderCell}
-        showCreateButton={ false }
+        showCreateButton={ isAdmin }
       />
     </div>
   );

@@ -8,6 +8,7 @@ export interface CartProps {
   items: ICartItem[];
   count: number;
   tax: string;
+  distance: number;
   shippingCost: string;
   discount: string;
   subtotal: string;
@@ -20,7 +21,7 @@ export interface CartProps {
   onAddMemoryItem: ( newItem: ICartItem ) => void;
   onRemoveItem: ( itemToRemove: RemoveItem ) => void;
   onRemoveMemoryItem: ( removeItem: { productId: string, amount: number, removeAll: boolean } ) => void;
-  onChangeShippingCost: ( cost: string ) => void;
+  onChangeShippingCost: ( cost: string, distance: number ) => void;
   onChangeShippingCostMemory: ( cost: string) => void;
   onChangeCart: (cart:ICart) => void;
   onClear: () => void;

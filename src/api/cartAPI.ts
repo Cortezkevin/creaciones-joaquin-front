@@ -59,9 +59,9 @@ export const removeItem = async (removeItem: RemoveItem) => {
   } 
 }
 
-export const updateShippingCost = async (shippingCost: string, cartId: string) => {
+export const updateShippingCost = async (shippingCost: string, distance: number, cartId: string) => {
   try{
-    const { data } = await AxiosInstance.put<ResponseWrapper<ICart>>(PATH + "/shipping", { shippingCost, cartId } , {
+    const { data } = await AxiosInstance.put<ResponseWrapper<ICart>>(PATH + "/shipping", { shippingCost, distance, cartId } , {
       "headers": {
         "Content-Type": "application/json",
         "Authorization": "Bearer " + Cookies.get("token")

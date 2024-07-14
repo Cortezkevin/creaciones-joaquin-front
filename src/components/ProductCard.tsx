@@ -13,10 +13,15 @@ export const ProductCard: FC<Props> = ({ product }) => {
   const [isHover, setIsHover] = React.useState(false);
 
   const image = React.useMemo(() => {
-    if( isHover ){
-      return product.images[1];
+    if( product.images.length > 1){
+      if( isHover ){
+        return product.images[1];
+      }
+      return product.images[0];
+    }else {
+      return product.images[0];
     }
-    return product.images[0];
+    
   }, [ isHover ]);
 
   const handleClick = () => {
@@ -25,6 +30,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
 
   return (
     <div className="flex flex-col gap-2 shadow-lg cursor-pointer min-w-[250px] max-w-[250px]" onClick={handleClick}>
+      { product.stock === 0 && <div className='absolute bg-red-200 p-2 border-2 border-red-500 rounded-md text-red-500 z-50 text-xs'>Agotado</div> }
       <div className='p-2 bg-white min-h-[250px] flex items-center justify-center'>
         <Image className='rounded-none' src={image} width={200} height={200} alt={product.name} onMouseOver={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}/>
       </div>

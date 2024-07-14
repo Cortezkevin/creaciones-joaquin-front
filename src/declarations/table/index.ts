@@ -2,6 +2,7 @@ export * from './carrier';
 export * from './category';
 export * from './collection';
 export * from './grocer';
+export * from './guide';
 export * from './orders';
 export * from './product';
 export * from './purchaseOrder';

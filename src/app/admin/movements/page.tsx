@@ -1,31 +1,46 @@
 "use client";
 
-import { supplierAPI } from "@/api";
 import { DataTable, DataTableModalProps } from "@/components/DataTable";
-import { SupplierModal } from "@/components/SupplierModal";
-import { PurchaseContext } from "@/context/admin/purchase";
+import { MovementModal } from "@/components/MovementModal";
 import { WarehouseContext } from "@/context/admin/warehouse";
 import {
   IMovementsTableColumn,
   IMovementsTableCell,
   InventoryMovementType,
 } from "@/declarations";
-import { formatDate } from "@/utils/utils";
+import { formatDate, passOneDay } from "@/utils/utils";
 import { Chip, Tooltip } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const columns: IMovementsTableColumn[] = [
   {
+    key: "grocer",
+    title: "Realizado por"
+  },
+  {
     key: "productOrMaterial",
     title: "Producto/Material",
+  },
+  {
+    key: "type",
+    title: "Tipo de Movimiento",
+  },
+  {
+    key: "initialStock",
+    title: "Stock Inicial"
   },
   {
     key: "amount",
     title: "Cantidad",
   },
   {
-    key: "type",
-    title: "Tipo de Movimiento",
+    key: "newStock",
+    title: "Nuevo Stock"
+  },
+  {
+    key: "reason",
+    title: "Razon",
   },
   {
     key: "date",
@@ -44,8 +59,11 @@ const columns: IMovementsTableColumn[] = [
 export default function MovementsPage() {
   const {
     movement: { movements },
+    onSelectMovement,
     loadingData,
   } = React.useContext(WarehouseContext);
+
+  const router = useRouter();
 
   const renderCell = React.useCallback(
     (
@@ -58,24 +76,24 @@ export default function MovementsPage() {
         cellValue = item[columnKey] + "";
       } else {
         if (columnKey != "actions") {
-          cellValue = item[columnKey];
+          cellValue = item[columnKey]+"";
         }
       }
 
       switch (columnKey) {
+        case "grocer":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">{cellValue}</p>
+            </div>
+          );
         case "productOrMaterial":
           return (
             <div className="flex flex-col">
               <p className="text-bold text-small capitalize">{cellValue}</p>
             </div>
           );
-        case "amount":
-          return (
-            <div className="flex flex-col">
-              <p className="text-bold text-small capitalize">{cellValue}</p>
-            </div>
-          );
-        case "type":
+          case "type":
           return (
             <div className="flex flex-col">
              <Chip
@@ -90,6 +108,30 @@ export default function MovementsPage() {
               >
                 {cellValue}
               </Chip>
+            </div>
+          );
+          case "initialStock":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">{cellValue}</p>
+            </div>
+          );
+        case "amount":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">{cellValue}</p>
+            </div>
+          );
+          case "newStock":
+            return (
+              <div className="flex flex-col">
+                <p className="text-bold text-small capitalize">{cellValue}</p>
+              </div>
+            );
+        case "reason":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">{cellValue}</p>
             </div>
           );
         case "date":
@@ -108,10 +150,18 @@ export default function MovementsPage() {
           return (
             <div className="relative flex justify-center items-center gap-2">
               <Tooltip color="warning" content="Ver Detalles">
-                <span className="text-lg text-warning cursor-pointer active:opacity-50">
+                <span onClick={() => router.push("/admin/movements/"+item.id)} className="text-lg text-warning cursor-pointer active:opacity-50">
                   <i className="fa-solid fa-eye"></i>
                 </span>
               </Tooltip>
+              {/* <Tooltip color="warning" content="Editar">
+                <span className={`text-lg text-warning cursor-pointer active:opacity-50`}>
+                  <i className="fa-solid fa-pen-to-square" onClick={() => {
+                    onSelectMovement( item )
+                    modalProps.openModal( true );
+                  }}></i>
+                </span>
+              </Tooltip> */}
             </div>
           );
         default:
@@ -121,18 +171,26 @@ export default function MovementsPage() {
     []
   );
 
+  const getAllStatus = () => {
+    const statusArray: InventoryMovementType[] = ["ENTRADA", "SALIDA","PRODUCCION"];
+    return statusArray;
+  }
+
   return (
     <div className="w-full h-[100vh] p-8 bg-slate-200 flex flex-col gap-6 overflow-auto animate__animated animate__fadeIn animate__fast">
       <h1 className="text-large font-semibold">Movimientos</h1>
       <DataTable
         isLoading={loadingData}
         renderCell={renderCell}
-        typeName="movimiento"
-        filterBy="type"
+        emptyMessage="No se encontraron mivimientos"
+        filterBy={{ key: "productOrMaterial", text: "Producto o Material" }}
         data={movements}
         columns={columns}
-        modal={SupplierModal}
-        showCreateButton={ false }
+        modal={MovementModal}
+        extraFilterOptions={{
+          options: getAllStatus(),
+          field: "type"
+        }}
       />
     </div>
   );

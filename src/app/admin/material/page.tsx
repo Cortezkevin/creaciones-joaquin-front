@@ -49,7 +49,7 @@ export default function SupplierPage() {
     ) => {
       let cellValue = "";
       if (columnKey != "actions") {
-        cellValue = item[columnKey];
+        cellValue = item[columnKey].toString();
       }
 
       switch (columnKey) {
@@ -131,8 +131,8 @@ export default function SupplierPage() {
       <DataTable
         isLoading={ loadingData }
         renderCell={renderCell}
-        typeName="materiales"
-        filterBy="name"
+        emptyMessage="No se encontraron materiales"
+        filterBy={{ key: "name", text: "Nombre" }}
         data={rawMaterials}
         columns={columns}
         modal={ RawMaterialModal }

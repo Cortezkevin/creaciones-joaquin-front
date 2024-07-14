@@ -3,13 +3,15 @@ export * from './cart';
 export * from './user';
 export * from './order';
 export * from './profile';
-export * from './category';
-export * from './supplier';
-export * from './rawMaterial';
-export * from './purchaseOrder';
-export * from './collection';
-export * from './subcategory';
 export * from './product';
+export * from './category';
+export * from './dashboard';
+export * from './supplier';
+export * from './movements';
+export * from './collection';
+export * from './rawMaterial';
+export * from './subcategory';
+export * from './purchaseOrder';
 
 export type ResponseWrapper<T> = {
   success: boolean;

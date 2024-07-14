@@ -91,8 +91,8 @@ export default function CollectionPage() {
       <DataTable
         isLoading={ loadingData }
         renderCell={renderCell}
-        typeName="coleccion"
-        filterBy="name"
+        emptyMessage="No se encontraron colecciones"
+        filterBy={{ key: "name", text: "Nombre" }}
         data={collections}
         columns={columns}
         modal={CollectionModal}

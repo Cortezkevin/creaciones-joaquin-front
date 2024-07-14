@@ -60,7 +60,7 @@ export function UserModal({ handleOpenModal, isOpen }: Props) {
   const {
     user: { selected, loading },
     onSelectUser,
-    onEditUser,
+    onCreateOrEditUser,
   } = React.useContext(StoreContext);
   
   const [roles, setRoles] = React.useState<IRole[]>([]);
@@ -119,7 +119,8 @@ export function UserModal({ handleOpenModal, isOpen }: Props) {
 
   const onSubmit = async () => {
     if (selected) {
-      onEditUser(
+      onCreateOrEditUser(
+        "Edit",
         {
           firstName: values.firstName,
           lastName: values.lastName,
@@ -127,6 +128,22 @@ export function UserModal({ handleOpenModal, isOpen }: Props) {
           roles: values.roles,
           status: values.status,
           userId: selected.id,
+        },
+        () => {
+          resetForm();
+          handleOpenModal(false);
+        }
+      );
+    }else {
+      onCreateOrEditUser(
+        "Create",
+        {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          roles: values.roles,
+          status: values.status,
+          password: values.email
         },
         () => {
           resetForm();

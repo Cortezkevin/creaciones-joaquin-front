@@ -8,8 +8,19 @@ export function middleware(req: NextRequest) {
     case "/admin/category":
     case "/admin/sub-category":
     case "/admin/collection":
-    case "/admin/product":
       return validateRoleAdmin(req);
+    case "/admin/material":
+    case "/admin/movements":
+    case "/admin/purchase":
+    case "/admin/purchase/:id":
+    case "/admin/entry-guide":
+    case "/admin/reception":
+    case "/admin/purchase/reception/:id":
+      return validateRoleGrocerOrAdmin( req );
+    case "/admin/grocer":
+    case "/admin/carrier":
+    case "/admin/product":
+    case "/admin/supplier":
     case "/admin/orders":
     case "/admin/orders/shipping":
     case "/admin/orders/preparation":
@@ -39,6 +50,34 @@ const validateRoleAdmin = async (req: NextRequest) => {
 
   const validRole = "ROLE_ADMIN";
   if (session && !session.content.roles.includes(validRole)) {
+    const url = req.nextUrl.clone();
+    url.pathname = "/";
+    return NextResponse.redirect(url);
+  }
+
+  return NextResponse.next();
+};
+
+const validateRoleGrocerOrAdmin = async (req: NextRequest) => {
+  const session = await validateToken(req.cookies.get("token")?.value + "");
+  if (!session?.success || session === undefined || session === null) {
+    const requestedPage = req.nextUrl.pathname;
+    const url = req.nextUrl.clone();
+    url.pathname = "/auth/login";
+    url.search = `prevPage=${requestedPage}`;
+    return NextResponse.redirect(url);
+  }
+
+  const validRoles = ["ROLE_ADMIN","ROLE_WAREHOUSE"];
+
+  let isRoleValid = false;
+  session.content.roles.forEach( r => {
+    if( validRoles.includes(r) ){
+      isRoleValid = true;
+    }
+  });
+
+  if (session && !isRoleValid) {
     const url = req.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);
@@ -103,8 +142,18 @@ export const config = {
     "/admin/category",
     "/admin/sub-category",
     "/admin/collection",
+    "/admin/material",
+    "/admin/grocer",
+    "/admin/carrier",
     "/admin/product",
     "/admin/orders",
+    "/admin/supplier",
+    "/admin/movements",
+    "/admin/purchase",
+    "/admin/purchase/:id",
+    "/admin/entry-guide",
+    "/admin/reception",
+    "/admin/purchase/reception/:id",
     "/admin/orders/preparation",
     "/admin/orders/shipping",
     "/auth/login",

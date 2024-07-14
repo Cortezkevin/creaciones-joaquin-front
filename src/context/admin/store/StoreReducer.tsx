@@ -101,6 +101,10 @@ type StoreAction =
       payload: IUser;
     }
   | {
+      type: "[Store] - User Created";
+      payload: IUser;
+    }
+  | {
       type: "[Store] - Select User";
       payload: IUsersTableCell | null;
     };
@@ -343,6 +347,15 @@ export const StoreReducer = (
             }
             return u;
           }),
+          selected: null,
+          loading: false,
+        },
+      };
+    case "[Store] - User Created":
+      return {
+        ...state,
+        user: {
+          users: [...state.user.users, action.payload],
           selected: null,
           loading: false,
         },

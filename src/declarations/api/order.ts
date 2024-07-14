@@ -1,3 +1,5 @@
-export type UpdateOrder = {
-  
+export type CompletedOrderPreparation = {
+  orderPreparationId: string;
+  observations: string;
+  warehouse: string;
 }
