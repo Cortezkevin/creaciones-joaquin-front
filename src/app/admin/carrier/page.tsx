@@ -119,7 +119,7 @@ export default function SubCategoryPage() {
           return <>{cellValue}</>;
       }
     },
-    []
+    [ isAdmin ]
   );
 
   React.useEffect(() => {

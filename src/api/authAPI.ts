@@ -17,6 +17,7 @@ export const login = async (email: string, password: string) => {
         tax: "0.00",
         discount: "0.00",
         subtotal: "0.00",
+        distance: 0.0,
         shippingCost: "0.00",
         total: "0.00"
       }
@@ -49,6 +50,7 @@ export const register = async (newUser: NewUser) => {
         tax: "0.00",
         discount: "0.00",
         subtotal: "0.00",
+        distance: 0.0,
         shippingCost: "0.00",
         total: "0.00"
       }

@@ -327,7 +327,6 @@ export function PurchaseOrderModal({ handleOpenModal, isOpen }: Props) {
                   <div className="flex gap-2">
                     <Select
                       size="sm"
-                      isRequired
                       items={rawMaterials.filter(
                         (r) => r.supplierId === values.supplier
                       )}

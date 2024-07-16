@@ -110,7 +110,7 @@ export function GrocerModal({ handleOpenModal, isOpen }: Props) {
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Crear Repartidor
+              { selected ? "Editar Almacenero" : "Crear Almacenero" }
             </ModalHeader>
             <ModalBody>
               <Select

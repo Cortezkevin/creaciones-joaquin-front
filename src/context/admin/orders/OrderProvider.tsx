@@ -7,7 +7,6 @@ import {
   IOrderTableCell
 } from "@/declarations";
 import { orderAPI } from "@/api";
-import toast from "react-hot-toast";
 
 interface Props {
   children: ReactElement | ReactElement[];
@@ -64,32 +63,10 @@ export const OrderProvider: FC<Props> = ({ children }) => {
     });
   };
 
-  const onEditOrder = async (
-    order: any,
-    onTerminate: () => void
-  ) => {
-    dispatch({
-      type: "[Order] - Saving Order",
-    });
-   /*  const response = await orderAPI.update( order );
-    if (response?.success) {
-      dispatch({
-        type: "[Order] - Order Updated",
-        payload: response.content,
-      });
-      toast.success(response.message);
-      onTerminate();
-      return;
-    }
-    toast.error(response!.message); */
-    onTerminate();
-  };
-
   return (
     <OrderContext.Provider
       value={{
         ...state,
-        onEditOrder,
         onSelectOrder,
         loadOrders,
       }}

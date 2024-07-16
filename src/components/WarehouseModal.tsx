@@ -102,7 +102,7 @@ export function WarehouseModal({ handleOpenModal, isOpen }: Props) {
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              {isEditing ? "Editar Almacen" : "Crear nuevo Almacen"}
+              {selected ? "Editar Almacen" : "Crear Almacen"}
             </ModalHeader>
             <ModalBody>
               <Input

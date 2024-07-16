@@ -168,7 +168,7 @@ export function UserModal({ handleOpenModal, isOpen }: Props) {
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Editar Usuario
+              { selected ? "Editar Usuario" : "Crear Usuario" }
             </ModalHeader>
             <ModalBody>
               <Input

@@ -136,7 +136,7 @@ export function CarrierModal({ handleOpenModal, isOpen }: Props) {
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Crear Repartidor
+              { selected ? "Editar Repartidor" : "Crear Repartidor" }
             </ModalHeader>
             <ModalBody>
               <Input

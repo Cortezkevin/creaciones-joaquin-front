@@ -357,6 +357,7 @@ export function ProductModal({ handleOpenModal, isOpen }: Props) {
                         selected.supplierId ? selected.supplierId : undefined,
                       ] as any)
                     }
+                    description="Seleecionar si es un producto externo"
                   >
                     {(supplier) => (
                       <SelectItem value={supplier.id} key={supplier.id}>
@@ -401,6 +402,7 @@ export function ProductModal({ handleOpenModal, isOpen }: Props) {
                           : undefined,
                       ] as any)
                     }
+                    description="Seleccionar si pertenece a alguna coleccion"
                   >
                     {(collection) => (
                       <SelectItem value={collection.id} key={collection.id}>
@@ -418,7 +420,7 @@ export function ProductModal({ handleOpenModal, isOpen }: Props) {
                     errorMessage={touched.price && errors.price}
                     variant="bordered"
                   />
-                  <Input
+                  {/* <Input
                     isRequired
                     onChange={handleChange("stock")}
                     onBlur={handleBlur("stock")}
@@ -428,7 +430,7 @@ export function ProductModal({ handleOpenModal, isOpen }: Props) {
                     isInvalid={!!errors.stock && touched.stock}
                     errorMessage={touched.stock && errors.stock}
                     variant="bordered"
-                  />
+                  /> */}
                   <InputImage
                     label="Imagenes"
                     multiple={true}

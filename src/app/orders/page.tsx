@@ -25,10 +25,6 @@ import React from "react";
 
 const columns: IOrderTableColumn[] = [
   {
-    key: "user",
-    title: "Cliente",
-  },
-  {
     key: "shippingAddress",
     title: "Direccion de Envio",
   },
@@ -78,12 +74,6 @@ export default function OrdersPage() {
       }
       
       switch (columnKey) {
-        case "user":
-          return (
-            <div className="flex flex-col">
-              <p className="text-bold text-small capitalize">{cellValue}</p>
-            </div>
-          );
         case "shippingAddress":
           return (
             <div className="flex flex-col">
@@ -148,7 +138,7 @@ export default function OrdersPage() {
   return (
     <div className="w-[100vw] min-h-[400px] flex flex-col gap-4 items-center justify-start p-8">
       <h1 className="text-xl font-semibold">Historial de Pedidos</h1>
-      <div className="w-[1400px] min-h-[200px] flex flex-col items-center justify-center p-4 gap-4">
+      <div className="w-[1200px] min-h-[200px] flex flex-col items-center justify-center p-4 gap-4">
         <Table
           aria-label="Example table with client side pagination"
           isStriped

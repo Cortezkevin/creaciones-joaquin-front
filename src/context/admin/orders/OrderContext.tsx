@@ -3,7 +3,6 @@
 import {
   IOrder,
   IOrderTableCell,
-  UpdateOrder,
 } from "@/declarations";
 import { createContext } from "react";
 
@@ -16,6 +15,6 @@ export interface OrderProps {
   loadingData: boolean;
   loadOrders: () => void;
   onSelectOrder: (order: IOrderTableCell | null) => void;
-  onEditOrder: (order: UpdateOrder, onTerminate: () => void) => void;
+/*   onEditOrder: (order: UpdateOrder, onTerminate: () => void) => void; */
 }
 export const OrderContext = createContext({} as OrderProps);

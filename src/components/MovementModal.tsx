@@ -373,7 +373,7 @@ export function MovementModal({ handleOpenModal, isOpen }: Props) {
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Crear Movimientos
+              Realizar Movimientos
             </ModalHeader>
             <ModalBody>
               <div className="flex flex-col gap-4">

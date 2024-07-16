@@ -111,7 +111,7 @@ export default function CarrierPage() {
           return <>{cellValue}</>;
       }
     },
-    []
+    [ isAdmin ]
   );
 
   React.useEffect(() => {

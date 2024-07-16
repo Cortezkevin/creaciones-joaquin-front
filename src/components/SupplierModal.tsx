@@ -56,7 +56,6 @@ export function SupplierModal({ handleOpenModal, isOpen }: Props) {
     handleChange,
     handleBlur,
     values,
-    setFieldValue,
     isValid,
     resetForm,
     errors,
@@ -117,7 +116,7 @@ export function SupplierModal({ handleOpenModal, isOpen }: Props) {
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              {isEditing ? "Editar Proveedor" : "Crear nuevo Proveedor"}
+              {selected ? "Editar Proveedor" : "Crear Proveedor"}
             </ModalHeader>
             <ModalBody>
               <Input

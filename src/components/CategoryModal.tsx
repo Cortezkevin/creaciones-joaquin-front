@@ -89,7 +89,7 @@ export function CategoryModal({ handleOpenModal, isOpen }: Props) {
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              { isEditing ? "Editar Categoria" : "Crear nueva Categoria" }
+              { selected ? "Editar Categoria" : "Crear Categoria" }
             </ModalHeader>
             <ModalBody>
               <Input
