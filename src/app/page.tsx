@@ -15,12 +15,12 @@ export default function Home() {
   return (
     <main className=" bg-slate-100">
       <NavbarUI />
-      <div className="w-full bg-primary-200 flex items-center justify-center min-h-[750px] h-auto bg-slate-200">
+      <div className="w-full bg-primary-200 flex items-center justify-center min-h-[400px] h-auto bg-slate-200">
         <Image
           width={1800}
-          height={700}
+          height={500}
           alt="NextUI hero Image with delay"
-          src="https://colineal.pe/cdn/shop/files/AF6C577C-85F8-452F-A865-2D8C9932C86C_2000x.jpg?v=1714842610"
+          src="https://colineal.pe/cdn/shop/files/PORTADA-TEMP-COMEDORES-WEB-PE07.2024_2000x.jpg?v=1720103739"
         />
       </div>
       <div className="flex flex-col gap-4 mt-[40px] justify-center items-center pb-12">
